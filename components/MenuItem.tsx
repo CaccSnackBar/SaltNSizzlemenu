@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { MenuItem } from '../types';
+import { MenuItem, Theme } from '../types';
 import { PencilIcon } from './icons/PencilIcon';
 import { TrashIcon } from './icons/TrashIcon';
 import { EyeIcon } from './icons/EyeIcon';
@@ -12,14 +11,23 @@ interface MenuItemProps {
   onDelete: () => void;
   onToggleAvailability: () => void;
   isEditMode: boolean;
+  theme: Theme;
 }
 
-const MenuItemComponent: React.FC<MenuItemProps> = ({ item, onEdit, onDelete, onToggleAvailability, isEditMode }) => {
-  const containerClasses = `bg-white/50 p-4 rounded-lg shadow-sm relative transition-opacity duration-300 ${item.isCrossedOut ? 'opacity-50' : ''} ${isEditMode ? 'group' : ''}`;
+const MenuItemComponent: React.FC<MenuItemProps> = ({ item, onEdit, onDelete, onToggleAvailability, isEditMode, theme }) => {
+  const containerClasses = `p-4 rounded-lg shadow-sm relative transition-opacity duration-300 ${item.isCrossedOut ? 'opacity-50' : ''} ${isEditMode ? 'group bg-white/50' : ''}`;
   const textClasses = item.isCrossedOut ? 'line-through' : '';
 
+  const containerStyles = !isEditMode ? {
+    backgroundColor: theme.colors.cardBg,
+    borderColor: theme.colors.cardBorder,
+  } : {};
+  
+  const headingStyles = !isEditMode ? { color: theme.colors.heading } : {};
+  const textStyles = !isEditMode ? { color: theme.colors.text } : {};
+
   return (
-    <div className={containerClasses}>
+    <div className={containerClasses} style={containerStyles}>
        {isEditMode && (
         <div className="absolute top-2 right-2 flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button 
@@ -50,10 +58,10 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, onEdit, onDelete, on
        )}
 
       <div className="flex justify-between items-start">
-        <h3 className={`text-lg font-bold text-gray-800 ${isEditMode ? 'pr-28' : 'pr-2'} ${textClasses}`}>{item.name}</h3>
-        <p className={`text-lg font-bold text-gray-800 whitespace-nowrap ${textClasses}`}>{item.price}</p>
+        <h3 className={`text-lg font-bold ${isEditMode ? 'pr-28 text-gray-800' : 'pr-2'} ${textClasses}`} style={headingStyles}>{item.name}</h3>
+        <p className={`text-lg font-bold whitespace-nowrap ${isEditMode ? 'text-gray-800' : ''} ${textClasses}`} style={headingStyles}>{item.price}</p>
       </div>
-      <p className={`mt-1 text-gray-600 text-sm whitespace-pre-line ${textClasses}`}>{item.description}</p>
+      <p className={`mt-1 text-sm whitespace-pre-line ${isEditMode ? 'text-gray-600' : ''} ${textClasses}`} style={textStyles}>{item.description}</p>
     </div>
   );
 };

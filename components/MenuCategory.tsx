@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuCategory } from '../types';
+import { MenuCategory, Theme } from '../types';
 import MenuItemComponent from './MenuItem';
 import { PlusIcon } from './icons/PlusIcon';
 
@@ -10,13 +10,19 @@ interface MenuCategoryProps {
   onAddItem: () => void;
   onToggleItemAvailability: (itemId: string) => void;
   isEditMode: boolean;
+  theme: Theme;
 }
 
-const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditItem, onDeleteItem, onAddItem, onToggleItemAvailability, isEditMode }) => {
+const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditItem, onDeleteItem, onAddItem, onToggleItemAvailability, isEditMode, theme }) => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
-        <h2 className={`text-3xl font-bold text-gray-700 uppercase tracking-wide ${!isEditMode ? 'md:text-4xl' : ''}`}>{category.name}</h2>
+        <h2 
+          className={`text-3xl font-bold uppercase tracking-wide ${!isEditMode ? 'md:text-4xl' : 'text-gray-700'}`}
+          style={!isEditMode ? { color: theme.colors.heading } : {}}
+        >
+          {category.name}
+        </h2>
         {isEditMode && (
             <button 
                 onClick={onAddItem}
@@ -35,6 +41,7 @@ const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditIt
             onDelete={() => onDeleteItem(item.id)}
             onToggleAvailability={() => onToggleItemAvailability(item.id)}
             isEditMode={isEditMode}
+            theme={theme}
           />
         ))}
       </div>

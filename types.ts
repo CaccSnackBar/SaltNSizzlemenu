@@ -12,3 +12,15 @@ export interface MenuCategory {
   name: string;
   items: MenuItem[];
 }
+
+export interface Theme {
+  id: string;
+  name: string;
+  colors: {
+    background: string;
+    text: string;
+    heading: string;
+    cardBg: string;
+    cardBorder: string;
+  };
+}
