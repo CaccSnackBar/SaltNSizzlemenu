@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -10,7 +9,8 @@ if (!rootElement) {
 }
 
 const AppRouter = () => {
-  if (window.location.pathname.startsWith('/fullscreen')) {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('view') === 'fullscreen') {
     return <FullScreenMenu />;
   }
   return <App />;

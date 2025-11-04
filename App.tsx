@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { MenuCategory, MenuItem, Theme } from './types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from './constants';
-import { THEMES } from './themes';
+import { MenuCategory, MenuItem } from './types';
+import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU } from './constants';
 import MenuCategoryComponent from './components/MenuCategory';
 import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
@@ -29,17 +28,8 @@ function App() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [activeThemeId, setActiveThemeId] = useState<string>(THEMES[0].id);
-  const [activeTheme, setActiveTheme] = useState<Theme>(THEMES[0]);
 
-  // Sync activeTheme object whenever activeThemeId changes
-  useEffect(() => {
-    const currentTheme = THEMES.find(t => t.id === activeThemeId) || THEMES[0];
-    setActiveTheme(currentTheme);
-  }, [activeThemeId]);
-
-
-  // Load menu and theme from localStorage on initial render
+  // Load menu from localStorage on initial render
   useEffect(() => {
     try {
       const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
@@ -48,12 +38,6 @@ function App() {
       } else {
         setMenu(INITIAL_MENU);
       }
-
-      const savedTheme = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
-      if (savedTheme) {
-        setActiveThemeId(savedTheme);
-      }
-
     } catch (error) {
       console.error("Could not load data from localStorage:", error);
       setMenu(INITIAL_MENU);
@@ -177,45 +161,25 @@ function App() {
       updateMenu(() => INITIAL_MENU);
     }
   };
-
-  const handleSetTheme = (themeId: string) => {
-    setActiveThemeId(themeId);
-    try {
-        localStorage.setItem(LOCAL_STORAGE_KEY_THEME, themeId);
-    } catch (error) {
-        console.error("Could not save theme to localStorage:", error);
-    }
-  }
   
   if (showLogin) {
     return <LoginScreen onLoginSuccess={handleLoginSuccess} />
   }
 
-  const themeStyles = !isEditMode ? {
-    backgroundColor: activeTheme.colors.background,
-    color: activeTheme.colors.text,
-  } : {};
-
-  const headingStyles = !isEditMode ? { color: activeTheme.colors.heading } : {};
-  const subHeadingStyles = !isEditMode ? { color: activeTheme.colors.text } : {};
-
   return (
     <div 
-      className={`min-h-screen text-gray-800 relative transition-all duration-300 ${!isEditMode ? 'p-8 sm:p-12 md:p-16' : 'bg-[#e0e8e2] p-4 sm:p-6 md:p-8'}`}
-      style={themeStyles}
+      className={`min-h-screen text-gray-800 relative transition-all duration-300 bg-[#e0e8e2] ${!isEditMode ? 'p-8 sm:p-12 md:p-16' : 'p-4 sm:p-6 md:p-8'}`}
     >
        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 flex items-center gap-4">
-        <a
-            href="/fullscreen"
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+            onClick={() => window.open('/?view=fullscreen', '_blank')}
             className="flex items-center gap-2 bg-white/70 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 focus:ring-offset-[#e0e8e2] transition-all duration-200"
             aria-label="Launch Fullscreen Display"
             title="Launch Fullscreen Display"
         >
             <ExpandIcon className="w-5 h-5" />
             <span className="hidden sm:inline font-semibold">Fullscreen</span>
-        </a>
+        </button>
         <button
             onClick={() => {
               if (isEditMode) {
@@ -234,7 +198,7 @@ function App() {
       </div>
       
       <header className={`text-center transition-all duration-300 ${!isEditMode ? 'mb-8' : 'mb-8 md:mb-12'}`}>
-        <h1 className="font-brand text-5xl md:text-7xl tracking-wider" style={headingStyles}>SALT & SIZZLE</h1>
+        <h1 className="font-brand text-5xl md:text-7xl tracking-wider text-gray-800">SALT & SIZZLE</h1>
         {isEditMode && (
             <>
                 <div className="flex justify-center items-center mt-4">
@@ -245,7 +209,7 @@ function App() {
             </>
         )}
          {!isEditMode && (
-             <p className="mt-4 text-sm uppercase" style={subHeadingStyles}>Disclaimer: All food is while supplies last</p>
+             <p className="mt-4 text-sm uppercase text-gray-700">Disclaimer: All food is while supplies last</p>
          )}
       </header>
       
@@ -260,7 +224,6 @@ function App() {
               onAddItem={() => handleOpenModal(category.id, null)}
               onToggleItemAvailability={(itemId) => handleToggleItemAvailability(category.id, itemId)}
               isEditMode={isEditMode}
-              theme={activeTheme}
             />
           ))}
         </div>
@@ -284,25 +247,6 @@ function App() {
                         Reset Menu
                     </button>
                 </div>
-
-                <div className="bg-white/50 p-6 rounded-lg shadow-sm">
-                    <h3 className="text-xl font-bold text-center text-gray-700 uppercase tracking-wide mb-4">Display & Theme Settings</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {THEMES.map(theme => (
-                            <button key={theme.id} onClick={() => handleSetTheme(theme.id)} className={`p-2 rounded-lg border-2 transition-all ${activeThemeId === theme.id ? 'border-gray-700 ring-2 ring-gray-700 ring-offset-2' : 'border-transparent hover:border-gray-400'}`}>
-                                <div className="w-full h-16 rounded-md flex flex-col overflow-hidden" style={{ backgroundColor: theme.colors.cardBg }}>
-                                    <div className="h-1/3" style={{ backgroundColor: theme.colors.background }}></div>
-                                    <div className="flex-1 p-2">
-                                        <div className="h-2 w-3/4 rounded-sm" style={{ backgroundColor: theme.colors.heading }}></div>
-                                        <div className="h-2 w-1/2 rounded-sm mt-1" style={{ backgroundColor: theme.colors.text }}></div>
-                                    </div>
-                                </div>
-                                <p className="text-center text-sm font-semibold mt-2 text-gray-700">{theme.name}</p>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
             </div>
         )}
       </main>

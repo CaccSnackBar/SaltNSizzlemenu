@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MenuCategory, Theme } from '../types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from '../constants';
-import { THEMES } from '../themes';
+import { MenuCategory } from '../types';
+import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU } from '../constants';
 
 const FullScreenMenu: React.FC = () => {
   const [menu, setMenu] = useState<MenuCategory[]>([]);
-  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    // Load theme from localStorage
-    const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME) || THEMES[0].id;
-    const activeTheme = THEMES.find(t => t.id === savedThemeId) || THEMES[0];
-    setTheme(activeTheme);
-
     // Load menu from localStorage
     try {
       const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
@@ -27,20 +20,8 @@ const FullScreenMenu: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    // Update body background color when theme changes
-    if (theme) {
-      document.body.style.backgroundColor = theme.colors.background;
-      document.body.style.transition = 'background-color 500ms ease';
-    }
-    // Cleanup function to reset body style when component unmounts
-    return () => {
-      document.body.style.backgroundColor = '';
-      document.body.style.transition = '';
-    };
-  }, [theme]);
 
-  if (!theme || menu.length === 0) {
+  if (menu.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#e0e8e2]">
         <h1 className="font-brand text-5xl text-gray-800 animate-pulse">Loading...</h1>
@@ -49,11 +30,10 @@ const FullScreenMenu: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 md:p-12 lg:p-16 transition-colors duration-500">
+    <div className="min-h-screen p-8 md:p-12 lg:p-16 bg-[#e0e8e2]">
       <header className="text-center mb-12">
         <h1
-          className="font-brand text-7xl md:text-8xl lg:text-9xl tracking-wider"
-          style={{ color: theme.colors.heading }}
+          className="font-brand text-7xl md:text-8xl lg:text-9xl tracking-wider text-gray-800"
         >
           SALT & SIZZLE
         </h1>
@@ -63,8 +43,7 @@ const FullScreenMenu: React.FC = () => {
           {menu.map(category => (
             <div key={category.id}>
               <h2
-                className="text-4xl font-bold uppercase tracking-wide mb-6"
-                style={{ color: theme.colors.heading }}
+                className="text-4xl font-bold uppercase tracking-wide mb-6 text-gray-800"
               >
                 {category.name}
               </h2>
@@ -72,31 +51,26 @@ const FullScreenMenu: React.FC = () => {
                 {category.items.map(item => (
                   <div
                     key={item.id}
-                    className="p-6 rounded-xl shadow-md border"
+                    className="p-6 rounded-xl shadow-md border bg-white/50 border-transparent"
                     style={{
-                      backgroundColor: theme.colors.cardBg,
-                      borderColor: theme.colors.cardBorder,
                       opacity: item.isCrossedOut ? 0.4 : 1,
                       transition: 'opacity 300ms',
                     }}
                   >
                     <div className="flex justify-between items-start gap-4">
                       <h3
-                        className={`text-2xl font-bold ${item.isCrossedOut ? 'line-through' : ''}`}
-                        style={{ color: theme.colors.heading }}
+                        className={`text-2xl font-bold text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
                       >
                         {item.name}
                       </h3>
                       <p
-                        className={`text-2xl font-bold whitespace-nowrap ${item.isCrossedOut ? 'line-through' : ''}`}
-                        style={{ color: theme.colors.heading }}
+                        className={`text-2xl font-bold whitespace-nowrap text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
                       >
                         {item.price}
                       </p>
                     </div>
                     <p
-                      className={`mt-2 text-lg whitespace-pre-line ${item.isCrossedOut ? 'line-through' : ''}`}
-                      style={{ color: theme.colors.text }}
+                      className={`mt-2 text-lg whitespace-pre-line text-gray-700 ${item.isCrossedOut ? 'line-through' : ''}`}
                     >
                       {item.description}
                     </p>
@@ -109,8 +83,7 @@ const FullScreenMenu: React.FC = () => {
       </main>
       <footer className="text-center mt-16">
         <p
-          className="text-base uppercase"
-          style={{ color: theme.colors.text }}
+          className="text-base uppercase text-gray-700"
         >
           Disclaimer: All food is while supplies last
         </p>
