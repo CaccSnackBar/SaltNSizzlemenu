@@ -10,6 +10,7 @@ import { LoginIcon } from './components/icons/LoginIcon';
 import { ResetIcon } from './components/icons/ResetIcon';
 import { ExpandIcon } from './components/icons/ExpandIcon';
 import LoginScreen from './components/LoginScreen';
+import FullScreenMenu from './components/FullScreenMenu';
 
 const SaltShakerIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -28,6 +29,7 @@ function App() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Load menu from localStorage on initial render
   useEffect(() => {
@@ -166,13 +168,17 @@ function App() {
     return <LoginScreen onLoginSuccess={handleLoginSuccess} />
   }
 
+  if (isFullScreen) {
+    return <FullScreenMenu onExit={() => setIsFullScreen(false)} />;
+  }
+
   return (
     <div 
       className={`min-h-screen text-gray-800 relative transition-all duration-300 bg-[#e0e8e2] ${!isEditMode ? 'p-8 sm:p-12 md:p-16' : 'p-4 sm:p-6 md:p-8'}`}
     >
        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 flex items-center gap-4">
         <button
-            onClick={() => window.open('/?view=fullscreen', '_blank')}
+            onClick={() => setIsFullScreen(true)}
             className="flex items-center gap-2 bg-white/70 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 focus:ring-offset-[#e0e8e2] transition-all duration-200"
             aria-label="Launch Fullscreen Display"
             title="Launch Fullscreen Display"

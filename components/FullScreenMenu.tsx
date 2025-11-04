@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { MenuCategory } from '../types';
 import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU } from '../constants';
+import { CloseIcon } from './icons/CloseIcon';
 
-const FullScreenMenu: React.FC = () => {
+interface FullScreenMenuProps {
+  onExit: () => void;
+}
+
+const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
   const [menu, setMenu] = useState<MenuCategory[]>([]);
 
   useEffect(() => {
@@ -30,10 +35,19 @@ const FullScreenMenu: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 md:p-12 lg:p-16 bg-[#e0e8e2]">
+    <div className="min-h-screen p-8 md:p-12 lg:p-16 bg-[#e0e8e2] relative">
+      <button
+        onClick={onExit}
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20 flex items-center gap-2 bg-white/70 text-gray-700 p-3 rounded-full shadow-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 focus:ring-offset-[#e0e8e2] transition-all duration-200"
+        aria-label="Exit Fullscreen Display"
+        title="Exit Fullscreen Display"
+      >
+        <CloseIcon className="w-6 h-6" />
+      </button>
+
       <header className="text-center mb-12">
         <h1
-          className="font-brand text-7xl md:text-8xl lg:text-9xl tracking-wider text-gray-800"
+          className="font-brand text-6xl md:text-7xl xl:text-8xl tracking-wider text-gray-800"
         >
           SALT & SIZZLE
         </h1>
@@ -43,7 +57,7 @@ const FullScreenMenu: React.FC = () => {
           {menu.map(category => (
             <div key={category.id}>
               <h2
-                className="text-4xl font-bold uppercase tracking-wide mb-6 text-gray-800"
+                className="text-3xl md:text-4xl font-bold uppercase tracking-wide mb-6 text-gray-800"
               >
                 {category.name}
               </h2>
@@ -59,18 +73,18 @@ const FullScreenMenu: React.FC = () => {
                   >
                     <div className="flex justify-between items-start gap-4">
                       <h3
-                        className={`text-2xl font-bold text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
+                        className={`text-xl md:text-2xl font-bold text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
                       >
                         {item.name}
                       </h3>
                       <p
-                        className={`text-2xl font-bold whitespace-nowrap text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
+                        className={`text-xl md:text-2xl font-bold whitespace-nowrap text-gray-800 ${item.isCrossedOut ? 'line-through' : ''}`}
                       >
                         {item.price}
                       </p>
                     </div>
                     <p
-                      className={`mt-2 text-lg whitespace-pre-line text-gray-700 ${item.isCrossedOut ? 'line-through' : ''}`}
+                      className={`mt-2 text-base md:text-lg whitespace-pre-line text-gray-700 ${item.isCrossedOut ? 'line-through' : ''}`}
                     >
                       {item.description}
                     </p>
@@ -83,7 +97,7 @@ const FullScreenMenu: React.FC = () => {
       </main>
       <footer className="text-center mt-16">
         <p
-          className="text-base uppercase text-gray-700"
+          className="text-sm md:text-base uppercase text-gray-700"
         >
           Disclaimer: All food is while supplies last
         </p>
