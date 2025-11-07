@@ -15,6 +15,7 @@ export interface MenuCategory {
 export interface Theme {
   id: string;
   name: string;
+  category: 'daily' | 'palette' | 'holiday';
   colors: {
     background: string;
     cardBackground: string;

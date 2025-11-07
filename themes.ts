@@ -4,6 +4,7 @@ export const themes: Theme[] = [
   {
     id: 'tuesday',
     name: 'Default Green',
+    category: 'daily',
     colors: {
       background: '#e0e8e2',
       cardBackground: 'rgba(255, 255, 255, 0.5)',
@@ -15,6 +16,7 @@ export const themes: Theme[] = [
   {
     id: 'monday',
     name: 'Calm Blue',
+    category: 'daily',
     colors: {
       background: '#e0e8f0',
       cardBackground: 'rgba(255, 255, 255, 0.6)',
@@ -26,6 +28,7 @@ export const themes: Theme[] = [
   {
     id: 'wednesday',
     name: 'Warm Yellow',
+    category: 'daily',
     colors: {
       background: '#fef3c7',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -37,6 +40,7 @@ export const themes: Theme[] = [
   {
     id: 'thursday',
     name: 'Toasty Orange',
+    category: 'daily',
     colors: {
       background: '#ffedd5',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -48,6 +52,7 @@ export const themes: Theme[] = [
   {
     id: 'friday',
     name: 'Vibrant Purple',
+    category: 'daily',
     colors: {
       background: '#fae8ff',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -59,6 +64,7 @@ export const themes: Theme[] = [
   {
     id: 'saturday',
     name: 'Saturday Sunset',
+    category: 'daily',
     colors: {
       background: '#fee2e2',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -70,6 +76,7 @@ export const themes: Theme[] = [
   {
     id: 'sunday',
     name: 'Sunday Brunch',
+    category: 'daily',
     colors: {
       background: '#f5f5f4',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
@@ -81,6 +88,7 @@ export const themes: Theme[] = [
   {
     id: 'midnight',
     name: 'Midnight Mode',
+    category: 'palette',
     colors: {
       background: '#1f2937',
       cardBackground: 'rgba(55, 65, 81, 0.7)',
@@ -92,6 +100,7 @@ export const themes: Theme[] = [
   {
     id: 'graphite',
     name: 'Graphite Night',
+    category: 'palette',
     colors: {
       background: '#18181b',
       cardBackground: 'rgba(39, 39, 42, 0.8)',
@@ -103,6 +112,7 @@ export const themes: Theme[] = [
   {
     id: 'deep_forest',
     name: 'Deep Forest',
+    category: 'palette',
     colors: {
       background: '#064e3b',
       cardBackground: 'rgba(5, 150, 105, 0.2)',
@@ -114,6 +124,7 @@ export const themes: Theme[] = [
   {
     id: 'oceanic',
     name: 'Oceanic Teal',
+    category: 'palette',
     colors: {
       background: '#f0f9ff',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -125,6 +136,7 @@ export const themes: Theme[] = [
   {
     id: 'crimson',
     name: 'Classic Crimson',
+    category: 'palette',
     colors: {
       background: '#fef2f2',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -136,6 +148,7 @@ export const themes: Theme[] = [
   {
     id: 'earthy',
     name: 'Earthy Brown',
+    category: 'palette',
     colors: {
       background: '#fdf8f6',
       cardBackground: 'rgba(255, 255, 255, 0.6)',
@@ -147,6 +160,7 @@ export const themes: Theme[] = [
   {
     id: 'slate',
     name: 'Slate Gray',
+    category: 'palette',
     colors: {
       background: '#f1f5f9',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
@@ -158,6 +172,7 @@ export const themes: Theme[] = [
   {
     id: 'pastel',
     name: 'Pastel Dreams',
+    category: 'palette',
     colors: {
       background: '#eff6ff',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -169,6 +184,7 @@ export const themes: Theme[] = [
   {
     id: 'cherry_blossom',
     name: 'Cherry Blossom',
+    category: 'palette',
     colors: {
       background: '#fff1f2',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -180,6 +196,7 @@ export const themes: Theme[] = [
   {
     id: 'royal_gold',
     name: 'Royal Gold',
+    category: 'palette',
     colors: {
       background: '#f7fee7',
       cardBackground: 'rgba(255, 255, 255, 0.6)',
@@ -191,6 +208,7 @@ export const themes: Theme[] = [
   {
     id: 'cool_mint',
     name: 'Cool Mint',
+    category: 'palette',
     colors: {
       background: '#f0fdfa',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -202,6 +220,7 @@ export const themes: Theme[] = [
   {
     id: 'lavender',
     name: 'Lavender Fields',
+    category: 'palette',
     colors: {
       background: '#ede9fe',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -213,6 +232,7 @@ export const themes: Theme[] = [
   {
     id: 'indigo',
     name: 'Deep Indigo',
+    category: 'palette',
     colors: {
       background: '#e0e7ff',
       cardBackground: 'rgba(255, 255, 255, 0.6)',
@@ -224,6 +244,7 @@ export const themes: Theme[] = [
   {
     id: 'tangerine',
     name: 'Tangerine Dream',
+    category: 'palette',
     colors: {
       background: '#fff7ed',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -234,7 +255,8 @@ export const themes: Theme[] = [
   },
   {
     id: 'holiday-valentines',
-    name: "Valentine's Day",
+    name: "Valentine's",
+    category: 'holiday',
     colors: {
       background: '#fff1f2',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
@@ -245,7 +267,8 @@ export const themes: Theme[] = [
   },
   {
     id: 'holiday-stpatricks',
-    name: "St. Patrick's Day",
+    name: "St. Patrick's",
+    category: 'holiday',
     colors: {
       background: '#dcfce7',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -257,6 +280,7 @@ export const themes: Theme[] = [
   {
     id: 'holiday-easter',
     name: 'Easter',
+    category: 'holiday',
     colors: {
       background: '#eff6ff',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
@@ -267,7 +291,8 @@ export const themes: Theme[] = [
   },
   {
     id: 'holiday-july4',
-    name: 'Fourth of July',
+    name: 'July 4th',
+    category: 'holiday',
     colors: {
       background: '#f1f5f9',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -279,6 +304,7 @@ export const themes: Theme[] = [
   {
     id: 'holiday-halloween',
     name: 'Halloween',
+    category: 'holiday',
     colors: {
       background: '#18181b',
       cardBackground: 'rgba(39, 39, 42, 0.8)',
@@ -290,6 +316,7 @@ export const themes: Theme[] = [
   {
     id: 'holiday-thanksgiving',
     name: 'Thanksgiving',
+    category: 'holiday',
     colors: {
       background: '#fff7ed',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
@@ -301,6 +328,7 @@ export const themes: Theme[] = [
   {
     id: 'holiday-christmas',
     name: 'Christmas',
+    category: 'holiday',
     colors: {
       background: '#f0fdf4',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
@@ -312,6 +340,7 @@ export const themes: Theme[] = [
   {
     id: 'holiday-newyears',
     name: "New Year's",
+    category: 'holiday',
     colors: {
       background: '#1f2937',
       cardBackground: 'rgba(55, 65, 81, 0.7)',

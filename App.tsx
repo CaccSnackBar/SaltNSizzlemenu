@@ -65,6 +65,17 @@ const getHolidayTheme = (): string | null => {
     return null;
 };
 
+const HOLIDAY_GREETINGS: { [key: string]: string } = {
+    'holiday-valentines': "Happy Valentine's Day!",
+    'holiday-stpatricks': "Happy St. Patrick's Day!",
+    'holiday-easter': 'Happy Easter!',
+    'holiday-july4': 'Happy Fourth of July!',
+    'holiday-halloween': 'Happy Halloween!',
+    'holiday-thanksgiving': 'Happy Thanksgiving!',
+    'holiday-christmas': 'Happy Holidays!',
+    'holiday-newyears': "Happy New Year!",
+};
+
 const SaltShakerIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18.82 10H5.18A2.2 2.2 0 0 0 3 12.2v5.6A2.2 2.2 0 0 0 5.18 20h13.64A2.2 2.2 0 0 0 21 17.8v-5.6A2.2 2.2 0 0 0 18.82 10Z" />
@@ -85,6 +96,7 @@ function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [theme, setTheme] = useState<Theme>(themes[0]);
   const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
+  const [activeHolidayId, setActiveHolidayId] = useState<string | null>(null);
   const themePopoverRef = useRef<HTMLDivElement>(null);
 
   // Load menu and theme on initial render
@@ -100,6 +112,7 @@ function App() {
 
       // Determine and set theme
       const holidayThemeId = getHolidayTheme();
+      setActiveHolidayId(holidayThemeId); // Store for greeting
       let activeTheme: Theme;
 
       if (holidayThemeId) {
@@ -267,6 +280,8 @@ function App() {
   if (isFullScreen) {
     return <FullScreenMenu onExit={() => setIsFullScreen(false)} />;
   }
+  
+  const holidayGreeting = activeHolidayId ? HOLIDAY_GREETINGS[activeHolidayId] : null;
 
   return (
     <div 
@@ -322,6 +337,14 @@ function App() {
       </div>
       
       <header className={`text-center transition-all duration-300 ${!isEditMode ? 'mb-8' : 'mb-8 md:mb-12'}`}>
+        {holidayGreeting && !isEditMode && (
+          <p 
+            className="font-brand text-2xl md:text-3xl mb-2 animate-pulse" 
+            style={{ color: theme.colors.header }}
+          >
+            {holidayGreeting}
+          </p>
+        )}
         <h1 className="font-brand text-5xl md:text-7xl tracking-wider" style={{ color: theme.colors.header }}>SALT & SIZZLE</h1>
         {isEditMode && (
             <>
