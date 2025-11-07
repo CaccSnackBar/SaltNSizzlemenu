@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuCategory } from '../types';
+import { MenuCategory, Theme } from '../types';
 import MenuItemComponent from './MenuItem';
 import { PlusIcon } from './icons/PlusIcon';
 
@@ -10,21 +10,23 @@ interface MenuCategoryProps {
   onAddItem: () => void;
   onToggleItemAvailability: (itemId: string) => void;
   isEditMode: boolean;
+  theme: Theme;
 }
 
-const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditItem, onDeleteItem, onAddItem, onToggleItemAvailability, isEditMode }) => {
+const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditItem, onDeleteItem, onAddItem, onToggleItemAvailability, isEditMode, theme }) => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
         <h2 
-          className={`text-3xl font-bold uppercase tracking-wide text-gray-800 ${!isEditMode ? 'md:text-4xl' : ''}`}
+          className={`text-3xl font-bold uppercase tracking-wide ${!isEditMode ? 'md:text-4xl' : ''}`}
+          style={{ color: theme.colors.header }}
         >
           {category.name}
         </h2>
         {isEditMode && (
             <button 
                 onClick={onAddItem}
-                className="flex items-center gap-1 text-sm bg-gray-700 text-white py-1 px-3 rounded-md shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 focus:ring-offset-[#e0e8e2] transition-all duration-200"
+                className="flex items-center gap-1 text-sm bg-gray-700 text-white py-1 px-3 rounded-md shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
             >
               <PlusIcon className="w-4 h-4" /> Add
             </button>
@@ -39,6 +41,7 @@ const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditIt
             onDelete={() => onDeleteItem(item.id)}
             onToggleAvailability={() => onToggleItemAvailability(item.id)}
             isEditMode={isEditMode}
+            theme={theme}
           />
         ))}
       </div>

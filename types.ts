@@ -1,4 +1,3 @@
-
 export interface MenuItem {
   id: string;
   name: string;
@@ -11,4 +10,16 @@ export interface MenuCategory {
   id: string;
   name: string;
   items: MenuItem[];
+}
+
+export interface Theme {
+  id: string;
+  name: string;
+  colors: {
+    background: string;
+    cardBackground: string;
+    textPrimary: string;
+    textSecondary: string;
+    header: string;
+  };
 }
