@@ -232,4 +232,92 @@ export const themes: Theme[] = [
       header: '#c2410c',
     },
   },
+  {
+    id: 'holiday-valentines',
+    name: "Valentine's Day",
+    colors: {
+      background: '#fff1f2',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      textPrimary: '#881337',
+      textSecondary: '#be123c',
+      header: '#dc2626',
+    },
+  },
+  {
+    id: 'holiday-stpatricks',
+    name: "St. Patrick's Day",
+    colors: {
+      background: '#dcfce7',
+      cardBackground: 'rgba(255, 255, 255, 0.7)',
+      textPrimary: '#14532d',
+      textSecondary: '#166534',
+      header: '#ca8a04',
+    },
+  },
+  {
+    id: 'holiday-easter',
+    name: 'Easter',
+    colors: {
+      background: '#eff6ff',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      textPrimary: '#6d28d9',
+      textSecondary: '#9333ea',
+      header: '#f9a8d4',
+    },
+  },
+  {
+    id: 'holiday-july4',
+    name: 'Fourth of July',
+    colors: {
+      background: '#f1f5f9',
+      cardBackground: 'rgba(255, 255, 255, 0.7)',
+      textPrimary: '#1e3a8a',
+      textSecondary: '#475569',
+      header: '#b91c1c',
+    },
+  },
+  {
+    id: 'holiday-halloween',
+    name: 'Halloween',
+    colors: {
+      background: '#18181b',
+      cardBackground: 'rgba(39, 39, 42, 0.8)',
+      textPrimary: '#f4f4f5',
+      textSecondary: '#a1a1aa',
+      header: '#ea580c',
+    },
+  },
+  {
+    id: 'holiday-thanksgiving',
+    name: 'Thanksgiving',
+    colors: {
+      background: '#fff7ed',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      textPrimary: '#78350f',
+      textSecondary: '#9a3412',
+      header: '#c2410c',
+    },
+  },
+  {
+    id: 'holiday-christmas',
+    name: 'Christmas',
+    colors: {
+      background: '#f0fdf4',
+      cardBackground: 'rgba(255, 255, 255, 0.7)',
+      textPrimary: '#14532d',
+      textSecondary: '#166534',
+      header: '#dc2626',
+    },
+  },
+  {
+    id: 'holiday-newyears',
+    name: "New Year's",
+    colors: {
+      background: '#1f2937',
+      cardBackground: 'rgba(55, 65, 81, 0.7)',
+      textPrimary: '#f9fafb',
+      textSecondary: '#d1d5db',
+      header: '#facc15',
+    },
+  }
 ];

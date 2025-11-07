@@ -1,4 +1,5 @@
 
+
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { MenuCategory, MenuItem, Theme } from './types';
 import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from './constants';
@@ -15,6 +16,54 @@ import { PaletteIcon } from './components/icons/PaletteIcon';
 import LoginScreen from './components/LoginScreen';
 import FullScreenMenu from './components/FullScreenMenu';
 import ThemePopover from './components/ThemePopover';
+
+const getHolidayTheme = (): string | null => {
+    const today = new Date();
+    const month = today.getMonth(); // 0 = January, 11 = December
+    const day = today.getDate();
+  
+    // New Year's (Dec 27 - Jan 2)
+    if ((month === 11 && day >= 27) || (month === 0 && day <= 2)) {
+      return 'holiday-newyears';
+    }
+  
+    // Valentine's Day (Feb 7 - Feb 14)
+    if (month === 1 && day >= 7 && day <= 14) {
+      return 'holiday-valentines';
+    }
+  
+    // St. Patrick's Day (Mar 10 - Mar 17)
+    if (month === 2 && day >= 10 && day <= 17) {
+      return 'holiday-stpatricks';
+    }
+  
+    // Easter (approx. Mar 20 - Apr 20 to cover floating date)
+    if ((month === 2 && day >= 20) || (month === 3 && day <= 20)) {
+      return 'holiday-easter';
+    }
+  
+    // Fourth of July (July 1 - July 7)
+    if (month === 6 && day >= 1 && day <= 7) {
+      return 'holiday-july4';
+    }
+
+    // Halloween (Oct 24 - Oct 31)
+    if (month === 9 && day >= 24 && day <= 31) {
+      return 'holiday-halloween';
+    }
+
+    // Thanksgiving (fourth week of Nov)
+    if (month === 10 && day >= 22 && day <= 28) {
+        return 'holiday-thanksgiving';
+    }
+  
+    // Christmas (Dec 1 - Dec 26)
+    if (month === 11 && day >= 1 && day <= 26) {
+      return 'holiday-christmas';
+    }
+  
+    return null;
+};
 
 const SaltShakerIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -38,9 +87,10 @@ function App() {
   const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
   const themePopoverRef = useRef<HTMLDivElement>(null);
 
-  // Load menu and theme from localStorage on initial render
+  // Load menu and theme on initial render
   useEffect(() => {
     try {
+      // Load menu
       const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
       if (savedMenu) {
         setMenu(JSON.parse(savedMenu));
@@ -48,8 +98,18 @@ function App() {
         setMenu(INITIAL_MENU);
       }
 
-      const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
-      const activeTheme = themes.find(t => t.id === savedThemeId) || themes[0];
+      // Determine and set theme
+      const holidayThemeId = getHolidayTheme();
+      let activeTheme: Theme;
+
+      if (holidayThemeId) {
+        // Holiday theme takes precedence
+        activeTheme = themes.find(t => t.id === holidayThemeId) || themes[0];
+      } else {
+        // Otherwise, use saved theme or default
+        const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
+        activeTheme = themes.find(t => t.id === savedThemeId) || themes[0];
+      }
       setTheme(activeTheme);
 
     } catch (error) {
