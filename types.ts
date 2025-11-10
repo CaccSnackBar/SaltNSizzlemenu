@@ -15,7 +15,7 @@ export interface MenuCategory {
 export interface Theme {
   id: string;
   name: string;
-  category: 'daily' | 'palette' | 'holiday';
+  category: 'daily' | 'palette' | 'holiday' | 'interactive';
   fontHeader: string;
   fontBody: string;
   colors: {
@@ -26,5 +26,11 @@ export interface Theme {
     header: string;
     cardBorder?: string;
     cardBoxShadow?: string;
+  };
+  specialEffect?: 'cosmic' | 'retro';
+  sounds?: {
+    change: string; // URL to sound file
+    open: string;
+    add: string;
   };
 }

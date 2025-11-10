@@ -3,6 +3,7 @@ import { MenuCategory } from './types';
 export const ADMIN_PASSWORD = 'sizzle';
 export const LOCAL_STORAGE_KEY_MENU = 'salt-sizzle-menu';
 export const LOCAL_STORAGE_KEY_THEME = 'salt-sizzle-theme';
+export const LOCAL_STORAGE_KEY_SOUND = 'salt-sizzle-sound';
 
 
 export const INITIAL_MENU: MenuCategory[] = [

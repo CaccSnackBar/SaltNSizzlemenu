@@ -1,5 +1,16 @@
 import { Theme } from './types';
 
+// Sound effects as base64 data URIs
+const soundChange = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAoAAAA/v//gP7//wD8//8B/f//A/z//wL+//8D/v//A/7//wH+//8A//8=';
+const soundOpen = 'data:audio/wav;base64,UklGRiIAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA+AAAA8v8V/f/g/0/8M/d/Av5E/T770/so/Vb7f/g4/Uf+8v2+/an9vv7n/sD/4//f/6//uv++/v3/6P8A';
+const soundAdd = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAAACE26ZcEc3f/c/6w=';
+
+const defaultSounds = {
+  change: soundChange,
+  open: soundOpen,
+  add: soundAdd,
+};
+
 export const themes: Theme[] = [
   // Daily Themes
   {
@@ -17,6 +28,7 @@ export const themes: Theme[] = [
       cardBorder: '1px solid rgba(255, 255, 255, 0.3)',
       cardBoxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'monday',
@@ -31,6 +43,7 @@ export const themes: Theme[] = [
       textSecondary: '#4a5568',
       header: '#1a365d',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'wednesday',
@@ -45,6 +58,7 @@ export const themes: Theme[] = [
       textSecondary: '#6b4618',
       header: '#92400e',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'thursday',
@@ -59,6 +73,7 @@ export const themes: Theme[] = [
       textSecondary: '#6f4e37',
       header: '#78350f',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'friday',
@@ -73,6 +88,7 @@ export const themes: Theme[] = [
       textSecondary: '#6d28d9',
       header: '#5b21b6',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'saturday',
@@ -88,6 +104,7 @@ export const themes: Theme[] = [
       header: '#9f1239',
       cardBorder: '1px solid rgba(255, 255, 255, 0.2)',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'sunday',
@@ -103,6 +120,45 @@ export const themes: Theme[] = [
       header: '#78716c',
       cardBorder: '1px solid #e7e5e4',
     },
+    sounds: defaultSounds,
+  },
+
+  // Interactive Themes
+  {
+    id: 'interactive-cosmic',
+    name: 'Cosmic Diner',
+    category: 'interactive',
+    fontHeader: "'VT323', monospace",
+    fontBody: "'Montserrat', sans-serif",
+    colors: {
+      background: '#000011',
+      cardBackground: 'rgba(30, 30, 80, 0.5)',
+      textPrimary: '#e0e0ff',
+      textSecondary: '#a0a0ff',
+      header: '#ff80ff',
+      cardBorder: '1px solid #ff80ff',
+      cardBoxShadow: '0 0 15px #ff80ff',
+    },
+    specialEffect: 'cosmic',
+    sounds: defaultSounds,
+  },
+  {
+    id: 'interactive-retro',
+    name: 'Retro Arcade',
+    category: 'interactive',
+    fontHeader: "'Press Start 2P', cursive",
+    fontBody: "'VT323', monospace",
+    colors: {
+      background: '#0d0221',
+      cardBackground: 'rgba(10, 10, 10, 0.4)',
+      textPrimary: '#00f5d4',
+      textSecondary: '#9b5de5',
+      header: '#f15bb5',
+      cardBorder: '1px solid #00f5d4',
+      cardBoxShadow: '0 0 10px #f15bb5',
+    },
+    specialEffect: 'retro',
+    sounds: defaultSounds,
   },
 
   // Palette Themes
@@ -121,6 +177,7 @@ export const themes: Theme[] = [
       cardBorder: '1px solid rgba(147, 197, 253, 0.3)',
       cardBoxShadow: '0 0 10px rgba(147, 197, 253, 0.1)',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'graphite',
@@ -137,6 +194,7 @@ export const themes: Theme[] = [
       cardBorder: '1px solid #22c55e',
       cardBoxShadow: '0 0 12px rgba(34, 197, 94, 0.3)',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'deep_forest',
@@ -151,6 +209,22 @@ export const themes: Theme[] = [
       textSecondary: '#a7f3d0',
       header: '#6ee7b7',
     },
+    sounds: defaultSounds,
+  },
+  {
+    id: 'secret_garden',
+    name: 'Secret Garden',
+    category: 'palette',
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Lato', sans-serif",
+    colors: {
+      background: 'linear-gradient(120deg, #f0fff4, #e6fffa)',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      textPrimary: '#2f855a',
+      textSecondary: '#276749',
+      header: '#e53e3e',
+    },
+    sounds: defaultSounds,
   },
   {
     id: 'oceanic',
@@ -165,6 +239,7 @@ export const themes: Theme[] = [
       textSecondary: '#155e75',
       header: '#0e7490',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'crimson',
@@ -179,20 +254,7 @@ export const themes: Theme[] = [
       textSecondary: '#b91c1c',
       header: '#991b1b',
     },
-  },
-  {
-    id: 'earthy',
-    name: 'Earthy Brown',
-    category: 'palette',
-    fontHeader: "'Montserrat', sans-serif",
-    fontBody: "'Roboto', sans-serif",
-    colors: {
-      background: 'linear-gradient(to bottom, #fdf8f6, #f8f0ec)',
-      cardBackground: 'rgba(255, 255, 255, 0.6)',
-      textPrimary: '#422006',
-      textSecondary: '#78350f',
-      header: '#9a3412',
-    },
+    sounds: defaultSounds,
   },
   {
     id: 'slate',
@@ -207,20 +269,7 @@ export const themes: Theme[] = [
       textSecondary: '#475569',
       header: '#334155',
     },
-  },
-  {
-    id: 'pastel',
-    name: 'Pastel Dreams',
-    category: 'palette',
-    fontHeader: "'Dancing Script', cursive",
-    fontBody: "'Lato', sans-serif",
-    colors: {
-      background: 'linear-gradient(45deg, #eff6ff, #e0f2fe, #dbeafe, #c7d2fe, #ddd6fe)',
-      cardBackground: 'rgba(255, 255, 255, 0.7)',
-      textPrimary: '#5b21b6',
-      textSecondary: '#9333ea',
-      header: '#a855f7',
-    },
+    sounds: defaultSounds,
   },
   {
     id: 'cherry_blossom',
@@ -235,6 +284,7 @@ export const themes: Theme[] = [
       textSecondary: '#be185d',
       header: '#db2777',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'royal_gold',
@@ -250,6 +300,24 @@ export const themes: Theme[] = [
       header: '#facc15',
       cardBorder: '1px solid #ca8a04'
     },
+    sounds: defaultSounds,
+  },
+  {
+    id: 'cyberpunk',
+    name: 'Cyberpunk',
+    category: 'palette',
+    fontHeader: "'VT323', monospace",
+    fontBody: "'Montserrat', sans-serif",
+    colors: {
+        background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
+        cardBackground: 'rgba(0, 0, 0, 0.3)',
+        textPrimary: '#00ffdd',
+        textSecondary: '#ff00ff',
+        header: '#f7b733',
+        cardBorder: '1px solid #00ffdd',
+        cardBoxShadow: '0 0 10px #ff00ff',
+    },
+    sounds: defaultSounds,
   },
 
   // Holiday Themes
@@ -266,6 +334,7 @@ export const themes: Theme[] = [
       textSecondary: '#be123c',
       header: '#dc2626',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-stpatricks',
@@ -280,6 +349,7 @@ export const themes: Theme[] = [
       textSecondary: '#166534',
       header: '#ca8a04',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-easter',
@@ -294,6 +364,7 @@ export const themes: Theme[] = [
       textSecondary: '#9333ea',
       header: '#f9a8d4',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-july4',
@@ -309,6 +380,23 @@ export const themes: Theme[] = [
       header: '#b91c1c',
       cardBorder: '2px dashed #1e3a8a',
     },
+    sounds: defaultSounds,
+  },
+  {
+    id: 'holiday-pirate',
+    name: "Pirate's Treasure",
+    category: 'holiday',
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Lato', sans-serif",
+    colors: {
+      background: 'linear-gradient(to bottom, #4f46e5, #1e3a8a)',
+      cardBackground: 'rgba(245, 222, 179, 0.3)', // "wheat"
+      textPrimary: '#fef3c7', // light yellow
+      textSecondary: '#fde68a',
+      header: '#facc15', // gold
+      cardBorder: '2px solid #ca8a04', // darker gold
+    },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-halloween',
@@ -325,6 +413,7 @@ export const themes: Theme[] = [
       cardBorder: '1px solid #ea580c',
       cardBoxShadow: '0 0 15px #ea580c',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-thanksgiving',
@@ -339,6 +428,7 @@ export const themes: Theme[] = [
       textSecondary: '#9a3412',
       header: '#c2410c',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-christmas',
@@ -354,6 +444,7 @@ export const themes: Theme[] = [
       header: '#dc2626',
       cardBorder: '1px solid #dc2626',
     },
+    sounds: defaultSounds,
   },
   {
     id: 'holiday-newyears',
@@ -369,5 +460,6 @@ export const themes: Theme[] = [
       header: '#facc15',
       cardBoxShadow: '0 0 20px rgba(250, 204, 21, 0.4)',
     },
+    sounds: defaultSounds,
   }
 ];

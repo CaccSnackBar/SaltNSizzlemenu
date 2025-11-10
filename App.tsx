@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { MenuCategory, MenuItem, Theme } from './types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from './constants';
+import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND } from './constants';
 import { themes } from './themes';
 import MenuCategoryComponent from './components/MenuCategory';
 import Modal from './components/Modal';
@@ -11,54 +11,28 @@ import { LoginIcon } from './components/icons/LoginIcon';
 import { ResetIcon } from './components/icons/ResetIcon';
 import { ExpandIcon } from './components/icons/ExpandIcon';
 import { PaletteIcon } from './components/icons/PaletteIcon';
+import { SoundOnIcon } from './components/icons/SoundOnIcon';
+import { SoundOffIcon } from './components/icons/SoundOffIcon';
 import LoginScreen from './components/LoginScreen';
 import FullScreenMenu from './components/FullScreenMenu';
 import ThemePopover from './components/ThemePopover';
+import { playSound } from './utils/audio';
+import AnimatedBackground from './components/AnimatedBackground';
 
 const getHolidayTheme = (): string | null => {
     const today = new Date();
     const month = today.getMonth(); // 0 = January, 11 = December
     const day = today.getDate();
   
-    // New Year's (Dec 27 - Jan 2)
-    if ((month === 11 && day >= 27) || (month === 0 && day <= 2)) {
-      return 'holiday-newyears';
-    }
-  
-    // Valentine's Day (Feb 7 - Feb 14)
-    if (month === 1 && day >= 7 && day <= 14) {
-      return 'holiday-valentines';
-    }
-  
-    // St. Patrick's Day (Mar 10 - Mar 17)
-    if (month === 2 && day >= 10 && day <= 17) {
-      return 'holiday-stpatricks';
-    }
-  
-    // Easter (approx. Mar 20 - Apr 20 to cover floating date)
-    if ((month === 2 && day >= 20) || (month === 3 && day <= 20)) {
-      return 'holiday-easter';
-    }
-  
-    // Fourth of July (July 1 - July 7)
-    if (month === 6 && day >= 1 && day <= 7) {
-      return 'holiday-july4';
-    }
-
-    // Halloween (Oct 24 - Oct 31)
-    if (month === 9 && day >= 24 && day <= 31) {
-      return 'holiday-halloween';
-    }
-
-    // Thanksgiving (fourth week of Nov)
-    if (month === 10 && day >= 22 && day <= 28) {
-        return 'holiday-thanksgiving';
-    }
-  
-    // Christmas (Dec 1 - Dec 26)
-    if (month === 11 && day >= 1 && day <= 26) {
-      return 'holiday-christmas';
-    }
+    if ((month === 11 && day >= 27) || (month === 0 && day <= 2)) return 'holiday-newyears';
+    if (month === 1 && day >= 7 && day <= 14) return 'holiday-valentines';
+    if (month === 2 && day >= 10 && day <= 17) return 'holiday-stpatricks';
+    if ((month === 2 && day >= 20) || (month === 3 && day <= 20)) return 'holiday-easter';
+    if (month === 6 && day >= 1 && day <= 7) return 'holiday-july4';
+    if (month === 8 && day >= 15 && day <= 22) return 'holiday-pirate'; // Talk like a Pirate Day is Sep 19
+    if (month === 9 && day >= 24 && day <= 31) return 'holiday-halloween';
+    if (month === 10 && day >= 22 && day <= 28) return 'holiday-thanksgiving';
+    if (month === 11 && day >= 1 && day <= 26) return 'holiday-christmas';
   
     return null;
 };
@@ -68,6 +42,7 @@ const HOLIDAY_GREETINGS: { [key: string]: string } = {
     'holiday-stpatricks': "Happy St. Patrick's Day!",
     'holiday-easter': 'Happy Easter!',
     'holiday-july4': 'Happy Fourth of July!',
+    'holiday-pirate': 'Ahoy, Matey!',
     'holiday-halloween': 'Happy Halloween!',
     'holiday-thanksgiving': 'Happy Thanksgiving!',
     'holiday-christmas': 'Happy Holidays!',
@@ -80,27 +55,34 @@ const SaltShakerIcon = () => (
       <path d="M12 4v6" />
       <path d="M15.29 4.71a2.5 2.5 0 0 0-3.54-3.54" />
       <path d="M8.71 4.71a2.5 2.5 0 0 1 3.54-3.54" />
-      <path d="M7 4h10" />
+      <path d="m14 2-2.09 2.09" />
+      <path d="m10 2 2.09 2.09" />
+      <path d="M12 10.5 10 9" />
+      <path d="m14 9-2 1.5" />
     </svg>
 );
 
-function App() {
+
+const App: React.FC = () => {
   const [menu, setMenu] = useState<MenuCategory[]>([]);
-  const [editingItem, setEditingItem] = useState<{ categoryId: string; item: MenuItem | null } | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState<MenuItem | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [theme, setTheme] = useState<Theme>(themes[0]);
+  const [activeThemeId, setActiveThemeId] = useState<string>('tuesday');
   const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
-  const [activeHolidayId, setActiveHolidayId] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
+  
   const themePopoverRef = useRef<HTMLDivElement>(null);
 
-  // Load menu and theme on initial render
+  const activeTheme = themes.find(t => t.id === activeThemeId) || themes[0];
+  const holidayGreeting = HOLIDAY_GREETINGS[activeTheme.id];
+
   useEffect(() => {
     try {
-      // Load menu
       const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
       if (savedMenu) {
         setMenu(JSON.parse(savedMenu));
@@ -108,320 +90,285 @@ function App() {
         setMenu(INITIAL_MENU);
       }
 
-      // Determine and set theme
       const holidayThemeId = getHolidayTheme();
-      setActiveHolidayId(holidayThemeId); // Store for greeting
-      let activeTheme: Theme;
-
-      if (holidayThemeId) {
-        // Holiday theme takes precedence
-        activeTheme = themes.find(t => t.id === holidayThemeId) || themes[0];
+      const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
+      
+      if (holidayThemeId && holidayThemeId !== savedThemeId) {
+        setActiveThemeId(holidayThemeId);
+        // Don't save holiday theme as the default for next time
+      } else if (savedThemeId) {
+        setActiveThemeId(savedThemeId);
       } else {
-        // Otherwise, use saved theme or default
-        const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
-        activeTheme = themes.find(t => t.id === savedThemeId) || themes[0];
+        const day = new Date().toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
+        const dailyTheme = themes.find(t => t.id === day) || themes[0];
+        setActiveThemeId(dailyTheme.id);
       }
-      setTheme(activeTheme);
+
+      const savedSoundSetting = localStorage.getItem(LOCAL_STORAGE_KEY_SOUND);
+      if (savedSoundSetting) {
+        setSoundEnabled(JSON.parse(savedSoundSetting));
+      }
 
     } catch (error) {
       console.error("Could not load data from localStorage:", error);
       setMenu(INITIAL_MENU);
-      setTheme(themes[0]);
+      setActiveThemeId('tuesday');
     }
   }, []);
 
   useEffect(() => {
-    const wantsToEdit = new URLSearchParams(window.location.search).get('edit') === 'true';
-    if (wantsToEdit) {
-        if (isAuthenticated) {
-            setIsEditMode(true);
-            setShowLogin(false);
-        } else {
-            setShowLogin(true);
-        }
-    } else {
-        setIsEditMode(false);
-        setShowLogin(false);
-    }
-  }, [isAuthenticated]);
-  
-  // Click outside handler for theme popover
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (themePopoverRef.current && !themePopoverRef.current.contains(event.target as Node)) {
-        setIsThemePopoverOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [themePopoverRef]);
-
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-  };
-
-  const handleOpenModal = (categoryId: string, item: MenuItem | null) => {
-    if (!isEditMode) return;
-    setEditingItem({ categoryId, item });
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingItem(null);
-  };
-
-  const updateMenu = (updater: (prevMenu: MenuCategory[]) => MenuCategory[]) => {
-    setMenu(prevMenu => {
-        const newMenu = updater(prevMenu);
-        try {
-            localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(newMenu));
-        } catch (error) {
-            console.error("Could not save menu to localStorage:", error);
-        }
-        return newMenu;
-    });
-  };
-
-  const handleThemeChange = (selectedTheme: Theme) => {
-    setTheme(selectedTheme);
     try {
-        localStorage.setItem(LOCAL_STORAGE_KEY_THEME, selectedTheme.id);
+      localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(menu));
+    } catch (error) {
+      console.error("Could not save menu to localStorage:", error);
+    }
+  }, [menu]);
+
+  useEffect(() => {
+    try {
+        if (!activeTheme.category.startsWith('holiday')) {
+            localStorage.setItem(LOCAL_STORAGE_KEY_THEME, activeThemeId);
+        }
     } catch (error) {
         console.error("Could not save theme to localStorage:", error);
     }
-    setIsThemePopoverOpen(false); // Close popover on selection
+    document.body.style.fontFamily = activeTheme.fontBody;
+    document.body.style.background = activeTheme.colors.background;
+  }, [activeThemeId, activeTheme]);
+  
+  useEffect(() => {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY_SOUND, JSON.stringify(soundEnabled));
+    } catch (error) {
+        console.error("Could not save sound setting to localStorage:", error);
+    }
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isThemePopoverOpen && themePopoverRef.current && !themePopoverRef.current.contains(event.target as Node)) {
+        const paletteButton = document.getElementById('palette-button');
+        if (paletteButton && !paletteButton.contains(event.target as Node)) {
+          setIsThemePopoverOpen(false);
+        }
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isThemePopoverOpen]);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setIsEditMode(true);
+  };
+  
+  const handleAddItem = (categoryId: string) => {
+    playSound(activeTheme.sounds?.open, soundEnabled);
+    setItemToEdit(null);
+    setEditingCategoryId(categoryId);
+    setIsModalOpen(true);
+  };
+  
+  const handleEditItem = (item: MenuItem, categoryId: string) => {
+    playSound(activeTheme.sounds?.open, soundEnabled);
+    setItemToEdit(item);
+    setEditingCategoryId(categoryId);
+    setIsModalOpen(true);
   };
 
-  const handleSaveItem = useCallback((categoryId: string, itemToSave: MenuItem) => {
-    updateMenu(prevMenu => {
-      return prevMenu.map(category => {
-        if (category.id === categoryId) {
-          if (itemToSave.id.startsWith('new-')) { // It's a new item
-            return {
-              ...category,
-              items: [...category.items, { ...itemToSave, id: `item-${Date.now()}` }],
-            };
-          } else { // It's an existing item
-            return {
-              ...category,
-              items: category.items.map(item =>
-                item.id === itemToSave.id ? itemToSave : item
-              ),
-            };
-          }
-        }
-        return category;
-      });
-    });
-    handleCloseModal();
-  }, []);
-
-  const handleDeleteItem = useCallback((categoryId: string, itemId: string) => {
+  const handleDeleteItem = (itemId: string, categoryId: string) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
-        updateMenu(prevMenu =>
-          prevMenu.map(category => {
-            if (category.id === categoryId) {
-              return {
-                ...category,
-                items: category.items.filter(item => item.id !== itemId),
-              };
-            }
-            return category;
-          })
-        );
-    }
-  }, []);
-
-  const handleToggleItemAvailability = useCallback((categoryId: string, itemId: string) => {
-    updateMenu(prevMenu =>
-      prevMenu.map(category => {
+      setMenu(prevMenu => prevMenu.map(category => {
         if (category.id === categoryId) {
-          return {
-            ...category,
-            items: category.items.map(item =>
-              item.id === itemId ? { ...item, isCrossedOut: !item.isCrossedOut } : item
-            ),
-          };
+          return { ...category, items: category.items.filter(item => item.id !== itemId) };
         }
         return category;
-      })
-    );
-  }, []);
-
-  const handleAddCategory = () => {
-    const categoryName = window.prompt("Enter new category name:");
-    if (categoryName && categoryName.trim() !== '') {
-        updateMenu(prevMenu => [
-            ...prevMenu,
-            {
-                id: `cat-${Date.now()}`,
-                name: categoryName,
-                items: []
-            }
-        ]);
-    }
-  };
-
-  const handleResetMenu = () => {
-    if (window.confirm('Are you sure you want to reset the entire menu to its original state? This cannot be undone.')) {
-      updateMenu(() => INITIAL_MENU);
+      }));
     }
   };
   
-  if (showLogin) {
-    return <LoginScreen onLoginSuccess={handleLoginSuccess} />
+  const handleSaveItem = (itemData: MenuItem) => {
+    if (itemToEdit) { // Editing existing item
+      setMenu(prevMenu => prevMenu.map(category => ({
+        ...category,
+        items: category.items.map(item => item.id === itemData.id ? itemData : item)
+      })));
+    } else { // Adding new item
+      playSound(activeTheme.sounds?.add, soundEnabled);
+      setMenu(prevMenu => prevMenu.map(category => {
+        if (category.id === editingCategoryId) {
+          return { ...category, items: [...category.items, itemData] };
+        }
+        return category;
+      }));
+    }
+    setIsModalOpen(false);
+    setItemToEdit(null);
+    setEditingCategoryId(null);
+  };
+  
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setItemToEdit(null);
+    setEditingCategoryId(null);
+  };
+
+  const handleToggleItemAvailability = (itemId: string, categoryId: string) => {
+    setMenu(prevMenu => prevMenu.map(category => {
+      if (category.id === categoryId) {
+        return {
+          ...category,
+          items: category.items.map(item => 
+            item.id === itemId ? { ...item, isCrossedOut: !item.isCrossedOut } : item
+          )
+        };
+      }
+      return category;
+    }));
+  };
+
+  const handleResetMenu = () => {
+    if (window.confirm('Are you sure you want to reset the menu to its original state? This cannot be undone.')) {
+      setMenu(INITIAL_MENU);
+    }
+  };
+
+  const handleThemeChange = (theme: Theme) => {
+    playSound(activeTheme.sounds?.change, soundEnabled);
+    setActiveThemeId(theme.id);
+    setIsThemePopoverOpen(false);
+  }
+
+  const handleToggleThemePopover = () => {
+    playSound(activeTheme.sounds?.open, soundEnabled);
+    setIsThemePopoverOpen(prev => !prev);
+  }
+
+  const handleToggleSound = () => {
+    setSoundEnabled(prev => {
+        const newState = !prev;
+        if (newState) {
+            // FIX: Cannot find name 'soundOpen'. Use the sound from the active theme.
+            playSound(activeTheme.sounds?.open, true);
+        }
+        return newState;
+    });
+  }
+
+  const handlePreviewTheme = (theme: Theme | null) => {
+    setPreviewTheme(theme);
+  };
+
+  if (!isLoggedIn) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      return <LoginScreen onLoginSuccess={handleLogin} />;
+    }
   }
 
   if (isFullScreen) {
     return <FullScreenMenu onExit={() => setIsFullScreen(false)} />;
   }
-  
-  const holidayGreeting = activeHolidayId ? HOLIDAY_GREETINGS[activeHolidayId] : null;
+
+  const displayTheme = previewTheme || activeTheme;
+  const titleText = "SALT & SIZZLE";
 
   return (
-    <div 
-      style={{ 
-        background: theme.colors.background,
-        fontFamily: theme.fontBody,
-      }}
-      className={`min-h-screen text-gray-800 relative transition-all duration-300 ${!isEditMode ? 'p-8 sm:p-12 md:p-16' : 'p-4 sm:p-6 md:p-8'}`}
-    >
-       <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 flex items-center gap-4">
-        <div ref={themePopoverRef} className="relative">
-            <button
-                onClick={() => setIsThemePopoverOpen(prev => !prev)}
-                className="flex items-center gap-2 bg-white/70 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
-                style={{ backgroundColor: theme.colors.cardBackground }}
-                aria-label="Change theme"
-                title="Change theme"
-            >
-                <PaletteIcon className="w-5 h-5" />
-                <span className="hidden sm:inline font-semibold">Theme</span>
-            </button>
-            {isThemePopoverOpen && (
-                <ThemePopover
-                    themes={themes}
-                    currentTheme={theme}
-                    onThemeChange={handleThemeChange}
-                />
-            )}
-        </div>
-        <button
-            onClick={() => setIsFullScreen(true)}
-            className="flex items-center gap-2 bg-white/70 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
-            style={{ backgroundColor: theme.colors.cardBackground }}
-            aria-label="Launch Fullscreen Display"
-            title="Launch Fullscreen Display"
-        >
-            <ExpandIcon className="w-5 h-5" />
-            <span className="hidden sm:inline font-semibold">Fullscreen</span>
-        </button>
-        <button
-            onClick={() => {
-              if (isEditMode) {
-                window.location.href = window.location.pathname;
-              } else {
-                window.location.search = 'edit=true';
-              }
-            }}
-            className="flex items-center gap-2 bg-white/70 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
-            style={{ backgroundColor: theme.colors.cardBackground }}
-            aria-label={isEditMode ? 'View Public Menu' : 'Admin Login'}
-            title={isEditMode ? 'View Public Menu' : 'Admin Login'}
-        >
-            {isEditMode ? <EyeIcon className="w-5 h-5" /> : <LoginIcon className="w-5 h-5" />}
-            <span className="hidden sm:inline font-semibold">{isEditMode ? 'Public View' : 'Admin Login'}</span>
-        </button>
-      </div>
-      
-      <header className={`text-center transition-all duration-300 ${!isEditMode ? 'mb-8' : 'mb-8 md:mb-12'}`}>
-        {holidayGreeting && !isEditMode && (
-          <p 
-            className="text-2xl md:text-3xl mb-2 animate-pulse" 
-            style={{ 
-              color: theme.colors.header,
-              fontFamily: theme.fontHeader
-            }}
-          >
-            {holidayGreeting}
-          </p>
-        )}
-        <h1 
-          className="text-5xl md:text-7xl tracking-wider" 
+    <>
+        <AnimatedBackground effect={activeTheme.specialEffect} />
+        <div 
+          className="min-h-screen p-4 sm:p-6 md:p-8 relative transition-colors duration-500"
           style={{ 
-            color: theme.colors.header,
-            fontFamily: theme.fontHeader 
+            color: activeTheme.colors.textSecondary,
+            fontFamily: activeTheme.fontBody,
+            background: activeTheme.specialEffect ? 'transparent' : activeTheme.colors.background,
           }}
         >
-          SALT & SIZZLE
-        </h1>
-        {isEditMode && (
-            <>
-                <div className="flex justify-center items-center mt-4">
-                    <SaltShakerIcon />
-                    <p className="text-2xl font-bold uppercase tracking-widest ml-2" style={{ color: theme.colors.textPrimary }}>Admin Panel</p>
+        <div className="max-w-4xl mx-auto">
+            <header className="text-center mb-8 md:mb-12 relative">
+                {holidayGreeting && <p className="text-2xl font-bold mb-4" style={{color: activeTheme.colors.header, fontFamily: activeTheme.fontHeader}}>{holidayGreeting}</p>}
+                
+                <h1
+                  className="font-brand text-5xl md:text-7xl tracking-wider cursor-default title-hover-effect"
+                  style={{ color: activeTheme.colors.header, fontFamily: activeTheme.fontHeader }}
+                >
+                   {titleText.split('').map((char, i) => (
+                        <span
+                            key={i}
+                            className="inline-block transition-all duration-300 ease-out"
+                            style={{ 
+                                transitionDelay: `${i * 30}ms`,
+                            }}
+                        >
+                            {char === ' ' ? '\u00A0' : char}
+                        </span>
+                    ))}
+                </h1>
+                
+                <p className="mt-2 text-lg">Disclaimer: All food is while supplies last</p>
+                
+                <div className="absolute top-0 right-0 flex flex-col sm:flex-row gap-2">
+                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
+                    <button id="palette-button" onClick={handleToggleThemePopover} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Change Theme" style={{color: activeTheme.colors.textPrimary}}><PaletteIcon className="w-5 h-5" /></button>
+                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
+                    <button onClick={handleToggleSound} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title={soundEnabled ? "Mute Sounds" : "Unmute Sounds"} style={{color: activeTheme.colors.textPrimary}}>
+                        {soundEnabled 
+                            ? <SoundOnIcon className="w-5 h-5" />
+                            : <SoundOffIcon className="w-5 h-5" />
+                        }
+                    </button>
+                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
+                    <button onClick={() => setIsFullScreen(true)} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Fullscreen Mode" style={{color: activeTheme.colors.textPrimary}}><ExpandIcon className="w-5 h-5" /></button>
+                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
+                    {isEditMode && <button onClick={handleResetMenu} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Reset Menu" style={{color: activeTheme.colors.textPrimary}}><ResetIcon className="w-5 h-5" /></button>}
+                    {/* FIX: Moved style prop from Icon component to parent anchor tag to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
+                    {!isLoggedIn && <a href="?admin=true" className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Admin Login" style={{color: activeTheme.colors.textPrimary}}><LoginIcon className="w-5 h-5" /></a>}
                 </div>
-                <p className="mt-4 text-sm uppercase" style={{ color: theme.colors.textSecondary }}>You are in edit mode. Changes are saved automatically.</p>
-            </>
-        )}
-         {!isEditMode && (
-             <p className="mt-4 text-sm uppercase" style={{ color: theme.colors.textSecondary }}>Disclaimer: All food is while supplies last</p>
-         )}
-      </header>
-      
-      <main className="max-w-7xl mx-auto">
-        <div className={`grid ${!isEditMode ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12' : 'grid-cols-1 md:grid-cols-2 gap-8'}`}>
-          {menu.map(category => (
-            <MenuCategoryComponent
-              key={category.id}
-              category={category}
-              onEditItem={(item) => handleOpenModal(category.id, item)}
-              onDeleteItem={(itemId) => handleDeleteItem(category.id, itemId)}
-              onAddItem={() => handleOpenModal(category.id, null)}
-              onToggleItemAvailability={(itemId) => handleToggleItemAvailability(category.id, itemId)}
-              isEditMode={isEditMode}
-              theme={theme}
-            />
-          ))}
+
+                {isThemePopoverOpen && (
+                    <div ref={themePopoverRef}>
+                        <ThemePopover 
+                            themes={themes} 
+                            currentTheme={activeTheme} 
+                            onThemeChange={handleThemeChange}
+                            previewTheme={previewTheme}
+                            onPreviewTheme={handlePreviewTheme}
+                        />
+                    </div>
+                )}
+            </header>
+
+            <main className="space-y-10">
+            {menu.map(category => (
+                <MenuCategoryComponent
+                    key={category.id}
+                    category={category}
+                    onAddItem={() => handleAddItem(category.id)}
+                    onEditItem={(item) => handleEditItem(item, category.id)}
+                    onDeleteItem={(itemId) => handleDeleteItem(itemId, category.id)}
+                    onToggleItemAvailability={(itemId) => handleToggleItemAvailability(itemId, category.id)}
+                    isEditMode={isEditMode}
+                    theme={activeTheme}
+                />
+            ))}
+            </main>
         </div>
-
-        {isEditMode && (
-            <div className="mt-12">
-                <div className="text-center flex flex-wrap justify-center items-center gap-4">
-                    <button
-                        onClick={handleAddCategory}
-                        className="bg-gray-700 text-white py-2 px-6 rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 flex items-center gap-2"
-                    >
-                        <PlusIcon className="w-5 h-5"/>
-                        Add New Category
-                    </button>
-                    <button
-                        onClick={handleResetMenu}
-                        className="bg-white text-red-600 border border-red-600 py-2 px-6 rounded-lg shadow-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 flex items-center gap-2"
-                        title="Reset menu to default"
-                    >
-                        <ResetIcon className="w-5 h-5" />
-                        Reset Menu
-                    </button>
-                </div>
-            </div>
-        )}
-      </main>
-
-      {isModalOpen && editingItem && (
-         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <Modal isOpen={isModalOpen} onClose={handleCancel}>
             <MenuItemForm
-                itemToEdit={editingItem.item}
-                onSave={(item) => handleSaveItem(editingItem.categoryId, item)}
-                onCancel={handleCloseModal}
+            itemToEdit={itemToEdit}
+            onSave={handleSaveItem}
+            onCancel={handleCancel}
             />
-         </Modal>
-      )}
-    </div>
+        </Modal>
+        </div>
+        <style>{`
+            .title-hover-effect:hover span {
+                color: ${activeTheme.colors.textPrimary};
+                transform: translateY(-5px) scale(1.1);
+            }
+        `}</style>
+    </>
   );
-}
+};
 
 export default App;

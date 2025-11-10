@@ -1,0 +1,32 @@
+// A simple cache to avoid re-creating Audio objects for the same sound.
+const audioCache: { [key: string]: HTMLAudioElement } = {};
+
+/**
+ * Plays a sound from a given URL if sounds are enabled.
+ * @param soundUrl The URL of the sound file to play (can be a data URI).
+ * @param isSoundEnabled A boolean indicating if sound is globally enabled.
+ */
+export const playSound = (soundUrl: string | undefined, isSoundEnabled: boolean): void => {
+  if (!soundUrl || !isSoundEnabled) {
+    return;
+  }
+  
+  try {
+    let audio = audioCache[soundUrl];
+    if (!audio) {
+      audio = new Audio(soundUrl);
+      audioCache[soundUrl] = audio;
+    }
+    
+    // Ensure we can play from the start if it's already playing.
+    audio.currentTime = 0;
+    
+    audio.play().catch(error => {
+      // This catch block handles cases where autoplay is prevented by the browser.
+      // It's common in modern browsers and can be safely ignored for this app's context.
+      console.warn("Sound playback was prevented by the browser:", error);
+    });
+  } catch (error) {
+    console.error("Error initializing or playing sound:", error);
+  }
+};
