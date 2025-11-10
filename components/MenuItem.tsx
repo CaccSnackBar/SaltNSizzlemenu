@@ -15,13 +15,17 @@ interface MenuItemProps {
 }
 
 const MenuItemComponent: React.FC<MenuItemProps> = ({ item, onEdit, onDelete, onToggleAvailability, isEditMode, theme }) => {
-  const containerClasses = `p-4 rounded-lg shadow-sm relative transition-opacity duration-300 ${item.isCrossedOut ? 'opacity-50' : ''} ${isEditMode ? 'group' : ''}`;
+  const containerClasses = `p-4 rounded-lg relative transition-all duration-300 ${item.isCrossedOut ? 'opacity-50' : ''} ${isEditMode ? 'group' : ''}`;
   const textClasses = item.isCrossedOut ? 'line-through' : '';
 
   return (
     <div 
       className={containerClasses}
-      style={{ backgroundColor: theme.colors.cardBackground }}
+      style={{ 
+        backgroundColor: theme.colors.cardBackground,
+        border: theme.colors.cardBorder || '1px solid transparent',
+        boxShadow: theme.colors.cardBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+      }}
     >
        {isEditMode && (
         <div className="absolute top-2 right-2 flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -55,7 +59,10 @@ const MenuItemComponent: React.FC<MenuItemProps> = ({ item, onEdit, onDelete, on
       <div className="flex justify-between items-start">
         <h3 
             className={`text-lg font-bold ${isEditMode ? 'pr-28' : 'pr-2'} ${textClasses}`}
-            style={{ color: theme.colors.textPrimary }}
+            style={{ 
+                color: theme.colors.textPrimary,
+                fontFamily: theme.fontHeader,
+            }}
         >
             {item.name}
         </h3>

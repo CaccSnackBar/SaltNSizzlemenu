@@ -43,7 +43,10 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
   }
 
   return (
-    <div className="min-h-screen p-6 md:p-8 lg:p-10 relative" style={{backgroundColor: theme.colors.background}}>
+    <div className="min-h-screen p-6 md:p-8 lg:p-10 relative" style={{
+      background: theme.colors.background,
+      fontFamily: theme.fontBody,
+    }}>
       <button
         onClick={onExit}
         className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20 flex items-center gap-2 text-gray-700 p-3 rounded-full shadow-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
@@ -56,8 +59,11 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
 
       <header className="text-center mb-12">
         <h1
-          className="font-brand text-[clamp(3.25rem,8vw,5rem)] tracking-wider"
-          style={{ color: theme.colors.header }}
+          className="text-[clamp(3.25rem,8vw,5rem)] tracking-wider"
+          style={{ 
+            color: theme.colors.header,
+            fontFamily: theme.fontHeader,
+          }}
         >
           SALT & SIZZLE
         </h1>
@@ -68,7 +74,10 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
             <div key={category.id}>
               <h2
                 className="text-[clamp(1.5rem,5vw,2.25rem)] font-bold uppercase tracking-wide mb-6"
-                style={{ color: theme.colors.header }}
+                style={{ 
+                  color: theme.colors.header,
+                  fontFamily: theme.fontHeader,
+                }}
               >
                 {category.name}
               </h2>
@@ -76,17 +85,22 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
                 {category.items.map(item => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl shadow-md border border-transparent"
+                    className="p-4 rounded-xl border"
                     style={{
                       backgroundColor: theme.colors.cardBackground,
                       opacity: item.isCrossedOut ? 0.4 : 1,
                       transition: 'opacity 300ms',
+                      border: theme.colors.cardBorder || '1px solid transparent',
+                      boxShadow: theme.colors.cardBoxShadow || '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     }}
                   >
                     <div className="flex justify-between items-start gap-4">
                       <h3
                         className={`text-[clamp(1.1rem,3vw,1.375rem)] font-bold ${item.isCrossedOut ? 'line-through' : ''}`}
-                        style={{ color: theme.colors.textPrimary }}
+                        style={{ 
+                          color: theme.colors.textPrimary,
+                          fontFamily: theme.fontHeader,
+                        }}
                       >
                         {item.name}
                       </h3>

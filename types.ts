@@ -16,11 +16,15 @@ export interface Theme {
   id: string;
   name: string;
   category: 'daily' | 'palette' | 'holiday';
+  fontHeader: string;
+  fontBody: string;
   colors: {
     background: string;
     cardBackground: string;
     textPrimary: string;
     textSecondary: string;
     header: string;
+    cardBorder?: string;
+    cardBoxShadow?: string;
   };
 }

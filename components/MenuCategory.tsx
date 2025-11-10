@@ -19,7 +19,10 @@ const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ category, onEditIt
       <div className="flex justify-between items-center mb-4">
         <h2 
           className={`text-3xl font-bold uppercase tracking-wide ${!isEditMode ? 'md:text-4xl' : ''}`}
-          style={{ color: theme.colors.header }}
+          style={{ 
+            color: theme.colors.header,
+            fontFamily: theme.fontHeader 
+          }}
         >
           {category.name}
         </h2>

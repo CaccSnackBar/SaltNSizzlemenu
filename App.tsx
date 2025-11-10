@@ -1,5 +1,3 @@
-
-
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { MenuCategory, MenuItem, Theme } from './types';
 import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from './constants';
@@ -285,7 +283,10 @@ function App() {
 
   return (
     <div 
-      style={{ backgroundColor: theme.colors.background }}
+      style={{ 
+        background: theme.colors.background,
+        fontFamily: theme.fontBody,
+      }}
       className={`min-h-screen text-gray-800 relative transition-all duration-300 ${!isEditMode ? 'p-8 sm:p-12 md:p-16' : 'p-4 sm:p-6 md:p-8'}`}
     >
        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 flex items-center gap-4">
@@ -339,13 +340,24 @@ function App() {
       <header className={`text-center transition-all duration-300 ${!isEditMode ? 'mb-8' : 'mb-8 md:mb-12'}`}>
         {holidayGreeting && !isEditMode && (
           <p 
-            className="font-brand text-2xl md:text-3xl mb-2 animate-pulse" 
-            style={{ color: theme.colors.header }}
+            className="text-2xl md:text-3xl mb-2 animate-pulse" 
+            style={{ 
+              color: theme.colors.header,
+              fontFamily: theme.fontHeader
+            }}
           >
             {holidayGreeting}
           </p>
         )}
-        <h1 className="font-brand text-5xl md:text-7xl tracking-wider" style={{ color: theme.colors.header }}>SALT & SIZZLE</h1>
+        <h1 
+          className="text-5xl md:text-7xl tracking-wider" 
+          style={{ 
+            color: theme.colors.header,
+            fontFamily: theme.fontHeader 
+          }}
+        >
+          SALT & SIZZLE
+        </h1>
         {isEditMode && (
             <>
                 <div className="flex justify-center items-center mt-4">
