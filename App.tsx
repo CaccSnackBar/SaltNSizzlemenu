@@ -6,7 +6,7 @@ import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
 import LoginScreen from './components/LoginScreen';
 import { themes } from './themes';
-import ThemePopover from './components/ThemePopover';
+import ThemeScroller from './components/ThemeScroller';
 import { PaletteIcon } from './components/icons/PaletteIcon';
 import { ResetIcon } from './components/icons/ResetIcon';
 import { LoginIcon } from './components/icons/LoginIcon';
@@ -71,7 +71,7 @@ const App: React.FC = () => {
         return themes.find(t => t.id === savedThemeId) || themes[0];
     });
     const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
-    const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
+    const [isThemeScrollerOpen, setIsThemeScrollerOpen] = useState(false);
     
     const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
         try {
@@ -343,7 +343,7 @@ const App: React.FC = () => {
     const handleThemeChange = (theme: Theme) => {
         playSound(theme.sound?.click, isSoundEnabled);
         setCurrentTheme(theme);
-        setIsThemePopoverOpen(false);
+        setIsThemeScrollerOpen(false);
     };
 
     const handleSoundToggle = () => {
@@ -384,20 +384,13 @@ const App: React.FC = () => {
                             <SoundOffIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                         }
                     </button>
-                    <div className="relative">
-                        <button onClick={() => setIsThemePopoverOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
-                            <PaletteIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
-                        </button>
-                        {isThemePopoverOpen && (
-                            <ThemePopover
-                                themes={themes}
-                                currentTheme={currentTheme}
-                                onThemeChange={handleThemeChange}
-                                previewTheme={previewTheme}
-                                onPreviewTheme={setPreviewTheme}
-                            />
-                        )}
-                    </div>
+                    {isAdmin && (
+                        <div className="relative">
+                            <button onClick={() => setIsThemeScrollerOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
+                                <PaletteIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
+                            </button>
+                        </div>
+                    )}
                      <button onClick={() => setIsFullScreen(true)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Fullscreen mode">
                         <ExpandIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                     </button>
@@ -517,6 +510,17 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </Modal>
+            
+            {isAdmin && isThemeScrollerOpen && (
+                <ThemeScroller
+                    themes={themes}
+                    currentTheme={currentTheme}
+                    onThemeChange={handleThemeChange}
+                    previewTheme={previewTheme}
+                    onPreviewTheme={setPreviewTheme}
+                    onClose={() => setIsThemeScrollerOpen(false)}
+                />
+            )}
 
         </div>
     );
