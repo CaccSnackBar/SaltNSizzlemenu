@@ -97,6 +97,35 @@ const App: React.FC = () => {
         localStorage.setItem(LOCAL_STORAGE_KEY_SOUND, JSON.stringify(isSoundEnabled));
     }, [isSoundEnabled]);
 
+    // Real-time sync between tabs/windows
+    useEffect(() => {
+        const syncState = (event: StorageEvent) => {
+            if (event.key === LOCAL_STORAGE_KEY_MENU && event.newValue) {
+                try {
+                    setMenu(JSON.parse(event.newValue));
+                } catch (error) {
+                    console.error("Failed to sync menu state from another tab.", error);
+                }
+            }
+            if (event.key === LOCAL_STORAGE_KEY_THEME && event.newValue) {
+                setCurrentTheme(themes.find(t => t.id === event.newValue) || themes[0]);
+            }
+            if (event.key === LOCAL_STORAGE_KEY_SOUND && event.newValue) {
+                try {
+                    setIsSoundEnabled(JSON.parse(event.newValue));
+                } catch (error) {
+                     console.error("Failed to sync sound state from another tab.", error);
+                }
+            }
+        };
+
+        window.addEventListener('storage', syncState);
+
+        return () => {
+            window.removeEventListener('storage', syncState);
+        };
+    }, []);
+
 
     const handleLoginSuccess = () => {
         setIsAdmin(true);
