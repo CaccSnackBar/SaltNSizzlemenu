@@ -26,8 +26,8 @@ const DealOfTheDayBanner: React.FC<DealOfTheDayBannerProps> = ({ text }) => {
           animation: 'subtle-glow 4s ease-in-out infinite'
         }}
       >
-        <MegaphoneIcon className="w-8 h-8 flex-shrink-0" />
-        <p className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'var(--font-header)' }}>
+        <MegaphoneIcon className="w-6 h-6 flex-shrink-0" />
+        <p className="text-xl md:text-2xl font-bold" style={{ fontFamily: 'var(--font-header)' }}>
           {text}
         </p>
       </div>

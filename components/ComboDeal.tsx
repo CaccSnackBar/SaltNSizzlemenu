@@ -38,29 +38,29 @@ const ComboDeal: React.FC<ComboDealProps> = ({ items }) => {
         }}
     >
         <div className="flex items-center gap-3 mb-4">
-            <TagIcon className="w-7 h-7" style={{ color: 'var(--color-text-primary)' }} />
-            <h2 className="text-3xl md:text-4xl font-bold tracking-wide" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
+            <TagIcon className="w-6 h-6" style={{ color: 'var(--color-text-primary)' }} />
+            <h2 className="text-2xl md:text-3xl font-bold tracking-wide" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
                 Recommended Combo
             </h2>
         </div>
         
-        <div className="pl-10">
-            <ul className="list-disc list-inside space-y-2 mb-4" style={{ color: 'var(--color-text-secondary)'}}>
+        <div className="pl-9">
+            <ul className="list-disc list-inside space-y-1 mb-4" style={{ color: 'var(--color-text-secondary)'}}>
                 {items.map(item => (
-                    <li key={item.id} className="text-xl" style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text-primary)' }}>{item.name}</li>
+                    <li key={item.id} className="text-lg" style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text-primary)' }}>{item.name}</li>
                 ))}
             </ul>
 
-            <div className="flex items-baseline justify-end gap-6">
+            <div className="flex items-baseline justify-end gap-4">
                 <div className="text-right">
-                    <p className="text-md uppercase" style={{ color: 'var(--color-text-secondary)' }}>Original Price</p>
-                    <p className="text-3xl font-semibold line-through" style={{ color: 'var(--color-text-secondary)' }}>
+                    <p className="text-sm uppercase" style={{ color: 'var(--color-text-secondary)' }}>Original Price</p>
+                    <p className="text-2xl font-semibold line-through" style={{ color: 'var(--color-text-secondary)' }}>
                         ${originalPrice.toFixed(2)}
                     </p>
                 </div>
                  <div className="text-right">
-                    <p className="text-md uppercase font-bold" style={{ color: 'var(--color-accent)' }}>Combo Price</p>
-                    <p className="text-5xl font-bold" style={{ color: 'var(--color-accent)' }}>
+                    <p className="text-sm uppercase font-bold" style={{ color: 'var(--color-accent)' }}>Combo Price</p>
+                    <p className="text-4xl font-bold" style={{ color: 'var(--color-accent)' }}>
                         ${comboPrice.toFixed(2)}
                     </p>
                 </div>
