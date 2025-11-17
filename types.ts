@@ -8,7 +8,7 @@ export interface MenuItem {
 }
 
 export interface MenuCategory {
-  id: string;
+  id:string;
   name: string;
   items: MenuItem[];
 }
@@ -16,7 +16,7 @@ export interface MenuCategory {
 export interface Theme {
   id: string;
   name: string;
-  category: 'daily' | 'palette' | 'holiday' | 'interactive';
+  category: 'daily' | 'palette' | 'holiday' | 'interactive' | 'nature' | 'urban' | 'vintage' | 'gourmet';
   colors: {
     background: string;
     header: string;

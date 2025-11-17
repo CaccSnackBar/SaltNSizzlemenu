@@ -11,12 +11,26 @@ interface ThemePopoverProps {
 }
 
 const ThemePopover: React.FC<ThemePopoverProps> = ({ themes, currentTheme, onThemeChange, previewTheme, onPreviewTheme }) => {
-    const dailyThemes = themes.filter(t => t.category === 'daily');
-    const paletteThemes = themes.filter(t => t.category === 'palette');
-    const holidayThemes = themes.filter(t => t.category === 'holiday');
-    const interactiveThemes = themes.filter(t => t.category === 'interactive');
-
     const displayTheme = previewTheme || currentTheme;
+    
+    const categoryTitles: Record<string, string> = {
+      interactive: 'Interactive',
+      daily: 'Daily Drivers',
+      palette: 'Color Palettes',
+      nature: "Nature's Palette",
+      urban: 'Urban Vibes',
+      gourmet: 'Gourmet',
+      vintage: 'Vintage',
+      holiday: 'Holidays',
+    };
+    
+    const categoryOrder: (Theme['category'])[] = ['interactive', 'daily', 'palette', 'nature', 'urban', 'gourmet', 'vintage', 'holiday'];
+    
+    // Group themes by category
+    const themeGroups = themes.reduce<Record<string, Theme[]>>((acc, theme) => {
+      (acc[theme.category] = acc[theme.category] || []).push(theme);
+      return acc;
+    }, {});
 
     interface ThemeSwatchProps {
       theme: Theme;
@@ -77,10 +91,12 @@ const ThemePopover: React.FC<ThemePopoverProps> = ({ themes, currentTheme, onThe
             border: `1px solid ${displayTheme.colors.cardBorder || 'transparent'}`
         }}
     >
-      {interactiveThemes.length > 0 && <ThemeSection title="Interactive" themes={interactiveThemes} />}
-      <ThemeSection title="Daily" themes={dailyThemes} />
-      <ThemeSection title="Color Palettes" themes={paletteThemes} />
-      {holidayThemes.length > 0 && <ThemeSection title="Holidays" themes={holidayThemes} />}
+        {categoryOrder.map(category => {
+            const categoryThemes = themeGroups[category];
+            if (!categoryThemes || categoryThemes.length === 0) return null;
+            const title = categoryTitles[category] || category;
+            return <ThemeSection key={category} title={title} themes={categoryThemes} />;
+        })}
     </div>
   );
 };

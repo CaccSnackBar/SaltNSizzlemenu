@@ -45,9 +45,6 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ menu, deal, comboItems,
         }}
       >
         <div className="w-full max-w-screen-2xl mx-auto flex-grow flex flex-col">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-center mb-8 md:mb-12" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
-            SALT & SIZZLE
-          </h1>
 
           {deal.isVisible && (
             <div className="mb-8 md:mb-12">
