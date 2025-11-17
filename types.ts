@@ -34,3 +34,8 @@ export interface Theme {
   };
   backgroundEffect?: 'cosmic' | 'retro';
 }
+
+export interface DealOfTheDay {
+  text: string;
+  isVisible: boolean;
+}

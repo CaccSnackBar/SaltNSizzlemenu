@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme } from './types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND } from './constants';
+import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme, DealOfTheDay } from './types';
+import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND, LOCAL_STORAGE_KEY_DEAL, INITIAL_DEAL } from './constants';
 import MenuCategory from './components/MenuCategory';
 import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
@@ -22,6 +22,8 @@ import { ExpandIcon } from './components/icons/ExpandIcon';
 import { LogoutIcon } from './components/icons/LogoutIcon';
 import { StarIcon } from './components/icons/StarIcon';
 import MenuItem from './components/MenuItem';
+import DealEditor from './components/DealEditor';
+import DealOfTheDayBanner from './components/DealOfTheDayBanner';
 
 const App: React.FC = () => {
     // State management
@@ -32,6 +34,16 @@ const App: React.FC = () => {
         } catch (error) {
             console.error("Could not parse menu from localStorage", error);
             return INITIAL_MENU;
+        }
+    });
+    
+    const [deal, setDeal] = useState<DealOfTheDay>(() => {
+        try {
+            const savedDeal = localStorage.getItem(LOCAL_STORAGE_KEY_DEAL);
+            return savedDeal ? JSON.parse(savedDeal) : INITIAL_DEAL;
+        } catch (error) {
+            console.error("Could not parse deal from localStorage", error);
+            return INITIAL_DEAL;
         }
     });
 
@@ -76,6 +88,11 @@ const App: React.FC = () => {
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(menu));
     }, [menu]);
+    
+    // Save deal to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_DEAL, JSON.stringify(deal));
+    }, [deal]);
 
     // Save theme to localStorage and apply styles
     useEffect(() => {
@@ -105,6 +122,13 @@ const App: React.FC = () => {
                     setMenu(JSON.parse(event.newValue));
                 } catch (error) {
                     console.error("Failed to sync menu state from another tab.", error);
+                }
+            }
+            if (event.key === LOCAL_STORAGE_KEY_DEAL && event.newValue) {
+                try {
+                    setDeal(JSON.parse(event.newValue));
+                } catch (error) {
+                    console.error("Failed to sync deal state from another tab.", error);
                 }
             }
             if (event.key === LOCAL_STORAGE_KEY_THEME && event.newValue) {
@@ -399,21 +423,26 @@ const App: React.FC = () => {
             </header>
             
             <main className="p-4 md:p-8">
+                 {deal.isVisible && !isAdmin && <DealOfTheDayBanner text={deal.text} />}
+
                 {isAdmin && (
-                    <div className="max-w-4xl mx-auto mb-8 text-center">
-                        <button
-                            onClick={handleOpenAddCategoryModal}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg transition-colors"
-                            style={{ 
-                                color: 'var(--color-text-primary)', 
-                                backgroundColor: 'var(--color-card-background)',
-                                border: '1px solid var(--color-card-border)',
-                            }}
-                            aria-label="Add new category"
-                        >
-                            <PlusIcon className="w-6 h-6" />
-                            Add New Category
-                        </button>
+                    <div className="max-w-4xl mx-auto mb-8 space-y-8">
+                         <DealEditor currentDeal={deal} onSave={setDeal} />
+                        <div className="text-center">
+                            <button
+                                onClick={handleOpenAddCategoryModal}
+                                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg transition-colors"
+                                style={{ 
+                                    color: 'var(--color-text-primary)', 
+                                    backgroundColor: 'var(--color-card-background)',
+                                    border: '1px solid var(--color-card-border)',
+                                }}
+                                aria-label="Add new category"
+                            >
+                                <PlusIcon className="w-6 h-6" />
+                                Add New Category
+                            </button>
+                        </div>
                     </div>
                 )}
 
