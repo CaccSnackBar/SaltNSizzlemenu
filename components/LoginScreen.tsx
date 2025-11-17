@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ADMIN_PASSWORD } from '../constants';
 
@@ -54,7 +55,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
             </form>
              <div className="mt-6 text-center">
                 <a 
-                    href={window.location.pathname}
+                    href="/"
                     className="font-medium text-sm text-gray-600 hover:text-gray-800"
                 >
                     ← Go back to public menu

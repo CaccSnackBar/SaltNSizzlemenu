@@ -1,374 +1,437 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { MenuCategory, MenuItem, Theme } from './types';
+
+
+import React, { useState, useEffect } from 'react';
+import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme } from './types';
 import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND } from './constants';
-import { themes } from './themes';
-import MenuCategoryComponent from './components/MenuCategory';
+import MenuCategory from './components/MenuCategory';
 import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
-import { PlusIcon } from './components/icons/PlusIcon';
-import { EyeIcon } from './components/icons/EyeIcon';
-import { LoginIcon } from './components/icons/LoginIcon';
-import { ResetIcon } from './components/icons/ResetIcon';
-import { ExpandIcon } from './components/icons/ExpandIcon';
+import LoginScreen from './components/LoginScreen';
+import { themes } from './themes';
+import ThemePopover from './components/ThemePopover';
 import { PaletteIcon } from './components/icons/PaletteIcon';
+import { ResetIcon } from './components/icons/ResetIcon';
+import { LoginIcon } from './components/icons/LoginIcon';
 import { SoundOnIcon } from './components/icons/SoundOnIcon';
 import { SoundOffIcon } from './components/icons/SoundOffIcon';
-import LoginScreen from './components/LoginScreen';
-import FullScreenMenu from './components/FullScreenMenu';
-import ThemePopover from './components/ThemePopover';
 import { playSound } from './utils/audio';
 import AnimatedBackground from './components/AnimatedBackground';
-
-const getHolidayTheme = (): string | null => {
-    const today = new Date();
-    const month = today.getMonth(); // 0 = January, 11 = December
-    const day = today.getDate();
-  
-    if ((month === 11 && day >= 27) || (month === 0 && day <= 2)) return 'holiday-newyears';
-    if (month === 1 && day >= 7 && day <= 14) return 'holiday-valentines';
-    if (month === 2 && day >= 10 && day <= 17) return 'holiday-stpatricks';
-    if ((month === 2 && day >= 20) || (month === 3 && day <= 20)) return 'holiday-easter';
-    if (month === 6 && day >= 1 && day <= 7) return 'holiday-july4';
-    if (month === 8 && day >= 15 && day <= 22) return 'holiday-pirate'; // Talk like a Pirate Day is Sep 19
-    if (month === 9 && day >= 24 && day <= 31) return 'holiday-halloween';
-    if (month === 10 && day >= 22 && day <= 28) return 'holiday-thanksgiving';
-    if (month === 11 && day >= 1 && day <= 26) return 'holiday-christmas';
-  
-    return null;
-};
-
-const HOLIDAY_GREETINGS: { [key: string]: string } = {
-    'holiday-valentines': "Happy Valentine's Day!",
-    'holiday-stpatricks': "Happy St. Patrick's Day!",
-    'holiday-easter': 'Happy Easter!',
-    'holiday-july4': 'Happy Fourth of July!',
-    'holiday-pirate': 'Ahoy, Matey!',
-    'holiday-halloween': 'Happy Halloween!',
-    'holiday-thanksgiving': 'Happy Thanksgiving!',
-    'holiday-christmas': 'Happy Holidays!',
-    'holiday-newyears': "Happy New Year!",
-};
-
-const SaltShakerIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18.82 10H5.18A2.2 2.2 0 0 0 3 12.2v5.6A2.2 2.2 0 0 0 5.18 20h13.64A2.2 2.2 0 0 0 21 17.8v-5.6A2.2 2.2 0 0 0 18.82 10Z" />
-      <path d="M12 4v6" />
-      <path d="M15.29 4.71a2.5 2.5 0 0 0-3.54-3.54" />
-      <path d="M8.71 4.71a2.5 2.5 0 0 1 3.54-3.54" />
-      <path d="m14 2-2.09 2.09" />
-      <path d="m10 2 2.09 2.09" />
-      <path d="M12 10.5 10 9" />
-      <path d="m14 9-2 1.5" />
-    </svg>
-);
-
+import { useKonami } from './hooks/useKonami';
+import FullScreenMenu from './components/FullScreenMenu';
+import CategoryForm from './components/CategoryForm';
+import { PlusIcon } from './components/icons/PlusIcon';
+import { ExpandIcon } from './components/icons/ExpandIcon';
+import { LogoutIcon } from './components/icons/LogoutIcon';
 
 const App: React.FC = () => {
-  const [menu, setMenu] = useState<MenuCategory[]>([]);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemToEdit, setItemToEdit] = useState<MenuItem | null>(null);
-  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [activeThemeId, setActiveThemeId] = useState<string>('tuesday');
-  const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
-  
-  const themePopoverRef = useRef<HTMLDivElement>(null);
-
-  const activeTheme = themes.find(t => t.id === activeThemeId) || themes[0];
-  const holidayGreeting = HOLIDAY_GREETINGS[activeTheme.id];
-
-  useEffect(() => {
-    try {
-      const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
-      if (savedMenu) {
-        setMenu(JSON.parse(savedMenu));
-      } else {
-        setMenu(INITIAL_MENU);
-      }
-
-      const holidayThemeId = getHolidayTheme();
-      const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
-      
-      if (holidayThemeId && holidayThemeId !== savedThemeId) {
-        setActiveThemeId(holidayThemeId);
-        // Don't save holiday theme as the default for next time
-      } else if (savedThemeId) {
-        setActiveThemeId(savedThemeId);
-      } else {
-        const day = new Date().toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
-        const dailyTheme = themes.find(t => t.id === day) || themes[0];
-        setActiveThemeId(dailyTheme.id);
-      }
-
-      const savedSoundSetting = localStorage.getItem(LOCAL_STORAGE_KEY_SOUND);
-      if (savedSoundSetting) {
-        setSoundEnabled(JSON.parse(savedSoundSetting));
-      }
-
-    } catch (error) {
-      console.error("Could not load data from localStorage:", error);
-      setMenu(INITIAL_MENU);
-      setActiveThemeId('tuesday');
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(menu));
-    } catch (error) {
-      console.error("Could not save menu to localStorage:", error);
-    }
-  }, [menu]);
-
-  useEffect(() => {
-    try {
-        if (!activeTheme.category.startsWith('holiday')) {
-            localStorage.setItem(LOCAL_STORAGE_KEY_THEME, activeThemeId);
+    // State management
+    const [menu, setMenu] = useState<MenuCategoryType[]>(() => {
+        try {
+            const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
+            return savedMenu ? JSON.parse(savedMenu) : INITIAL_MENU;
+        } catch (error) {
+            console.error("Could not parse menu from localStorage", error);
+            return INITIAL_MENU;
         }
-    } catch (error) {
-        console.error("Could not save theme to localStorage:", error);
-    }
-    document.body.style.fontFamily = activeTheme.fontBody;
-    document.body.style.background = activeTheme.colors.background;
-  }, [activeThemeId, activeTheme]);
-  
-  useEffect(() => {
-    try {
-        localStorage.setItem(LOCAL_STORAGE_KEY_SOUND, JSON.stringify(soundEnabled));
-    } catch (error) {
-        console.error("Could not save sound setting to localStorage:", error);
-    }
-  }, [soundEnabled]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isThemePopoverOpen && themePopoverRef.current && !themePopoverRef.current.contains(event.target as Node)) {
-        const paletteButton = document.getElementById('palette-button');
-        if (paletteButton && !paletteButton.contains(event.target as Node)) {
-          setIsThemePopoverOpen(false);
-        }
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isThemePopoverOpen]);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setIsEditMode(true);
-  };
-  
-  const handleAddItem = (categoryId: string) => {
-    playSound(activeTheme.sounds?.open, soundEnabled);
-    setItemToEdit(null);
-    setEditingCategoryId(categoryId);
-    setIsModalOpen(true);
-  };
-  
-  const handleEditItem = (item: MenuItem, categoryId: string) => {
-    playSound(activeTheme.sounds?.open, soundEnabled);
-    setItemToEdit(item);
-    setEditingCategoryId(categoryId);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteItem = (itemId: string, categoryId: string) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      setMenu(prevMenu => prevMenu.map(category => {
-        if (category.id === categoryId) {
-          return { ...category, items: category.items.filter(item => item.id !== itemId) };
-        }
-        return category;
-      }));
-    }
-  };
-  
-  const handleSaveItem = (itemData: MenuItem) => {
-    if (itemToEdit) { // Editing existing item
-      setMenu(prevMenu => prevMenu.map(category => ({
-        ...category,
-        items: category.items.map(item => item.id === itemData.id ? itemData : item)
-      })));
-    } else { // Adding new item
-      playSound(activeTheme.sounds?.add, soundEnabled);
-      setMenu(prevMenu => prevMenu.map(category => {
-        if (category.id === editingCategoryId) {
-          return { ...category, items: [...category.items, itemData] };
-        }
-        return category;
-      }));
-    }
-    setIsModalOpen(false);
-    setItemToEdit(null);
-    setEditingCategoryId(null);
-  };
-  
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setItemToEdit(null);
-    setEditingCategoryId(null);
-  };
-
-  const handleToggleItemAvailability = (itemId: string, categoryId: string) => {
-    setMenu(prevMenu => prevMenu.map(category => {
-      if (category.id === categoryId) {
-        return {
-          ...category,
-          items: category.items.map(item => 
-            item.id === itemId ? { ...item, isCrossedOut: !item.isCrossedOut } : item
-          )
-        };
-      }
-      return category;
-    }));
-  };
-
-  const handleResetMenu = () => {
-    if (window.confirm('Are you sure you want to reset the menu to its original state? This cannot be undone.')) {
-      setMenu(INITIAL_MENU);
-    }
-  };
-
-  const handleThemeChange = (theme: Theme) => {
-    playSound(activeTheme.sounds?.change, soundEnabled);
-    setActiveThemeId(theme.id);
-    setIsThemePopoverOpen(false);
-  }
-
-  const handleToggleThemePopover = () => {
-    playSound(activeTheme.sounds?.open, soundEnabled);
-    setIsThemePopoverOpen(prev => !prev);
-  }
-
-  const handleToggleSound = () => {
-    setSoundEnabled(prev => {
-        const newState = !prev;
-        if (newState) {
-            // FIX: Cannot find name 'soundOpen'. Use the sound from the active theme.
-            playSound(activeTheme.sounds?.open, true);
-        }
-        return newState;
     });
-  }
 
-  const handlePreviewTheme = (theme: Theme | null) => {
-    setPreviewTheme(theme);
-  };
+    const [isAdmin, setIsAdmin] = useState(false);
+    
+    // Item Modal State
+    const [isItemModalOpen, setIsItemModalOpen] = useState(false);
+    const [itemToEdit, setItemToEdit] = useState<{ item: MenuItemType, categoryId: string } | null>(null);
+    const [categoryForNewItem, setCategoryForNewItem] = useState<string | null>(null);
 
-  if (!isLoggedIn) {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('admin') === 'true') {
-      return <LoginScreen onLoginSuccess={handleLogin} />;
+    // Category Modal State
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [categoryToEdit, setCategoryToEdit] = useState<MenuCategoryType | null>(null);
+
+    // Delete Confirmation Modal State
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [categoryToDelete, setCategoryToDelete] = useState<MenuCategoryType | null>(null);
+
+    const [isFullScreen, setIsFullScreen] = useState(false);
+
+    // Drag and Drop State
+    const [draggedCategoryId, setDraggedCategoryId] = useState<string | null>(null);
+
+    const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
+        const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
+        return themes.find(t => t.id === savedThemeId) || themes[0];
+    });
+    const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
+    const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
+    
+    const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
+        try {
+            const savedSound = localStorage.getItem(LOCAL_STORAGE_KEY_SOUND);
+            return savedSound !== null ? JSON.parse(savedSound) : true;
+        } catch (error) {
+            console.error("Could not parse sound setting from localStorage", error);
+            return true;
+        }
+    });
+
+    // Save menu to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(menu));
+    }, [menu]);
+
+    // Save theme to localStorage and apply styles
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_THEME, currentTheme.id);
+        const themeToApply = previewTheme || currentTheme;
+        document.documentElement.style.setProperty('--color-background', themeToApply.colors.background);
+        document.documentElement.style.setProperty('--color-header', themeToApply.colors.header);
+        document.documentElement.style.setProperty('--color-text-primary', themeToApply.colors.textPrimary);
+        document.documentElement.style.setProperty('--color-text-secondary', themeToApply.colors.textSecondary);
+        document.documentElement.style.setProperty('--color-card-background', themeToApply.colors.cardBackground);
+        document.documentElement.style.setProperty('--color-card-border', themeToApply.colors.cardBorder || 'transparent');
+        document.documentElement.style.setProperty('--color-accent', themeToApply.colors.accent);
+        document.documentElement.style.setProperty('--font-header', themeToApply.fontHeader);
+        document.documentElement.style.setProperty('--font-body', themeToApply.fontBody);
+    }, [currentTheme, previewTheme]);
+
+    // Save sound setting
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_SOUND, JSON.stringify(isSoundEnabled));
+    }, [isSoundEnabled]);
+
+
+    const handleLoginSuccess = () => {
+        setIsAdmin(true);
+        window.location.hash = '';
+    };
+    
+    const handleLogout = () => {
+        setIsAdmin(false);
+    };
+
+    // Item CRUD operations
+    const handleSaveItem = (item: MenuItemType) => {
+        const categoryId = itemToEdit?.categoryId || categoryForNewItem;
+        if (!categoryId) return;
+
+        setMenu(prevMenu => {
+            const newMenu = [...prevMenu];
+            const categoryIndex = newMenu.findIndex(cat => cat.id === categoryId);
+            if (categoryIndex === -1) return prevMenu;
+
+            const category = { ...newMenu[categoryIndex] };
+            const itemIndex = category.items.findIndex(i => i.id === item.id);
+
+            if (itemIndex > -1) { // Editing existing item
+                category.items[itemIndex] = item;
+            } else { // Adding new item
+                category.items.push(item);
+            }
+
+            newMenu[categoryIndex] = category;
+            return newMenu;
+        });
+        closeItemModal();
+    };
+    
+    const handleDeleteItem = (itemId: string, categoryId: string) => {
+        if (window.confirm("Are you sure you want to delete this item?")) {
+            setMenu(prevMenu => {
+                const newMenu = [...prevMenu];
+                const categoryIndex = newMenu.findIndex(cat => cat.id === categoryId);
+                if (categoryIndex === -1) return prevMenu;
+
+                const category = { ...newMenu[categoryIndex] };
+                category.items = category.items.filter(item => item.id !== itemId);
+                newMenu[categoryIndex] = category;
+                return newMenu;
+            });
+        }
+    };
+    
+    const handleToggleCrossOut = (itemId: string, categoryId: string) => {
+        setMenu(prevMenu => {
+            const newMenu = [...prevMenu];
+            const categoryIndex = newMenu.findIndex(cat => cat.id === categoryId);
+            if (categoryIndex === -1) return prevMenu;
+    
+            const category = { ...newMenu[categoryIndex] };
+            const itemIndex = category.items.findIndex(i => i.id === itemId);
+            if (itemIndex === -1) return prevMenu;
+    
+            const item = { ...category.items[itemIndex] };
+            item.isCrossedOut = !item.isCrossedOut;
+            category.items[itemIndex] = item;
+            newMenu[categoryIndex] = category;
+            return newMenu;
+        });
+    };
+
+    const handleAddItem = (categoryId: string) => {
+        setItemToEdit(null);
+        setCategoryForNewItem(categoryId);
+        setIsItemModalOpen(true);
+    };
+
+    const handleEditItem = (item: MenuItemType, categoryId: string) => {
+        setCategoryForNewItem(null);
+        setItemToEdit({ item, categoryId });
+        setIsItemModalOpen(true);
+    };
+
+    const closeItemModal = () => {
+        setIsItemModalOpen(false);
+        setItemToEdit(null);
+        setCategoryForNewItem(null);
+    };
+    
+    // Category CRUD operations
+    const handleOpenAddCategoryModal = () => {
+        setCategoryToEdit(null);
+        setIsCategoryModalOpen(true);
+    };
+
+    const handleOpenEditCategoryModal = (category: MenuCategoryType) => {
+        setCategoryToEdit(category);
+        setIsCategoryModalOpen(true);
+    };
+
+    const handleCloseCategoryModal = () => {
+        setIsCategoryModalOpen(false);
+        setCategoryToEdit(null);
+    };
+
+    const handleSaveCategory = (categoryData: { id: string; name: string }) => {
+        setMenu(prevMenu => {
+            const isEditing = prevMenu.some(c => c.id === categoryData.id);
+            if (isEditing) {
+                return prevMenu.map(c => c.id === categoryData.id ? { ...c, name: categoryData.name } : c);
+            } else {
+                const newCategory: MenuCategoryType = { ...categoryData, items: [] };
+                return [...prevMenu, newCategory];
+            }
+        });
+        handleCloseCategoryModal();
+    };
+
+    const handleDeleteCategory = (categoryId: string) => {
+        const category = menu.find(c => c.id === categoryId);
+        if (category) {
+            setCategoryToDelete(category);
+            setIsDeleteModalOpen(true);
+        }
+    };
+
+    const confirmDeleteCategory = () => {
+        if (!categoryToDelete) return;
+        setMenu(prevMenu => prevMenu.filter(c => c.id !== categoryToDelete.id));
+        setIsDeleteModalOpen(false);
+        setCategoryToDelete(null);
+    };
+
+    const cancelDeleteCategory = () => {
+        setIsDeleteModalOpen(false);
+        setCategoryToDelete(null);
+    };
+    
+    const handleResetMenu = () => {
+        if (window.confirm("Are you sure you want to reset the menu to its original state? All changes will be lost.")) {
+            setMenu(INITIAL_MENU);
+        }
     }
-  }
 
-  if (isFullScreen) {
-    return <FullScreenMenu onExit={() => setIsFullScreen(false)} />;
-  }
+    // Drag and Drop Handlers
+    const handleDragStart = (e: React.DragEvent<HTMLDivElement>, categoryId: string) => {
+        setDraggedCategoryId(categoryId);
+        if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = 'move';
+        }
+    };
 
-  const displayTheme = previewTheme || activeTheme;
-  const titleText = "SALT & SIZZLE";
+    const handleDrop = (targetCategoryId: string) => {
+        if (!draggedCategoryId || draggedCategoryId === targetCategoryId) {
+            setDraggedCategoryId(null);
+            return;
+        }
 
-  return (
-    <>
-        <AnimatedBackground effect={activeTheme.specialEffect} />
-        <div 
-          className="min-h-screen p-4 sm:p-6 md:p-8 relative transition-colors duration-500"
-          style={{ 
-            color: activeTheme.colors.textSecondary,
-            fontFamily: activeTheme.fontBody,
-            background: activeTheme.specialEffect ? 'transparent' : activeTheme.colors.background,
-          }}
-        >
-        <div className="max-w-4xl mx-auto">
-            <header className="text-center mb-8 md:mb-12 relative">
-                {holidayGreeting && <p className="text-2xl font-bold mb-4" style={{color: activeTheme.colors.header, fontFamily: activeTheme.fontHeader}}>{holidayGreeting}</p>}
-                
-                <h1
-                  className="font-brand text-5xl md:text-7xl tracking-wider cursor-default title-hover-effect"
-                  style={{ color: activeTheme.colors.header, fontFamily: activeTheme.fontHeader }}
-                >
-                   {titleText.split('').map((char, i) => (
-                        <span
-                            key={i}
-                            className="inline-block transition-all duration-300 ease-out"
-                            style={{ 
-                                transitionDelay: `${i * 30}ms`,
-                            }}
-                        >
-                            {char === ' ' ? '\u00A0' : char}
-                        </span>
-                    ))}
-                </h1>
-                
-                <p className="mt-2 text-lg">Disclaimer: All food is while supplies last</p>
-                
-                <div className="absolute top-0 right-0 flex flex-col sm:flex-row gap-2">
-                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
-                    <button id="palette-button" onClick={handleToggleThemePopover} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Change Theme" style={{color: activeTheme.colors.textPrimary}}><PaletteIcon className="w-5 h-5" /></button>
-                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
-                    <button onClick={handleToggleSound} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title={soundEnabled ? "Mute Sounds" : "Unmute Sounds"} style={{color: activeTheme.colors.textPrimary}}>
-                        {soundEnabled 
-                            ? <SoundOnIcon className="w-5 h-5" />
-                            : <SoundOffIcon className="w-5 h-5" />
+        setMenu(prevMenu => {
+            const draggedIndex = prevMenu.findIndex(cat => cat.id === draggedCategoryId);
+            const targetIndex = prevMenu.findIndex(cat => cat.id === targetCategoryId);
+
+            if (draggedIndex === -1 || targetIndex === -1) return prevMenu;
+
+            const newMenu = [...prevMenu];
+            const [draggedItem] = newMenu.splice(draggedIndex, 1);
+            newMenu.splice(targetIndex, 0, draggedItem);
+            return newMenu;
+        });
+        setDraggedCategoryId(null);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedCategoryId(null);
+    };
+
+    const handleThemeChange = (theme: Theme) => {
+        playSound(theme.sound?.click, isSoundEnabled);
+        setCurrentTheme(theme);
+        setIsThemePopoverOpen(false);
+    };
+
+    const handleSoundToggle = () => {
+        playSound(currentTheme.sound?.toggle, !isSoundEnabled);
+        setIsSoundEnabled(prev => !prev);
+    };
+
+    useKonami(() => {
+        const konamiTheme = themes.find(t => t.id === 'konami');
+        if (konamiTheme) {
+            handleThemeChange(konamiTheme);
+        }
+    });
+
+    if (window.location.hash === '#/admin' && !isAdmin) {
+        return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
+    }
+    
+    const themeToApply = previewTheme || currentTheme;
+
+    return (
+        <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--color-background)', color: 'var(--color-text-primary)' }}>
+            {isFullScreen && <FullScreenMenu menu={menu} onClose={() => setIsFullScreen(false)} />}
+            
+            <AnimatedBackground effect={themeToApply.backgroundEffect} />
+            <header className="p-4 md:p-6 shadow-md sticky top-0 z-10 transition-colors duration-300 flex justify-between items-center" style={{ backgroundColor: 'var(--color-header)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+                <div className="text-center flex-grow">
+                    <h1 className="font-brand text-4xl md:text-6xl tracking-wider" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>SALT & SIZZLE</h1>
+                </div>
+                <div className="absolute top-4 right-4 flex items-center gap-2">
+                    <button onClick={handleSoundToggle} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Toggle sound">
+                        {isSoundEnabled ? 
+                            <SoundOnIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} /> : 
+                            <SoundOffIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                         }
                     </button>
-                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
-                    <button onClick={() => setIsFullScreen(true)} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Fullscreen Mode" style={{color: activeTheme.colors.textPrimary}}><ExpandIcon className="w-5 h-5" /></button>
-                    {/* FIX: Moved style prop from Icon component to parent button to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
-                    {isEditMode && <button onClick={handleResetMenu} className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Reset Menu" style={{color: activeTheme.colors.textPrimary}}><ResetIcon className="w-5 h-5" /></button>}
-                    {/* FIX: Moved style prop from Icon component to parent anchor tag to fix TypeScript error. The icon will inherit the color via `currentColor`. */}
-                    {!isLoggedIn && <a href="?admin=true" className="p-2 bg-white/30 rounded-full shadow-md hover:bg-white/50 transition-colors" title="Admin Login" style={{color: activeTheme.colors.textPrimary}}><LoginIcon className="w-5 h-5" /></a>}
+                    <div className="relative">
+                        <button onClick={() => setIsThemePopoverOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
+                            <PaletteIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
+                        </button>
+                        {isThemePopoverOpen && (
+                            <ThemePopover
+                                themes={themes}
+                                currentTheme={currentTheme}
+                                onThemeChange={handleThemeChange}
+                                previewTheme={previewTheme}
+                                onPreviewTheme={setPreviewTheme}
+                            />
+                        )}
+                    </div>
+                     <button onClick={() => setIsFullScreen(true)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Fullscreen mode">
+                        <ExpandIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
+                    </button>
+                    {isAdmin ? (
+                        <button onClick={handleLogout} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Logout">
+                            <LogoutIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }}/>
+                        </button>
+                    ) : (
+                         <a href="/#/admin" className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Admin Login">
+                            <LoginIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
+                        </a>
+                    )}
+                    {isAdmin && (
+                        <button onClick={handleResetMenu} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Reset menu">
+                            <ResetIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }}/>
+                        </button>
+                    )}
                 </div>
-
-                {isThemePopoverOpen && (
-                    <div ref={themePopoverRef}>
-                        <ThemePopover 
-                            themes={themes} 
-                            currentTheme={activeTheme} 
-                            onThemeChange={handleThemeChange}
-                            previewTheme={previewTheme}
-                            onPreviewTheme={handlePreviewTheme}
-                        />
+            </header>
+            
+            <main className="p-4 md:p-8">
+                {isAdmin && (
+                    <div className="max-w-4xl mx-auto mb-8 text-center">
+                        <button
+                            onClick={handleOpenAddCategoryModal}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-lg transition-colors"
+                            style={{ 
+                                color: 'var(--color-text-primary)', 
+                                backgroundColor: 'var(--color-card-background)',
+                                border: '1px solid var(--color-card-border)',
+                            }}
+                            aria-label="Add new category"
+                        >
+                            <PlusIcon className="w-6 h-6" />
+                            Add New Category
+                        </button>
                     </div>
                 )}
-            </header>
-
-            <main className="space-y-10">
-            {menu.map(category => (
-                <MenuCategoryComponent
-                    key={category.id}
-                    category={category}
-                    onAddItem={() => handleAddItem(category.id)}
-                    onEditItem={(item) => handleEditItem(item, category.id)}
-                    onDeleteItem={(itemId) => handleDeleteItem(itemId, category.id)}
-                    onToggleItemAvailability={(itemId) => handleToggleItemAvailability(itemId, category.id)}
-                    isEditMode={isEditMode}
-                    theme={activeTheme}
-                />
-            ))}
+                <div className={`mx-auto grid gap-x-8 gap-y-12 items-start ${isAdmin ? 'max-w-4xl grid-cols-1' : 'max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}>
+                    {menu.map(category => (
+                        <MenuCategory
+                            key={category.id}
+                            category={category}
+                            isAdmin={isAdmin}
+                            onAddItem={() => handleAddItem(category.id)}
+                            onEditItem={(item) => handleEditItem(item, category.id)}
+                            onDeleteItem={(itemId) => handleDeleteItem(itemId, category.id)}
+                            onToggleCrossOut={(itemId) => handleToggleCrossOut(itemId, category.id)}
+                            onEditCategory={() => handleOpenEditCategoryModal(category)}
+                            onDeleteCategory={() => handleDeleteCategory(category.id)}
+                            draggedCategoryId={draggedCategoryId}
+                            onDragStart={handleDragStart}
+                            onDrop={handleDrop}
+                            onDragEnd={handleDragEnd}
+                        />
+                    ))}
+                </div>
             </main>
+            
+            <footer className="p-4 text-center" style={{fontFamily: 'var(--font-body)', color: 'var(--color-text-secondary)'}}>
+              <p className="mb-4 text-xs uppercase tracking-wider">Disclaimer: All food is while supplies last</p>
+              <p className="text-sm">&copy; {new Date().getFullYear()} Salt & Sizzle. All Rights Reserved.</p>
+            </footer>
+
+            <Modal isOpen={isItemModalOpen} onClose={closeItemModal}>
+                <MenuItemForm
+                    itemToEdit={itemToEdit?.item || null}
+                    onSave={handleSaveItem}
+                    onCancel={closeItemModal}
+                />
+            </Modal>
+
+            <Modal isOpen={isCategoryModalOpen} onClose={handleCloseCategoryModal}>
+                <CategoryForm
+                    categoryToEdit={categoryToEdit}
+                    onSave={handleSaveCategory}
+                    onCancel={handleCloseCategoryModal}
+                />
+            </Modal>
+
+            <Modal isOpen={isDeleteModalOpen} onClose={cancelDeleteCategory}>
+                <div className="text-center p-2">
+                    <h3 className="text-xl font-bold text-gray-800">Confirm Deletion</h3>
+                    <p className="my-4 text-gray-600">
+                        Are you sure you want to permanently delete the category 
+                        <strong className="font-semibold"> "{categoryToDelete?.name}"</strong>? 
+                        This will also remove all items within it. This action cannot be undone.
+                    </p>
+                    <div className="flex justify-center items-center gap-4 mt-6">
+                        <button
+                            onClick={cancelDeleteCategory}
+                            className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={confirmDeleteCategory}
+                            className="px-6 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                            aria-label={`Confirm deletion of ${categoryToDelete?.name} category`}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
         </div>
-        <Modal isOpen={isModalOpen} onClose={handleCancel}>
-            <MenuItemForm
-            itemToEdit={itemToEdit}
-            onSave={handleSaveItem}
-            onCancel={handleCancel}
-            />
-        </Modal>
-        </div>
-        <style>{`
-            .title-hover-effect:hover span {
-                color: ${activeTheme.colors.textPrimary};
-                transform: translateY(-5px) scale(1.1);
-            }
-        `}</style>
-    </>
-  );
+    );
 };
 
 export default App;

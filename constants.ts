@@ -40,12 +40,6 @@ export const INITIAL_MENU: MenuCategory[] = [
         name: 'Smash Burger',
         price: '$3.00',
         description: 'Smashed 3 oz ground beef patty, seasoned with salt, pepper, and garlic powder, topped with cheese and a toasted bun.\nToppings: Lettuce, Tomato, Pickle\nAdd a Patty - $1.00\nAdd Bacon - $1.00'
-      },
-      {
-        id: 'item5',
-        name: 'Walking Taco',
-        price: '$3.00',
-        description: 'Choice of Doritos or Fritos topped with seasoned ground beef.\nToppings: Cheese, Sour Cream, Salsa\nAdd Cheese Sauce - $1.00'
       }
     ]
   },
@@ -70,6 +64,12 @@ export const INITIAL_MENU: MenuCategory[] = [
         name: 'Loaded Fries',
         price: '$3.00',
         description: "Bed of French fries, topped with Mrs. Hill's famous cheese sauce, bacon, and jalapenos."
+      },
+      {
+        id: 'item5',
+        name: 'Chips',
+        price: '$1.00',
+        description: 'Choice of Doritos or Fritos.'
       }
     ]
   },

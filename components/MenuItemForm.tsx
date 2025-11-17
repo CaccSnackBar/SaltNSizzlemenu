@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MenuItem } from '../types';
 
 interface MenuItemFormProps {
@@ -12,14 +11,6 @@ const MenuItemForm: React.FC<MenuItemFormProps> = ({ itemToEdit, onSave, onCance
   const [item, setItem] = useState<MenuItem>(
     itemToEdit || { id: `new-${Date.now()}`, name: '', price: '', description: '', isCrossedOut: false }
   );
-
-  useEffect(() => {
-    if (itemToEdit) {
-      setItem(itemToEdit);
-    } else {
-      setItem({ id: `new-${Date.now()}`, name: '', price: '', description: '', isCrossedOut: false });
-    }
-  }, [itemToEdit]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

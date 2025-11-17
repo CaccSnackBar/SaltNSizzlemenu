@@ -1,137 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { MenuCategory, Theme } from '../types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME } from '../constants';
-import { themes } from '../themes';
+import React from 'react';
+import { MenuCategory } from '../types';
+import Marquee from './Marquee';
 import { CloseIcon } from './icons/CloseIcon';
 
 interface FullScreenMenuProps {
-  onExit: () => void;
+  menu: MenuCategory[];
+  onClose: () => void;
 }
 
-const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ onExit }) => {
-  const [menu, setMenu] = useState<MenuCategory[]>([]);
-  const [theme, setTheme] = useState<Theme>(themes[0]);
-
-  useEffect(() => {
-    // Load menu and theme from localStorage
-    try {
-      const savedMenu = localStorage.getItem(LOCAL_STORAGE_KEY_MENU);
-      if (savedMenu) {
-        setMenu(JSON.parse(savedMenu));
-      } else {
-        setMenu(INITIAL_MENU);
-      }
-      
-      const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
-      const activeTheme = themes.find(t => t.id === savedThemeId) || themes[0];
-      setTheme(activeTheme);
-
-    } catch (error) {
-      console.error("Could not load data from localStorage:", error);
-      setMenu(INITIAL_MENU);
-      setTheme(themes[0]);
-    }
-  }, []);
-
-
-  if (menu.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: theme.colors.background}}>
-        <h1 className="font-brand text-5xl animate-pulse" style={{ color: theme.colors.header }}>Loading...</h1>
-      </div>
-    );
-  }
-
+const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ menu, onClose }) => {
   return (
-    <div className="min-h-screen p-6 md:p-8 lg:p-10 relative" style={{
-      background: theme.colors.background,
-      fontFamily: theme.fontBody,
-    }}>
-      <button
-        onClick={onExit}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20 flex items-center gap-2 text-gray-700 p-3 rounded-full shadow-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
-        style={{ backgroundColor: theme.colors.cardBackground, color: theme.colors.textPrimary }}
-        aria-label="Exit Fullscreen Display"
-        title="Exit Fullscreen Display"
-      >
-        <CloseIcon className="w-6 h-6" />
-      </button>
-
-      <header className="text-center mb-12">
-        <h1
-          className="text-[clamp(3.25rem,8vw,5rem)] tracking-wider"
-          style={{ 
-            color: theme.colors.header,
-            fontFamily: theme.fontHeader,
-          }}
-        >
+    <div 
+      className="fixed inset-0 p-4 md:p-8 overflow-y-auto z-50 flex flex-col" 
+      style={{ 
+        backgroundColor: 'var(--color-background)', 
+        color: 'var(--color-text-primary)' 
+      }}
+    >
+      <div className="w-full mx-auto flex-grow flex flex-col">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-center mb-8 md:mb-12" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
           SALT & SIZZLE
         </h1>
-      </header>
-      <main className="max-w-screen-2xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-6 gap-y-10">
+
+        <div 
+            className="flex-grow w-full" 
+            style={{ 
+                columnWidth: '320px', 
+                columnGap: '2rem',
+            }}
+        >
           {menu.map(category => (
-            <div key={category.id}>
-              <h2
-                className="text-[clamp(1.5rem,5vw,2.25rem)] font-bold uppercase tracking-wide mb-6"
-                style={{ 
-                  color: theme.colors.header,
-                  fontFamily: theme.fontHeader,
-                }}
-              >
+            <div key={category.id} className="mb-8" style={{ breakInside: 'avoid' }}>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4 pb-2" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)', borderBottom: '2px solid var(--color-card-border)' }}>
                 {category.name}
               </h2>
-              <div className="space-y-6">
+              <ul className="space-y-4" style={{ fontFamily: 'var(--font-body)' }}>
                 {category.items.map(item => (
-                  <div
-                    key={item.id}
-                    className="p-4 rounded-xl border"
-                    style={{
-                      backgroundColor: theme.colors.cardBackground,
-                      opacity: item.isCrossedOut ? 0.4 : 1,
-                      transition: 'opacity 300ms',
-                      border: theme.colors.cardBorder || '1px solid transparent',
-                      boxShadow: theme.colors.cardBoxShadow || '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                    }}
-                  >
-                    <div className="flex justify-between items-start gap-4">
-                      <h3
-                        className={`text-[clamp(1.1rem,3vw,1.375rem)] font-bold ${item.isCrossedOut ? 'line-through' : ''}`}
-                        style={{ 
-                          color: theme.colors.textPrimary,
-                          fontFamily: theme.fontHeader,
-                        }}
-                      >
+                  <li key={item.id} className={`transition-opacity ${item.isCrossedOut ? 'opacity-40' : ''}`}>
+                    <div className="flex justify-between items-baseline gap-4">
+                      <span className={`text-xl md:text-2xl ${item.isCrossedOut ? 'line-through' : ''}`}>
                         {item.name}
-                      </h3>
-                      <p
-                        className={`text-[clamp(1.1rem,3vw,1.375rem)] font-bold whitespace-nowrap ${item.isCrossedOut ? 'line-through' : ''}`}
-                        style={{ color: theme.colors.textPrimary }}
-                      >
+                      </span>
+                      <span className="text-xl md:text-2xl font-semibold flex-shrink-0 text-right" style={{ color: 'var(--color-accent)' }}>
                         {item.price}
-                      </p>
+                      </span>
                     </div>
-                    <p
-                      className={`mt-2 text-[clamp(0.9rem,2.5vw,1.1rem)] whitespace-pre-line ${item.isCrossedOut ? 'line-through' : ''}`}
-                       style={{ color: theme.colors.textSecondary }}
-                    >
-                      {item.description}
-                    </p>
-                  </div>
+                    {item.description && !item.isCrossedOut && (
+                        <p className="text-base md:text-lg mt-1 whitespace-pre-line" style={{ color: 'var(--color-text-secondary)' }}>
+                            {item.description}
+                        </p>
+                    )}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>
-      </main>
-      <footer className="text-center mt-16">
-        <p
-          className="text-[clamp(0.8rem,2vw,1rem)] uppercase"
-           style={{ color: theme.colors.textSecondary }}
-        >
-          Disclaimer: All food is while supplies last
-        </p>
-      </footer>
+      </div>
+      <div className="w-full mt-auto pt-8">
+        <Marquee text="Thank you for visiting! Check out our specials! Don't forget dessert!" />
+      </div>
+       <button onClick={onClose} className="fixed top-4 right-4 p-2 rounded-full transition-opacity group" aria-label="Close fullscreen">
+        <CloseIcon 
+            className="w-8 h-8 opacity-50 group-hover:opacity-100 transition-opacity" 
+            style={{ color: 'var(--color-text-primary)' }}
+        />
+      </button>
     </div>
   );
 };

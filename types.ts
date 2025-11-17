@@ -16,21 +16,20 @@ export interface Theme {
   id: string;
   name: string;
   category: 'daily' | 'palette' | 'holiday' | 'interactive';
-  fontHeader: string;
-  fontBody: string;
   colors: {
     background: string;
-    cardBackground: string;
+    header: string;
     textPrimary: string;
     textSecondary: string;
-    header: string;
+    cardBackground: string;
     cardBorder?: string;
-    cardBoxShadow?: string;
+    accent: string;
   };
-  specialEffect?: 'cosmic' | 'retro';
-  sounds?: {
-    change: string; // URL to sound file
-    open: string;
-    add: string;
+  fontHeader: string;
+  fontBody: string;
+  sound?: {
+    click?: string;
+    toggle?: string;
   };
+  backgroundEffect?: 'cosmic' | 'retro';
 }
