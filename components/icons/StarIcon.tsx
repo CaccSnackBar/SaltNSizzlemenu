@@ -1,9 +1,11 @@
 import React from 'react';
 
-export const StarIcon = ({ className = 'w-6 h-6' }: { className?: string }) => (
+// Fix: Add style prop to allow for dynamic styling and fix a type error in MenuItem.tsx.
+export const StarIcon = ({ className = 'w-6 h-6', style }: { className?: string; style?: React.CSSProperties }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         className={className}
+        style={style}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

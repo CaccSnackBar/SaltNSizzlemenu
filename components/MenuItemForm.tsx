@@ -9,12 +9,17 @@ interface MenuItemFormProps {
 
 const MenuItemForm: React.FC<MenuItemFormProps> = ({ itemToEdit, onSave, onCancel }) => {
   const [item, setItem] = useState<MenuItem>(
-    itemToEdit || { id: `new-${Date.now()}`, name: '', price: '', description: '', isCrossedOut: false }
+    itemToEdit || { id: `new-${Date.now()}`, name: '', price: '', description: '', isCrossedOut: false, isFeatured: false }
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setItem(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+        const { checked } = e.target as HTMLInputElement;
+        setItem(prev => ({...prev, [name]: checked }));
+    } else {
+        setItem(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -63,6 +68,19 @@ const MenuItemForm: React.FC<MenuItemFormProps> = ({ itemToEdit, onSave, onCance
           rows={4}
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
+      </div>
+       <div className="flex items-center">
+        <input
+          id="isFeatured"
+          name="isFeatured"
+          type="checkbox"
+          checked={!!item.isFeatured}
+          onChange={handleChange}
+          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+        />
+        <label htmlFor="isFeatured" className="ml-3 block text-sm font-medium text-gray-700">
+          Mark as Featured Item
+        </label>
       </div>
       <div className="flex justify-end space-x-3 pt-2">
         <button

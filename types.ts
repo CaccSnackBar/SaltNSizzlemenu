@@ -4,6 +4,7 @@ export interface MenuItem {
   price: string;
   description: string;
   isCrossedOut?: boolean;
+  isFeatured?: boolean;
 }
 
 export interface MenuCategory {

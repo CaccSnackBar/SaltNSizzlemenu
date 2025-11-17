@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme } from './types';
 import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND } from './constants';
@@ -22,6 +20,8 @@ import CategoryForm from './components/CategoryForm';
 import { PlusIcon } from './components/icons/PlusIcon';
 import { ExpandIcon } from './components/icons/ExpandIcon';
 import { LogoutIcon } from './components/icons/LogoutIcon';
+import { StarIcon } from './components/icons/StarIcon';
+import MenuItem from './components/MenuItem';
 
 const App: React.FC = () => {
     // State management
@@ -165,6 +165,24 @@ const App: React.FC = () => {
         });
     };
 
+    const handleToggleFeatured = (itemId: string, categoryId: string) => {
+        setMenu(prevMenu => {
+            const newMenu = [...prevMenu];
+            const categoryIndex = newMenu.findIndex(cat => cat.id === categoryId);
+            if (categoryIndex === -1) return prevMenu;
+    
+            const category = { ...newMenu[categoryIndex] };
+            const itemIndex = category.items.findIndex(i => i.id === itemId);
+            if (itemIndex === -1) return prevMenu;
+    
+            const item = { ...category.items[itemIndex] };
+            item.isFeatured = !item.isFeatured;
+            category.items[itemIndex] = item;
+            newMenu[categoryIndex] = category;
+            return newMenu;
+        });
+    };
+
     const handleAddItem = (categoryId: string) => {
         setItemToEdit(null);
         setCategoryForNewItem(categoryId);
@@ -294,6 +312,13 @@ const App: React.FC = () => {
     
     const themeToApply = previewTheme || currentTheme;
 
+    const featuredItems = menu
+        .flatMap(category => 
+            category.items
+                .filter(item => item.isFeatured)
+                .map(item => ({ ...item, categoryId: category.id }))
+        );
+
     return (
         <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--color-background)', color: 'var(--color-text-primary)' }}>
             {isFullScreen && <FullScreenMenu menu={menu} onClose={() => setIsFullScreen(false)} />}
@@ -362,6 +387,32 @@ const App: React.FC = () => {
                         </button>
                     </div>
                 )}
+
+                {featuredItems.length > 0 && (
+                    <div className={`mx-auto mb-12 ${isAdmin ? 'max-w-4xl' : 'max-w-7xl'}`}>
+                        <div className="flex items-center gap-3 mb-4">
+                            <StarIcon className="w-6 h-6 text-yellow-500" />
+                            <h2 className="text-2xl md:text-3xl font-bold tracking-wide" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
+                                Featured Items
+                            </h2>
+                        </div>
+                        <div className={`grid gap-4 ${isAdmin ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
+                            {featuredItems.map(item => (
+                                <MenuItem
+                                    key={`${item.id}-featured`}
+                                    item={item}
+                                    isAdmin={isAdmin}
+                                    onEdit={() => handleEditItem(item, item.categoryId)}
+                                    onDelete={() => handleDeleteItem(item.id, item.categoryId)}
+                                    onToggleCrossOut={() => handleToggleCrossOut(item.id, item.categoryId)}
+                                    onToggleFeatured={() => handleToggleFeatured(item.id, item.categoryId)}
+                                />
+                            ))}
+                        </div>
+                        <hr className="my-8 border-dashed" style={{ borderColor: 'var(--color-card-border)' }} />
+                    </div>
+                )}
+
                 <div className={`mx-auto grid gap-x-8 gap-y-12 items-start ${isAdmin ? 'max-w-4xl grid-cols-1' : 'max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}>
                     {menu.map(category => (
                         <MenuCategory
@@ -372,6 +423,7 @@ const App: React.FC = () => {
                             onEditItem={(item) => handleEditItem(item, category.id)}
                             onDeleteItem={(itemId) => handleDeleteItem(itemId, category.id)}
                             onToggleCrossOut={(itemId) => handleToggleCrossOut(itemId, category.id)}
+                            onToggleFeatured={(itemId) => handleToggleFeatured(itemId, category.id)}
                             onEditCategory={() => handleOpenEditCategoryModal(category)}
                             onDeleteCategory={() => handleDeleteCategory(category.id)}
                             draggedCategoryId={draggedCategoryId}
