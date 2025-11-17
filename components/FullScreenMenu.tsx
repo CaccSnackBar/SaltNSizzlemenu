@@ -1,14 +1,18 @@
 import React from 'react';
-import { MenuCategory } from '../types';
+import { MenuCategory, MenuItem as MenuItemType, DealOfTheDay } from '../types';
 import Marquee from './Marquee';
 import { CloseIcon } from './icons/CloseIcon';
+import DealOfTheDayBanner from './DealOfTheDayBanner';
+import ComboDeal from './ComboDeal';
 
 interface FullScreenMenuProps {
   menu: MenuCategory[];
+  deal: DealOfTheDay;
+  comboItems: MenuItemType[];
   onClose: () => void;
 }
 
-const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ menu, onClose }) => {
+const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ menu, deal, comboItems, onClose }) => {
   return (
     <>
       {/* Add custom scrollbar styles to make it less obtrusive and match the theme */}
@@ -40,20 +44,26 @@ const FullScreenMenu: React.FC<FullScreenMenuProps> = ({ menu, onClose }) => {
           color: 'var(--color-text-primary)' 
         }}
       >
-        <div className="w-full mx-auto flex-grow flex flex-col">
+        <div className="w-full max-w-screen-2xl mx-auto flex-grow flex flex-col">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-center mb-8 md:mb-12" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
             SALT & SIZZLE
           </h1>
 
-          <div 
-              className="flex-grow w-full" 
-              style={{ 
-                  columnWidth: '320px', 
-                  columnGap: '2rem',
-              }}
-          >
+          {deal.isVisible && (
+            <div className="mb-8 md:mb-12">
+              <DealOfTheDayBanner text={deal.text} />
+            </div>
+          )}
+          
+          {comboItems.length > 0 && (
+            <div className="mb-8 md:mb-12">
+              <ComboDeal items={comboItems} />
+            </div>
+          )}
+          
+          <div className="grid flex-grow w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
             {menu.map(category => (
-              <div key={category.id} className="mb-8" style={{ breakInside: 'avoid' }}>
+              <div key={category.id} className="flex flex-col" style={{ breakInside: 'avoid' }}>
                 <h2 className="text-3xl md:text-4xl font-semibold mb-4 pb-2" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)', borderBottom: '2px solid var(--color-card-border)' }}>
                   {category.name}
                 </h2>

@@ -12,7 +12,7 @@ interface MenuCategoryProps {
   onEditItem: (item: MenuItemType) => void;
   onDeleteItem: (itemId: string) => void;
   onToggleCrossOut: (itemId: string) => void;
-  onToggleFeatured: (itemId: string) => void;
+  onToggleCombo: (itemId: string) => void;
   onEditCategory: () => void;
   onDeleteCategory: () => void;
   // Drag and Drop props
@@ -29,7 +29,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
     onEditItem, 
     onDeleteItem, 
     onToggleCrossOut, 
-    onToggleFeatured,
+    onToggleCombo,
     onEditCategory, 
     onDeleteCategory,
     draggedCategoryId,
@@ -101,7 +101,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
               onEdit={() => onEditItem(item)}
               onDelete={() => onDeleteItem(item.id)}
               onToggleCrossOut={() => onToggleCrossOut(item.id)}
-              onToggleFeatured={() => onToggleFeatured(item.id)}
+              onToggleCombo={() => onToggleCombo(item.id)}
             />
           ))}
         </div>
@@ -125,7 +125,7 @@ const MenuCategory: React.FC<MenuCategoryProps> = ({
             onEdit={() => onEditItem(item)}
             onDelete={() => onDeleteItem(item.id)}
             onToggleCrossOut={() => onToggleCrossOut(item.id)}
-            onToggleFeatured={() => onToggleFeatured(item.id)}
+            onToggleCombo={() => onToggleCombo(item.id)}
           />
         ))}
       </div>

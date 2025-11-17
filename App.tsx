@@ -20,10 +20,9 @@ import CategoryForm from './components/CategoryForm';
 import { PlusIcon } from './components/icons/PlusIcon';
 import { ExpandIcon } from './components/icons/ExpandIcon';
 import { LogoutIcon } from './components/icons/LogoutIcon';
-import { StarIcon } from './components/icons/StarIcon';
-import MenuItem from './components/MenuItem';
 import DealEditor from './components/DealEditor';
 import DealOfTheDayBanner from './components/DealOfTheDayBanner';
+import ComboDeal from './components/ComboDeal';
 
 const App: React.FC = () => {
     // State management
@@ -218,7 +217,7 @@ const App: React.FC = () => {
         });
     };
 
-    const handleToggleFeatured = (itemId: string, categoryId: string) => {
+    const handleToggleCombo = (itemId: string, categoryId: string) => {
         setMenu(prevMenu => {
             const newMenu = [...prevMenu];
             const categoryIndex = newMenu.findIndex(cat => cat.id === categoryId);
@@ -365,16 +364,13 @@ const App: React.FC = () => {
     
     const themeToApply = previewTheme || currentTheme;
 
-    const featuredItems = menu
-        .flatMap(category => 
-            category.items
-                .filter(item => item.isFeatured)
-                .map(item => ({ ...item, categoryId: category.id }))
-        );
+    const comboItems = menu.flatMap(category => 
+        category.items.filter(item => item.isFeatured)
+    );
 
     return (
         <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--color-background)', color: 'var(--color-text-primary)' }}>
-            {isFullScreen && <FullScreenMenu menu={menu} onClose={() => setIsFullScreen(false)} />}
+            {isFullScreen && <FullScreenMenu menu={menu} deal={deal} comboItems={comboItems} onClose={() => setIsFullScreen(false)} />}
             
             <AnimatedBackground effect={themeToApply.backgroundEffect} />
             <header className="p-4 md:p-6 shadow-md sticky top-0 z-10 transition-colors duration-300 flex justify-between items-center" style={{ backgroundColor: 'var(--color-header)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
@@ -445,28 +441,10 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 )}
-
-                {featuredItems.length > 0 && (
-                    <div className={`mx-auto mb-12 ${isAdmin ? 'max-w-4xl' : 'max-w-7xl'}`}>
-                        <div className="flex items-center gap-3 mb-4">
-                            <StarIcon className="w-6 h-6 text-yellow-500" />
-                            <h2 className="text-2xl md:text-3xl font-bold tracking-wide" style={{ fontFamily: 'var(--font-header)', color: 'var(--color-text-primary)' }}>
-                                Featured Items
-                            </h2>
-                        </div>
-                        <div className={`grid gap-4 ${isAdmin ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
-                            {featuredItems.map(item => (
-                                <MenuItem
-                                    key={`${item.id}-featured`}
-                                    item={item}
-                                    isAdmin={isAdmin}
-                                    onEdit={() => handleEditItem(item, item.categoryId)}
-                                    onDelete={() => handleDeleteItem(item.id, item.categoryId)}
-                                    onToggleCrossOut={() => handleToggleCrossOut(item.id, item.categoryId)}
-                                    onToggleFeatured={() => handleToggleFeatured(item.id, item.categoryId)}
-                                />
-                            ))}
-                        </div>
+                
+                {comboItems.length > 0 && (
+                     <div className={`mx-auto mb-12 ${isAdmin ? 'max-w-4xl' : 'max-w-7xl'}`}>
+                        <ComboDeal items={comboItems} />
                         <hr className="my-8 border-dashed" style={{ borderColor: 'var(--color-card-border)' }} />
                     </div>
                 )}
@@ -481,7 +459,7 @@ const App: React.FC = () => {
                             onEditItem={(item) => handleEditItem(item, category.id)}
                             onDeleteItem={(itemId) => handleDeleteItem(itemId, category.id)}
                             onToggleCrossOut={(itemId) => handleToggleCrossOut(itemId, category.id)}
-                            onToggleFeatured={(itemId) => handleToggleFeatured(itemId, category.id)}
+                            onToggleCombo={(itemId) => handleToggleCombo(itemId, category.id)}
                             onEditCategory={() => handleOpenEditCategoryModal(category)}
                             onDeleteCategory={() => handleDeleteCategory(category.id)}
                             draggedCategoryId={draggedCategoryId}

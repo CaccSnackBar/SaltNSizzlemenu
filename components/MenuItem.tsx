@@ -12,12 +12,12 @@ interface MenuItemProps {
   onEdit: () => void;
   onDelete: () => void;
   onToggleCrossOut: () => void;
-  onToggleFeatured: () => void;
+  onToggleCombo: () => void;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, isAdmin, onEdit, onDelete, onToggleCrossOut, onToggleFeatured }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item, isAdmin, onEdit, onDelete, onToggleCrossOut, onToggleCombo }) => {
   const isCrossedOut = item.isCrossedOut ?? false;
-  const isFeatured = item.isFeatured ?? false;
+  const isComboItem = item.isFeatured ?? false;
 
   const wrapperClasses = isAdmin
     ? `transition-opacity duration-300 ${isCrossedOut ? 'opacity-50' : ''}`
@@ -36,7 +36,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isAdmin, onEdit, onDelete, on
     <div className={wrapperClasses} style={wrapperStyle}>
       <div className="flex justify-between items-start gap-2">
         <div className="flex items-center gap-2">
-            {isFeatured && <StarIcon className="w-4 h-4 text-yellow-500 flex-shrink-0" />}
+            {isComboItem && <StarIcon className="w-4 h-4 text-yellow-500 flex-shrink-0" />}
             <h3 className={`text-lg font-semibold ${isCrossedOut ? 'line-through' : ''}`} style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text-primary)' }}>
               {item.name}
             </h3>
@@ -52,8 +52,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, isAdmin, onEdit, onDelete, on
       )}
       {isAdmin && (
         <div className="flex items-center justify-end gap-2 mt-2">
-           <button onClick={onToggleFeatured} className="p-1.5 rounded-full hover:bg-black/10" aria-label={isFeatured ? 'Unmark as featured' : 'Mark as featured'}>
-            <StarIcon className={`w-5 h-5 transition-colors ${isFeatured ? 'text-yellow-500 fill-current' : ''}`} style={{ color: isFeatured ? 'var(--color-accent)' : 'var(--color-text-secondary)' }} />
+           <button onClick={onToggleCombo} className="p-1.5 rounded-full hover:bg-black/10" aria-label={isComboItem ? 'Remove from combo' : 'Add to combo'}>
+            <StarIcon className={`w-5 h-5 transition-colors ${isComboItem ? 'text-yellow-500 fill-current' : ''}`} style={{ color: isComboItem ? 'var(--color-accent)' : 'var(--color-text-secondary)' }} />
           </button>
           <button onClick={onToggleCrossOut} className="p-1.5 rounded-full hover:bg-black/10" aria-label={isCrossedOut ? 'Un-cross out item' : 'Cross out item'}>
             {isCrossedOut ? 

@@ -79,7 +79,7 @@ const MenuItemForm: React.FC<MenuItemFormProps> = ({ itemToEdit, onSave, onCance
           className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
         />
         <label htmlFor="isFeatured" className="ml-3 block text-sm font-medium text-gray-700">
-          Mark as Featured Item
+          Include in Recommended Combo
         </label>
       </div>
       <div className="flex justify-end space-x-3 pt-2">
