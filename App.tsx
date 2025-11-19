@@ -6,7 +6,7 @@ import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
 import LoginScreen from './components/LoginScreen';
 import { themes } from './themes';
-import ThemePopover from './components/ThemePopover';
+import ThemeSelectorModal from './components/ThemeSelectorModal';
 import { PaletteIcon } from './components/icons/PaletteIcon';
 import { ResetIcon } from './components/icons/ResetIcon';
 import { LoginIcon } from './components/icons/LoginIcon';
@@ -70,8 +70,7 @@ const App: React.FC = () => {
         const savedThemeId = localStorage.getItem(LOCAL_STORAGE_KEY_THEME);
         return themes.find(t => t.id === savedThemeId) || themes[0];
     });
-    const [previewTheme, setPreviewTheme] = useState<Theme | null>(null);
-    const [isThemePopoverOpen, setIsThemePopoverOpen] = useState(false);
+    const [isThemeSelectorOpen, setIsThemeSelectorOpen] = useState(false);
     
     const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
         try {
@@ -96,7 +95,7 @@ const App: React.FC = () => {
     // Save theme to localStorage and apply styles
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY_THEME, currentTheme.id);
-        const themeToApply = previewTheme || currentTheme;
+        const themeToApply = currentTheme;
         document.documentElement.style.setProperty('--color-background', themeToApply.colors.background);
         document.documentElement.style.setProperty('--color-header', themeToApply.colors.header);
         document.documentElement.style.setProperty('--color-text-primary', themeToApply.colors.textPrimary);
@@ -106,7 +105,7 @@ const App: React.FC = () => {
         document.documentElement.style.setProperty('--color-accent', themeToApply.colors.accent);
         document.documentElement.style.setProperty('--font-header', themeToApply.fontHeader);
         document.documentElement.style.setProperty('--font-body', themeToApply.fontBody);
-    }, [currentTheme, previewTheme]);
+    }, [currentTheme]);
 
     // Save sound setting
     useEffect(() => {
@@ -343,7 +342,6 @@ const App: React.FC = () => {
     const handleThemeChange = (theme: Theme) => {
         playSound(theme.sound?.click, isSoundEnabled);
         setCurrentTheme(theme);
-        setIsThemePopoverOpen(false);
     };
 
     const handleSoundToggle = () => {
@@ -362,7 +360,7 @@ const App: React.FC = () => {
         return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
     }
     
-    const themeToApply = previewTheme || currentTheme;
+    const themeToApply = currentTheme;
 
     const comboItems = menu.flatMap(category => 
         category.items.filter(item => item.isFeatured)
@@ -385,18 +383,9 @@ const App: React.FC = () => {
                         }
                     </button>
                     <div className="relative">
-                        <button onClick={() => setIsThemePopoverOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
+                        <button onClick={() => setIsThemeSelectorOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
                             <PaletteIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                         </button>
-                        {isThemePopoverOpen && (
-                            <ThemePopover
-                                themes={themes}
-                                currentTheme={currentTheme}
-                                onThemeChange={handleThemeChange}
-                                previewTheme={previewTheme}
-                                onPreviewTheme={setPreviewTheme}
-                            />
-                        )}
                     </div>
                      <button onClick={() => setIsFullScreen(true)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Fullscreen mode">
                         <ExpandIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
@@ -517,6 +506,17 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </Modal>
+
+            <ThemeSelectorModal
+              isOpen={isThemeSelectorOpen}
+              onClose={() => setIsThemeSelectorOpen(false)}
+              themes={themes}
+              currentTheme={currentTheme}
+              onThemeChange={(theme) => {
+                handleThemeChange(theme);
+                setIsThemeSelectorOpen(false);
+              }}
+            />
 
         </div>
     );
