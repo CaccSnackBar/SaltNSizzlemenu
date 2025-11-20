@@ -1,5 +1,6 @@
 
 import { Theme } from './types';
+import { CLICK_SOUND, TOGGLE_SOUND } from './utils/audio';
 
 export const themes: Theme[] = [
   // --- Daily Drivers ---
@@ -11,17 +12,14 @@ export const themes: Theme[] = [
       background: '#e0e8e2',
       header: 'rgba(243, 244, 246, 0.8)',
       textPrimary: '#1f2937',
-      textSecondary: '#374151', // Darkened for better contrast
+      textSecondary: '#374151', 
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#d1d5db',
       accent: '#8c6d52',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Roboto', sans-serif",
-    sound: {
-        click: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAABpAAAAAAAAAABsAAAAAAAAAABpAAAAAAAAAAACVGFsYgAAAAAAAAD+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAABEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/80DEAB8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVJAP/zkAAAAAAAAAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/gAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAA',
-        toggle: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAABpAAAAAAAAAABsAAAAAAAAAABpAAAAAAAAAAACVGFsYgAAAAAAAAD+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAABEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/80DEAB8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVJAP/zkAAAAAAAAAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/gAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAA',
-    }
+    sound: { click: CLICK_SOUND, toggle: TOGGLE_SOUND }
   },
   {
     id: 'dark',
@@ -87,8 +85,197 @@ export const themes: Theme[] = [
     fontHeader: "'Lobster', cursive",
     fontBody: "'Lato', sans-serif",
   },
+    {
+    id: 'contrast',
+    name: 'High Contrast',
+    category: 'daily',
+    colors: {
+      background: '#000000',
+      header: '#000000',
+      textPrimary: '#ffff00',
+      textSecondary: '#00ff00',
+      cardBackground: '#000000',
+      cardBorder: '#ffffff',
+      accent: '#00ffff',
+    },
+    fontHeader: "'Roboto', sans-serif",
+    fontBody: "'Roboto', sans-serif",
+  },
 
-  // --- Color Palettes ---
+  // --- School Spirit / Sports ---
+  {
+    id: 'varsity-red',
+    name: 'Varsity Red',
+    category: 'sports',
+    colors: {
+      background: '#f9fafb',
+      header: 'rgba(185, 28, 28, 0.9)',
+      textPrimary: '#1f2937',
+      textSecondary: '#374151',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#ef4444',
+      accent: '#b91c1c',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'varsity-blue',
+    name: 'Varsity Blue',
+    category: 'sports',
+    colors: {
+      background: '#f0f9ff',
+      header: 'rgba(29, 78, 216, 0.9)',
+      textPrimary: '#1e3a8a',
+      textSecondary: '#1e40af',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#3b82f6',
+      accent: '#2563eb',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'varsity-green',
+    name: 'Varsity Green',
+    category: 'sports',
+    colors: {
+      background: '#f0fdf4',
+      header: 'rgba(21, 128, 61, 0.9)',
+      textPrimary: '#14532d',
+      textSecondary: '#166534',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#22c55e',
+      accent: '#15803d',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+   {
+    id: 'varsity-purple',
+    name: 'Varsity Purple',
+    category: 'sports',
+    colors: {
+      background: '#faf5ff',
+      header: 'rgba(126, 34, 206, 0.9)',
+      textPrimary: '#581c87',
+      textSecondary: '#6b21a8',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#a855f7',
+      accent: '#7e22ce',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'varsity-gold',
+    name: 'Varsity Gold',
+    category: 'sports',
+    colors: {
+      background: '#1a1a1a',
+      header: 'rgba(234, 179, 8, 0.9)',
+      textPrimary: '#fefce8',
+      textSecondary: '#fde047',
+      cardBackground: 'rgba(50, 50, 50, 0.8)',
+      cardBorder: '#eab308',
+      accent: '#ca8a04',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'varsity-orange',
+    name: 'Varsity Orange',
+    category: 'sports',
+    colors: {
+      background: '#fff7ed',
+      header: 'rgba(234, 88, 12, 0.9)',
+      textPrimary: '#7c2d12',
+      textSecondary: '#9a3412',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#f97316',
+      accent: '#ea580c',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+
+  // --- Spectrum Series (New Massive Collection) ---
+  { id: 'spec-red-1', name: 'Spectrum: Crimson', category: 'spectrum', colors: { background: '#450a0a', header: '#7f1d1d', textPrimary: '#fecaca', textSecondary: '#f87171', cardBackground: '#991b1b', cardBorder: '#ef4444', accent: '#fca5a5' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-red-2', name: 'Spectrum: Rose', category: 'spectrum', colors: { background: '#fff1f2', header: '#ffe4e6', textPrimary: '#881337', textSecondary: '#be123c', cardBackground: '#fff0f1', cardBorder: '#f43f5e', accent: '#e11d48' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-red-3', name: 'Spectrum: Scarlet', category: 'spectrum', colors: { background: '#dc2626', header: '#b91c1c', textPrimary: '#ffffff', textSecondary: '#fecaca', cardBackground: '#b91c1c', cardBorder: '#f87171', accent: '#fee2e2' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-orange-1', name: 'Spectrum: Tangerine', category: 'spectrum', colors: { background: '#ffedd5', header: '#ff7a00', textPrimary: '#7c2d12', textSecondary: '#c2410c', cardBackground: '#fff7ed', cardBorder: '#fdba74', accent: '#ea580c' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-orange-2', name: 'Spectrum: Rust', category: 'spectrum', colors: { background: '#431407', header: '#7c2d12', textPrimary: '#ffedd5', textSecondary: '#fdba74', cardBackground: '#5e1e0e', cardBorder: '#9a3412', accent: '#fb923c' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-orange-3', name: 'Spectrum: Apricot', category: 'spectrum', colors: { background: '#fff7ed', header: '#ffedd5', textPrimary: '#9a3412', textSecondary: '#ea580c', cardBackground: '#ffffff', cardBorder: '#fed7aa', accent: '#f97316' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+
+  { id: 'spec-yellow-1', name: 'Spectrum: Lemon', category: 'spectrum', colors: { background: '#fefce8', header: '#fef9c3', textPrimary: '#854d0e', textSecondary: '#a16207', cardBackground: '#ffffff', cardBorder: '#fde047', accent: '#eab308' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-yellow-2', name: 'Spectrum: Gold', category: 'spectrum', colors: { background: '#422006', header: '#713f12', textPrimary: '#fef08a', textSecondary: '#fde047', cardBackground: '#713f12', cardBorder: '#eab308', accent: '#facc15' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-yellow-3', name: 'Spectrum: Mustard', category: 'spectrum', colors: { background: '#fef08a', header: '#fde047', textPrimary: '#713f12', textSecondary: '#854d0e', cardBackground: '#fffbeb', cardBorder: '#ca8a04', accent: '#a16207' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-green-1', name: 'Spectrum: Lime', category: 'spectrum', colors: { background: '#f7fee7', header: '#d9f99d', textPrimary: '#365314', textSecondary: '#4d7c0f', cardBackground: '#ecfccb', cardBorder: '#84cc16', accent: '#65a30d' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-green-2', name: 'Spectrum: Forest', category: 'spectrum', colors: { background: '#052e16', header: '#14532d', textPrimary: '#dcfce7', textSecondary: '#86efac', cardBackground: '#14532d', cardBorder: '#22c55e', accent: '#4ade80' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-green-3', name: 'Spectrum: Sage', category: 'spectrum', colors: { background: '#f0fdf4', header: '#dcfce7', textPrimary: '#14532d', textSecondary: '#15803d', cardBackground: '#ffffff', cardBorder: '#86efac', accent: '#16a34a' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+
+  { id: 'spec-teal-1', name: 'Spectrum: Aqua', category: 'spectrum', colors: { background: '#ecfeff', header: '#cffafe', textPrimary: '#0e7490', textSecondary: '#155f75', cardBackground: '#ffffff', cardBorder: '#67e8f9', accent: '#06b6d4' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-teal-2', name: 'Spectrum: Deep Sea', category: 'spectrum', colors: { background: '#083344', header: '#164e63', textPrimary: '#cffafe', textSecondary: '#67e8f9', cardBackground: '#155e75', cardBorder: '#22d3ee', accent: '#06b6d4' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-blue-1', name: 'Spectrum: Sky', category: 'spectrum', colors: { background: '#f0f9ff', header: '#e0f2fe', textPrimary: '#075985', textSecondary: '#0369a1', cardBackground: '#ffffff', cardBorder: '#7dd3fc', accent: '#0ea5e9' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-blue-2', name: 'Spectrum: Cobalt', category: 'spectrum', colors: { background: '#172554', header: '#1e3a8a', textPrimary: '#dbeafe', textSecondary: '#93c5fd', cardBackground: '#1e3a8a', cardBorder: '#3b82f6', accent: '#60a5fa' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-blue-3', name: 'Spectrum: Denim', category: 'spectrum', colors: { background: '#eff6ff', header: '#dbeafe', textPrimary: '#1e3a8a', textSecondary: '#1d4ed8', cardBackground: '#ffffff', cardBorder: '#93c5fd', accent: '#2563eb' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+
+  { id: 'spec-indigo-1', name: 'Spectrum: Indigo', category: 'spectrum', colors: { background: '#eef2ff', header: '#e0e7ff', textPrimary: '#312e81', textSecondary: '#4338ca', cardBackground: '#ffffff', cardBorder: '#818cf8', accent: '#6366f1' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-indigo-2', name: 'Spectrum: Abyss', category: 'spectrum', colors: { background: '#1e1b4b', header: '#312e81', textPrimary: '#e0e7ff', textSecondary: '#a5b4fc', cardBackground: '#312e81', cardBorder: '#6366f1', accent: '#818cf8' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-violet-1', name: 'Spectrum: Lilac', category: 'spectrum', colors: { background: '#f5f3ff', header: '#ede9fe', textPrimary: '#4c1d95', textSecondary: '#6d28d9', cardBackground: '#ffffff', cardBorder: '#a78bfa', accent: '#8b5cf6' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-violet-2', name: 'Spectrum: Grape', category: 'spectrum', colors: { background: '#2e1065', header: '#4c1d95', textPrimary: '#ede9fe', textSecondary: '#c4b5fd', cardBackground: '#5b21b6', cardBorder: '#8b5cf6', accent: '#a78bfa' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-pink-1', name: 'Spectrum: Blush', category: 'spectrum', colors: { background: '#fdf2f8', header: '#fce7f3', textPrimary: '#831843', textSecondary: '#be185d', cardBackground: '#ffffff', cardBorder: '#f9a8d4', accent: '#ec4899' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-pink-2', name: 'Spectrum: Hot Pink', category: 'spectrum', colors: { background: '#500724', header: '#831843', textPrimary: '#fce7f3', textSecondary: '#fbcfe8', cardBackground: '#831843', cardBorder: '#db2777', accent: '#f472b6' }, fontHeader: "'Lobster', cursive", fontBody: "'Roboto', sans-serif" },
+
+  { id: 'spec-grey-1', name: 'Spectrum: Slate', category: 'spectrum', colors: { background: '#f8fafc', header: '#f1f5f9', textPrimary: '#0f172a', textSecondary: '#334155', cardBackground: '#ffffff', cardBorder: '#cbd5e1', accent: '#64748b' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'spec-grey-2', name: 'Spectrum: Charcoal', category: 'spectrum', colors: { background: '#18181b', header: '#27272a', textPrimary: '#f4f4f5', textSecondary: '#a1a1aa', cardBackground: '#27272a', cardBorder: '#52525b', accent: '#71717a' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'spec-grey-3', name: 'Spectrum: Silver', category: 'spectrum', colors: { background: '#e5e7eb', header: '#d1d5db', textPrimary: '#111827', textSecondary: '#374151', cardBackground: '#f3f4f6', cardBorder: '#9ca3af', accent: '#4b5563' }, fontHeader: "'Roboto', sans-serif", fontBody: "'Lato', sans-serif" },
+
+  // --- World Travel ---
+  { id: 'travel-tokyo', name: 'Tokyo Neon', category: 'travel', colors: { background: '#0f0f0f', header: '#222', textPrimary: '#ff0055', textSecondary: '#00d4ff', cardBackground: '#1a1a1a', cardBorder: '#ff0055', accent: '#00d4ff' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'travel-kyoto', name: 'Kyoto Shrine', category: 'travel', colors: { background: '#f3e5d8', header: '#b91c1c', textPrimary: '#3f1a1a', textSecondary: '#7f1d1d', cardBackground: '#fff8f1', cardBorder: '#b91c1c', accent: '#b91c1c' }, fontHeader: "'Playfair Display', serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-paris', name: 'Parisian Chic', category: 'travel', colors: { background: '#fdf0f5', header: '#fbcfe8', textPrimary: '#831843', textSecondary: '#9d174d', cardBackground: '#fff', cardBorder: '#f472b6', accent: '#ec4899' }, fontHeader: "'Playfair Display', serif", fontBody: "'Montserrat', sans-serif" },
+  { id: 'travel-santorini', name: 'Santorini', category: 'travel', colors: { background: '#ffffff', header: '#0077be', textPrimary: '#0077be', textSecondary: '#004c8c', cardBackground: '#f0f8ff', cardBorder: '#0077be', accent: '#ff8c00' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-london', name: 'London Bus', category: 'travel', colors: { background: '#262626', header: '#dc2626', textPrimary: '#f5f5f5', textSecondary: '#d4d4d4', cardBackground: '#404040', cardBorder: '#dc2626', accent: '#dc2626' }, fontHeader: "'Roboto', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-nyc', name: 'NYC Taxi', category: 'travel', colors: { background: '#fbbf24', header: '#000000', textPrimary: '#000000', textSecondary: '#1f2937', cardBackground: '#fcd34d', cardBorder: '#000000', accent: '#000000' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'travel-sahara', name: 'Sahara Sands', category: 'travel', colors: { background: '#fbbf24', header: '#d97706', textPrimary: '#451a03', textSecondary: '#78350f', cardBackground: '#fcd34d', cardBorder: '#b45309', accent: '#92400e' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-amazon', name: 'Amazon River', category: 'travel', colors: { background: '#064e3b', header: '#065f46', textPrimary: '#ecfdf5', textSecondary: '#a7f3d0', cardBackground: '#047857', cardBorder: '#10b981', accent: '#34d399' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'travel-antarctica', name: 'Antarctica', category: 'travel', colors: { background: '#f0f9ff', header: '#e0f2fe', textPrimary: '#0c4a6e', textSecondary: '#075985', cardBackground: '#ffffff', cardBorder: '#bae6fd', accent: '#0284c7' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-cairo', name: 'Cairo Gold', category: 'travel', colors: { background: '#27272a', header: '#ca8a04', textPrimary: '#fefce8', textSecondary: '#eab308', cardBackground: '#3f3f46', cardBorder: '#a16207', accent: '#fbbf24' }, fontHeader: "'Playfair Display', serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-rio', name: 'Rio Carnival', category: 'travel', colors: { background: '#059669', header: '#fbbf24', textPrimary: '#fff', textSecondary: '#fef3c7', cardBackground: '#10b981', cardBorder: '#f59e0b', accent: '#3b82f6' }, fontHeader: "'Lobster', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'travel-miami', name: 'Miami Vice', category: 'travel', colors: { background: '#000000', header: '#ec4899', textPrimary: '#2dd4bf', textSecondary: '#f472b6', cardBackground: '#18181b', cardBorder: '#2dd4bf', accent: '#ec4899' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-mumbai', name: 'Mumbai Spice', category: 'travel', colors: { background: '#7f1d1d', header: '#fbbf24', textPrimary: '#fffbeb', textSecondary: '#fde68a', cardBackground: '#991b1b', cardBorder: '#f59e0b', accent: '#f59e0b' }, fontHeader: "'Playfair Display', serif", fontBody: "'Lato', sans-serif" },
+  { id: 'travel-hollywood', name: 'Hollywood', category: 'travel', colors: { background: '#000', header: '#ffd700', textPrimary: '#fff', textSecondary: '#ccc', cardBackground: '#222', cardBorder: '#ffd700', accent: '#d4af37' }, fontHeader: "'Playfair Display', serif", fontBody: "'Montserrat', sans-serif" },
+
+  // --- Materials ---
+  { id: 'mat-marble', name: 'Carrara Marble', category: 'materials', colors: { background: '#f8fafc', header: '#e2e8f0', textPrimary: '#475569', textSecondary: '#64748b', cardBackground: '#ffffff', cardBorder: '#cbd5e1', accent: '#0f172a' }, fontHeader: "'Playfair Display', serif", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-obsidian', name: 'Obsidian', category: 'materials', colors: { background: '#020617', header: '#1e293b', textPrimary: '#f8fafc', textSecondary: '#94a3b8', cardBackground: '#0f172a', cardBorder: '#334155', accent: '#64748b' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'mat-gold', name: 'Gold Bullion', category: 'materials', colors: { background: '#422006', header: '#eab308', textPrimary: '#fef08a', textSecondary: '#fde047', cardBackground: '#713f12', cardBorder: '#ca8a04', accent: '#facc15' }, fontHeader: "'Playfair Display', serif", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-copper', name: 'Aged Copper', category: 'materials', colors: { background: '#0f766e', header: '#115e59', textPrimary: '#ccfbf1', textSecondary: '#99f6e4', cardBackground: '#134e4a', cardBorder: '#2dd4bf', accent: '#d97706' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-steel', name: 'Brushed Steel', category: 'materials', colors: { background: '#334155', header: '#475569', textPrimary: '#f1f5f9', textSecondary: '#cbd5e1', cardBackground: '#1e293b', cardBorder: '#64748b', accent: '#94a3b8' }, fontHeader: "'Roboto', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-denim', name: 'Denim', category: 'materials', colors: { background: '#1e3a8a', header: '#1d4ed8', textPrimary: '#dbeafe', textSecondary: '#bfdbfe', cardBackground: '#172554', cardBorder: '#93c5fd', accent: '#f59e0b' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-leather', name: 'Leather', category: 'materials', colors: { background: '#451a03', header: '#78350f', textPrimary: '#fef3c7', textSecondary: '#fde68a', cardBackground: '#291002', cardBorder: '#92400e', accent: '#b45309' }, fontHeader: "'Playfair Display', serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'mat-concrete', name: 'Concrete', category: 'materials', colors: { background: '#d1d5db', header: '#9ca3af', textPrimary: '#1f2937', textSecondary: '#374151', cardBackground: '#e5e7eb', cardBorder: '#6b7280', accent: '#000000' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'mat-wood', name: 'Oak Wood', category: 'materials', colors: { background: '#78350f', header: '#92400e', textPrimary: '#fffbeb', textSecondary: '#fef3c7', cardBackground: '#b45309', cardBorder: '#d97706', accent: '#fcd34d' }, fontHeader: "'Lobster', cursive", fontBody: "'Lato', sans-serif" },
+  { id: 'mat-carbon', name: 'Carbon Fiber', category: 'materials', colors: { background: '#171717', header: '#262626', textPrimary: '#e5e5e5', textSecondary: '#a3a3a3', cardBackground: '#0a0a0a', cardBorder: '#404040', accent: '#ef4444' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Roboto', sans-serif" },
+
+  // --- Art & Abstract ---
+  { id: 'art-pop', name: 'Pop Art', category: 'art', colors: { background: '#fff', header: '#facc15', textPrimary: '#000', textSecondary: '#000', cardBackground: '#06b6d4', cardBorder: '#000', accent: '#ec4899' }, fontHeader: "'Bangers', cursive", fontBody: "'Roboto', sans-serif" },
+  { id: 'art-noir', name: 'Film Noir', category: 'art', colors: { background: '#000', header: '#222', textPrimary: '#fff', textSecondary: '#888', cardBackground: '#111', cardBorder: '#444', accent: '#fff' }, fontHeader: "'Playfair Display', serif", fontBody: "'Montserrat', sans-serif" },
+  { id: 'art-cubism', name: 'Cubism', category: 'art', colors: { background: '#d97706', header: '#92400e', textPrimary: '#451a03', textSecondary: '#78350f', cardBackground: '#f59e0b', cardBorder: '#000', accent: '#000' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'art-bauhaus', name: 'Bauhaus', category: 'art', colors: { background: '#f5f5f4', header: '#ef4444', textPrimary: '#1c1917', textSecondary: '#292524', cardBackground: '#fff', cardBorder: '#1c1917', accent: '#2563eb' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Roboto', sans-serif" },
+  { id: 'art-pastel', name: 'Pastel Dream', category: 'art', colors: { background: '#fff1f2', header: '#dbeafe', textPrimary: '#4c1d95', textSecondary: '#6d28d9', cardBackground: '#fdf2f8', cardBorder: '#f0abfc', accent: '#f0abfc' }, fontHeader: "'Dancing Script', cursive", fontBody: "'Lato', sans-serif" },
+  { id: 'art-glitch', name: 'Glitch Art', category: 'art', colors: { background: '#000', header: '#222', textPrimary: '#0ff', textSecondary: '#f0f', cardBackground: '#111', cardBorder: '#0ff', accent: '#f0f' }, fontHeader: "'VT323', monospace", fontBody: "'VT323', monospace" },
+  { id: 'art-minimal', name: 'Minimalist', category: 'art', colors: { background: '#fff', header: '#fff', textPrimary: '#000', textSecondary: '#444', cardBackground: '#fff', cardBorder: '#eee', accent: '#000' }, fontHeader: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif" },
+  { id: 'art-brutalist', name: 'Brutalist', category: 'art', colors: { background: '#e5e5e5', header: '#404040', textPrimary: '#000', textSecondary: '#222', cardBackground: '#d4d4d4', cardBorder: '#000', accent: '#0000ff' }, fontHeader: "'Roboto', sans-serif", fontBody: "'Roboto', sans-serif" },
+
+  // --- Color Palettes (Existing) ---
   {
     id: 'cafe',
     name: 'Coffee Shop',
@@ -97,7 +284,7 @@ export const themes: Theme[] = [
         background: '#f1e8e0',
         header: 'rgba(111, 78, 55, 0.8)',
         textPrimary: '#3e2723',
-        textSecondary: '#5d4037', // Darkened
+        textSecondary: '#5d4037',
         cardBackground: 'rgba(255, 255, 255, 0.6)',
         cardBorder: '#d7ccc8',
         accent: '#8d6e63',
@@ -112,8 +299,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#fdf6e3',
       header: 'rgba(245, 245, 220, 0.8)',
-      textPrimary: '#455a64', // Darkened
-      textSecondary: '#546e7a', // Darkened
+      textPrimary: '#455a64',
+      textSecondary: '#546e7a',
       cardBackground: 'rgba(255, 251, 237, 0.7)',
       cardBorder: '#eee8d5',
       accent: '#cb4b16',
@@ -145,7 +332,7 @@ export const themes: Theme[] = [
       background: '#f5f5f5',
       header: 'rgba(250, 250, 250, 0.8)',
       textPrimary: '#212121',
-      textSecondary: '#424242', // Darkened
+      textSecondary: '#424242',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#eeeeee',
       accent: '#616161',
@@ -196,10 +383,26 @@ export const themes: Theme[] = [
       textSecondary: '#b39ddb',
       cardBackground: 'rgba(69, 39, 160, 0.6)',
       cardBorder: '#512da8',
-      accent: '#ffd700', // Gold
+      accent: '#ffd700',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Montserrat', sans-serif",
+  },
+  {
+    id: 'cotton-candy',
+    name: 'Cotton Candy',
+    category: 'palette',
+    colors: {
+      background: '#fdf4ff',
+      header: 'rgba(249, 168, 212, 0.6)',
+      textPrimary: '#86198f',
+      textSecondary: '#a21caf',
+      cardBackground: 'rgba(255, 255, 255, 0.5)',
+      cardBorder: '#f0abfc',
+      accent: '#60a5fa',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Lato', sans-serif",
   },
   
   // --- Nature's Palette ---
@@ -211,7 +414,7 @@ export const themes: Theme[] = [
       background: '#3d403a',
       header: 'rgba(61, 64, 58, 0.8)',
       textPrimary: '#e8e6e3',
-      textSecondary: '#c7c4bf', // Slightly lighter for better contrast on dark bg
+      textSecondary: '#c7c4bf',
       cardBackground: 'rgba(81, 85, 78, 0.5)',
       cardBorder: '#6d706a',
       accent: '#a3b18a',
@@ -226,8 +429,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#f3e5d8',
       header: 'rgba(141, 110, 99, 0.8)',
-      textPrimary: '#3e2723', // Darkened
-      textSecondary: '#5d4037', // Darkened
+      textPrimary: '#3e2723',
+      textSecondary: '#5d4037',
       cardBackground: 'rgba(255, 248, 240, 0.7)',
       cardBorder: '#bcaaa4',
       accent: '#bf360c',
@@ -242,11 +445,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#d8e2ec',
       header: 'rgba(120, 144, 156, 0.8)',
-      textPrimary: '#263238', // Darkened significantly
-      textSecondary: '#455a64', // Darkened significantly
+      textPrimary: '#263238',
+      textSecondary: '#455a64',
       cardBackground: 'rgba(236, 239, 241, 0.7)',
-      cardBorder: '#90a4ae', // Darkened
-      accent: '#00897b', // Darkened for contrast
+      cardBorder: '#90a4ae',
+      accent: '#00897b',
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Lato', sans-serif",
@@ -258,11 +461,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#fdf0d5',
       header: 'rgba(224, 171, 114, 0.8)',
-      textPrimary: '#3e2723', // Darkened significantly
-      textSecondary: '#5d4037', // Darkened significantly
+      textPrimary: '#3e2723',
+      textSecondary: '#5d4037',
       cardBackground: 'rgba(255, 250, 240, 0.7)',
       cardBorder: '#d7ccc8',
-      accent: '#bf360c', // More vibrant/darker orange
+      accent: '#bf360c',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Roboto', sans-serif",
@@ -278,7 +481,7 @@ export const themes: Theme[] = [
       textSecondary: '#00838f',
       cardBackground: 'rgba(240, 253, 255, 0.7)',
       cardBorder: '#4dd0e1',
-      accent: '#d84315', // Darker orange
+      accent: '#d84315',
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Lato', sans-serif",
@@ -306,11 +509,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#f0f4f8',
       header: 'rgba(176, 190, 197, 0.8)',
-      textPrimary: '#263238', // Darkened
-      textSecondary: '#455a64', // Darkened
+      textPrimary: '#263238',
+      textSecondary: '#455a64',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#b0bec5',
-      accent: '#d81b60', // Darker pink
+      accent: '#d81b60',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Lato', sans-serif",
@@ -342,7 +545,7 @@ export const themes: Theme[] = [
       textSecondary: '#b0bec5',
       cardBackground: 'rgba(38, 50, 56, 0.6)',
       cardBorder: '#546e7a',
-      accent: '#ffab00', // Electric yellow/orange for lightning feel
+      accent: '#ffab00',
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Roboto', sans-serif",
@@ -352,16 +555,112 @@ export const themes: Theme[] = [
     name: 'Mossy Rock',
     category: 'nature',
     colors: {
-      background: '#33691e', // Dark green
+      background: '#33691e',
       header: 'rgba(27, 94, 32, 0.8)',
       textPrimary: '#f1f8e9',
       textSecondary: '#c5e1a5',
       cardBackground: 'rgba(51, 105, 30, 0.5)',
       cardBorder: '#558b2f',
-      accent: '#aeea00', // Bright lime
+      accent: '#aeea00',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'cherry',
+    name: 'Cherry Blossom',
+    category: 'nature',
+    colors: {
+      background: '#fff0f5',
+      header: 'rgba(255, 183, 178, 0.9)',
+      textPrimary: '#4a2c2a',
+      textSecondary: '#6d4c41',
+      cardBackground: 'rgba(255, 255, 255, 0.6)',
+      cardBorder: '#ffcdd2',
+      accent: '#d81b60',
+    },
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'rainforest',
+    name: 'Amazon Rainforest',
+    category: 'nature',
+    colors: {
+      background: '#052e16',
+      header: 'rgba(6, 78, 59, 0.9)',
+      textPrimary: '#f0fdf4',
+      textSecondary: '#86efac',
+      cardBackground: 'rgba(20, 83, 45, 0.6)',
+      cardBorder: '#22c55e',
+      accent: '#eab308',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'glacier',
+    name: 'Glacial Ice',
+    category: 'nature',
+    colors: {
+      background: '#e0f2fe',
+      header: 'rgba(186, 230, 253, 0.9)',
+      textPrimary: '#0c4a6e',
+      textSecondary: '#0369a1',
+      cardBackground: 'rgba(255, 255, 255, 0.7)',
+      cardBorder: '#7dd3fc',
+      accent: '#0284c7',
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'volcano',
+    name: 'Volcanic Ash',
+    category: 'nature',
+    colors: {
+      background: '#292524',
+      header: 'rgba(68, 64, 60, 0.9)',
+      textPrimary: '#fafaf9',
+      textSecondary: '#d6d3d1',
+      cardBackground: 'rgba(87, 83, 78, 0.5)',
+      cardBorder: '#78716c',
+      accent: '#ef4444',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'galaxy',
+    name: 'Deep Space',
+    category: 'nature',
+    colors: {
+      background: '#020617',
+      header: 'rgba(15, 23, 42, 0.9)',
+      textPrimary: '#f8fafc',
+      textSecondary: '#94a3b8',
+      cardBackground: 'rgba(30, 41, 59, 0.6)',
+      cardBorder: '#475569',
+      accent: '#818cf8',
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'summer',
+    name: 'Summer Heat',
+    category: 'nature',
+    colors: {
+      background: '#fefce8',
+      header: 'rgba(254, 240, 138, 0.9)',
+      textPrimary: '#854d0e',
+      textSecondary: '#a16207',
+      cardBackground: 'rgba(255, 255, 255, 0.6)',
+      cardBorder: '#facc15',
+      accent: '#0ea5e9',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Roboto', sans-serif",
   },
 
   // --- Urban Vibes ---
@@ -388,8 +687,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#596e79',
       header: 'rgba(42, 53, 59, 0.8)',
-      textPrimary: '#fdfbf7', // Lightened
-      textSecondary: '#d7ccc8', // Lightened
+      textPrimary: '#fdfbf7',
+      textSecondary: '#d7ccc8',
       cardBackground: 'rgba(42, 53, 59, 0.5)',
       cardBorder: '#718894',
       accent: '#ffa000',
@@ -404,8 +703,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#dcdcdc',
       header: 'rgba(169, 169, 169, 0.8)',
-      textPrimary: '#212121', // Darkened
-      textSecondary: '#424242', // Darkened
+      textPrimary: '#212121',
+      textSecondary: '#424242',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#9e9e9e',
       accent: '#d84315',
@@ -420,8 +719,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#edf6f9',
       header: 'rgba(129, 178, 154, 0.8)',
-      textPrimary: '#004d40', // Darkened
-      textSecondary: '#00695c', // Darkened
+      textPrimary: '#004d40',
+      textSecondary: '#00695c',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#81b29a',
       accent: '#d84315',
@@ -440,7 +739,7 @@ export const themes: Theme[] = [
       textSecondary: '#455a64',
       cardBackground: 'rgba(255, 255, 255, 0.5)',
       cardBorder: '#90a4ae',
-      accent: '#d84315', // Industrial orange
+      accent: '#d84315',
     },
     fontHeader: "'Bangers', cursive",
     fontBody: "'Roboto', sans-serif",
@@ -452,14 +751,78 @@ export const themes: Theme[] = [
     colors: {
       background: '#050505',
       header: 'rgba(20, 20, 20, 0.9)',
-      textPrimary: '#00e5ff', // Cyan
-      textSecondary: '#ea00d9', // Magenta
+      textPrimary: '#00e5ff',
+      textSecondary: '#ea00d9',
       cardBackground: 'rgba(30, 30, 30, 0.8)',
       cardBorder: '#00e5ff',
       accent: '#f50057',
     },
     fontHeader: "'Press Start 2P', cursive",
     fontBody: "'VT323', monospace",
+  },
+  {
+    id: 'blueprint',
+    name: 'Architect',
+    category: 'urban',
+    colors: {
+      background: '#1e3a8a',
+      header: 'rgba(30, 58, 138, 0.9)',
+      textPrimary: '#ffffff',
+      textSecondary: '#bfdbfe',
+      cardBackground: 'rgba(30, 58, 138, 0.6)',
+      cardBorder: '#60a5fa',
+      accent: '#ffffff',
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'VT323', monospace",
+  },
+  {
+    id: 'terminal',
+    name: 'Hacker Terminal',
+    category: 'urban',
+    colors: {
+      background: '#000000',
+      header: 'rgba(0, 20, 0, 0.9)',
+      textPrimary: '#4ade80',
+      textSecondary: '#22c55e',
+      cardBackground: 'rgba(0, 30, 0, 0.8)',
+      cardBorder: '#166534',
+      accent: '#4ade80',
+    },
+    fontHeader: "'VT323', monospace",
+    fontBody: "'VT323', monospace",
+  },
+  {
+    id: 'luxury',
+    name: 'Luxury Gold',
+    category: 'urban',
+    colors: {
+      background: '#1c1917',
+      header: 'rgba(28, 25, 23, 0.9)',
+      textPrimary: '#fbbf24',
+      textSecondary: '#d4d4d8',
+      cardBackground: 'rgba(41, 37, 36, 0.8)',
+      cardBorder: '#b45309',
+      accent: '#fbbf24',
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Montserrat', sans-serif",
+  },
+  {
+    id: 'sleek',
+    name: 'Sleek Dark',
+    category: 'urban',
+    colors: {
+      background: '#18181b',
+      header: 'rgba(24, 24, 27, 0.9)',
+      textPrimary: '#e4e4e7',
+      textSecondary: '#a1a1aa',
+      cardBackground: 'rgba(39, 39, 42, 0.8)',
+      cardBorder: '#3f3f46',
+      accent: '#3b82f6',
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'Lato', sans-serif",
   },
 
   // --- Gourmet ---
@@ -470,8 +833,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#e5f3e4',
       header: 'rgba(163, 177, 138, 0.8)',
-      textPrimary: '#1b4d3e', // Darkened
-      textSecondary: '#2d6a4f', // Darkened
+      textPrimary: '#1b4d3e',
+      textSecondary: '#2d6a4f',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#a3b18a',
       accent: '#1b4d3e',
@@ -487,7 +850,7 @@ export const themes: Theme[] = [
       background: '#f8e1f4',
       header: 'rgba(224, 150, 186, 0.8)',
       textPrimary: '#4a1942',
-      textSecondary: '#880e4f', // Darkened
+      textSecondary: '#880e4f',
       cardBackground: 'rgba(255, 240, 251, 0.7)',
       cardBorder: '#e096ba',
       accent: '#c2185b',
@@ -519,7 +882,7 @@ export const themes: Theme[] = [
       background: '#fffbeb',
       header: 'rgba(252, 211, 77, 0.8)',
       textPrimary: '#78350f',
-      textSecondary: '#92400e', // Darkened
+      textSecondary: '#92400e',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
       cardBorder: '#fde68a',
       accent: '#16a34a',
@@ -566,7 +929,7 @@ export const themes: Theme[] = [
     colors: {
       background: '#fff8e1',
       header: 'rgba(255, 160, 0, 0.8)',
-      textPrimary: '#4e342e', // Dark brown
+      textPrimary: '#4e342e',
       textSecondary: '#6d4c41',
       cardBackground: 'rgba(255, 236, 179, 0.6)',
       cardBorder: '#ffe082',
@@ -574,6 +937,86 @@ export const themes: Theme[] = [
     },
     fontHeader: "'Dancing Script', cursive",
     fontBody: "'Montserrat', sans-serif",
+  },
+  {
+    id: 'pizza',
+    name: 'Italian Pizzeria',
+    category: 'gourmet',
+    colors: {
+      background: '#fff1f2',
+      header: 'rgba(190, 18, 60, 0.9)',
+      textPrimary: '#881337',
+      textSecondary: '#9f1239',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#fda4af',
+      accent: '#15803d',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'sushi',
+    name: 'Sushi Roll',
+    category: 'gourmet',
+    colors: {
+      background: '#f0fdf4',
+      header: 'rgba(21, 128, 61, 0.8)',
+      textPrimary: '#1e293b',
+      textSecondary: '#334155',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#fb7185',
+      accent: '#fb7185',
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'bbq',
+    name: 'Smokehouse BBQ',
+    category: 'gourmet',
+    colors: {
+      background: '#27272a',
+      header: 'rgba(127, 29, 29, 0.9)',
+      textPrimary: '#f5f5f5',
+      textSecondary: '#d4d4d4',
+      cardBackground: 'rgba(63, 63, 70, 0.7)',
+      cardBorder: '#dc2626',
+      accent: '#fb923c',
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'icecream',
+    name: 'Ice Cream Parlor',
+    category: 'gourmet',
+    colors: {
+      background: '#fff7ed',
+      header: 'rgba(249, 168, 212, 0.8)',
+      textPrimary: '#be185d',
+      textSecondary: '#db2777',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#f472b6',
+      accent: '#60a5fa',
+    },
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'vineyard',
+    name: 'Vineyard',
+    category: 'gourmet',
+    colors: {
+      background: '#f5f3ff',
+      header: 'rgba(109, 40, 217, 0.8)',
+      textPrimary: '#4c1d95',
+      textSecondary: '#5b21b6',
+      cardBackground: 'rgba(255, 255, 255, 0.7)',
+      cardBorder: '#8b5cf6',
+      accent: '#15803d',
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Lato', sans-serif",
   },
 
   // --- Vintage ---
@@ -585,7 +1028,7 @@ export const themes: Theme[] = [
       background: '#f4a261',
       header: 'rgba(231, 111, 81, 0.8)',
       textPrimary: '#264653',
-      textSecondary: '#1d3557', // Dark blue for contrast
+      textSecondary: '#1d3557',
       cardBackground: 'rgba(255, 234, 210, 0.7)',
       cardBorder: '#e9c46a',
       accent: '#e76f51',
@@ -617,7 +1060,7 @@ export const themes: Theme[] = [
       background: '#8c6d52',
       header: 'rgba(78, 52, 46, 0.8)',
       textPrimary: '#ece0d1',
-      textSecondary: '#ffecb3', // Lighter for contrast against dark bg
+      textSecondary: '#ffecb3',
       cardBackground: 'rgba(78, 52, 46, 0.5)',
       cardBorder: '#c89f7a',
       accent: '#ffb74d',
@@ -633,7 +1076,7 @@ export const themes: Theme[] = [
       background: '#f5f0e1',
       header: 'rgba(90, 50, 40, 0.8)',
       textPrimary: '#3a2e2c',
-      textSecondary: '#4e342e', // Darkened
+      textSecondary: '#4e342e',
       cardBackground: 'rgba(253, 250, 242, 0.7)',
       cardBorder: '#e4d9c8',
       accent: '#1b5e20',
@@ -652,7 +1095,7 @@ export const themes: Theme[] = [
       textSecondary: '#9e9e9e',
       cardBackground: 'rgba(48, 48, 48, 0.6)',
       cardBorder: '#424242',
-      accent: '#00bcd4', // Retro blue
+      accent: '#00bcd4',
     },
     fontHeader: "'Bangers', cursive",
     fontBody: "'Roboto', sans-serif",
@@ -668,10 +1111,74 @@ export const themes: Theme[] = [
       textSecondary: '#424242',
       cardBackground: 'rgba(224, 224, 224, 0.6)',
       cardBorder: '#9e9e9e',
-      accent: '#d50000', // Red ink
+      accent: '#d50000',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'VT323', monospace",
+  },
+  {
+    id: 'vaporwave',
+    name: 'Vaporwave',
+    category: 'vintage',
+    colors: {
+      background: '#2e0249',
+      header: 'rgba(87, 10, 87, 0.8)',
+      textPrimary: '#ff0099',
+      textSecondary: '#a91079',
+      cardBackground: 'rgba(46, 2, 73, 0.7)',
+      cardBorder: '#00f2ff',
+      accent: '#00f2ff',
+    },
+    fontHeader: "'Press Start 2P', cursive",
+    fontBody: "'VT323', monospace",
+  },
+  {
+    id: 'western',
+    name: 'Wild West',
+    category: 'vintage',
+    colors: {
+      background: '#78350f',
+      header: 'rgba(120, 53, 15, 0.9)',
+      textPrimary: '#fef3c7',
+      textSecondary: '#fde68a',
+      cardBackground: 'rgba(146, 64, 14, 0.6)',
+      cardBorder: '#92400e',
+      accent: '#fbbf24',
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'diner',
+    name: '1950s Diner',
+    category: 'vintage',
+    colors: {
+      background: '#06b6d4',
+      header: 'rgba(255, 255, 255, 0.9)',
+      textPrimary: '#ef4444',
+      textSecondary: '#b91c1c',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#ecfeff',
+      accent: '#ef4444',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'sepia',
+    name: 'Sepia Tone',
+    category: 'vintage',
+    colors: {
+      background: '#785d37',
+      header: 'rgba(100, 75, 45, 0.9)',
+      textPrimary: '#fefce8',
+      textSecondary: '#fde047',
+      cardBackground: 'rgba(140, 100, 60, 0.6)',
+      cardBorder: '#a16207',
+      accent: '#fef08a',
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Roboto', sans-serif",
   },
 
 
@@ -700,7 +1207,7 @@ export const themes: Theme[] = [
       background: '#f2e9e4',
       header: 'rgba(187, 0, 0, 0.8)',
       textPrimary: '#0a4f0a',
-      textSecondary: '#1b5e20', // Darkened
+      textSecondary: '#1b5e20',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#e0e0e0',
       accent: '#c49a4a',
@@ -715,8 +1222,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#ffebee',
       header: 'rgba(255, 205, 210, 0.8)',
-      textPrimary: '#880e4f', // Darkened
-      textSecondary: '#ad1457', // Darkened
+      textPrimary: '#880e4f',
+      textSecondary: '#ad1457',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#f8bbd0',
       accent: '#d81b60',
@@ -746,12 +1253,12 @@ export const themes: Theme[] = [
     category: 'holiday',
     colors: {
       background: '#f1f2f6',
-      header: 'rgba(179, 25, 66, 0.8)', // Red
-      textPrimary: '#192a56', // Dark Blue
-      textSecondary: '#273c75', // Lighter Dark Blue
+      header: 'rgba(179, 25, 66, 0.8)',
+      textPrimary: '#192a56',
+      textSecondary: '#273c75',
       cardBackground: 'rgba(255, 255, 255, 0.8)',
       cardBorder: '#dcdde1',
-      accent: '#0057b8', // Blue
+      accent: '#0057b8',
     },
     fontHeader: "'Bangers', cursive",
     fontBody: "'Lato', sans-serif",
@@ -763,7 +1270,7 @@ export const themes: Theme[] = [
     colors: {
         background: '#fef3c7',
         header: 'rgba(217, 119, 6, 0.8)',
-        textPrimary: '#451a03', // Darkened
+        textPrimary: '#451a03',
         textSecondary: '#78350f',
         cardBackground: 'rgba(255, 255, 255, 0.7)',
         cardBorder: '#fcd34d',
@@ -787,6 +1294,38 @@ export const themes: Theme[] = [
     },
     fontHeader: "'Lobster', cursive",
     fontBody: "'Montserrat', sans-serif",
+  },
+  {
+    id: 'winter',
+    name: 'Winter Wonderland',
+    category: 'holiday',
+    colors: {
+      background: '#f0f9ff',
+      header: 'rgba(186, 230, 253, 0.9)',
+      textPrimary: '#0c4a6e',
+      textSecondary: '#0369a1',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#bae6fd',
+      accent: '#0ea5e9',
+    },
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'springfling',
+    name: 'Spring Fling',
+    category: 'holiday',
+    colors: {
+      background: '#fdf2f8',
+      header: 'rgba(252, 231, 243, 0.9)',
+      textPrimary: '#db2777',
+      textSecondary: '#be185d',
+      cardBackground: 'rgba(255, 255, 255, 0.8)',
+      cardBorder: '#fbcfe8',
+      accent: '#f472b6',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Lato', sans-serif",
   },
 
   // --- Interactive Themes ---

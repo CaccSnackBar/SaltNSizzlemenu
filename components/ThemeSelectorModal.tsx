@@ -28,15 +28,34 @@ const ThemeSelectorModal: React.FC<ThemeSelectorModalProps> = ({
   const categoryTitles: Record<string, string> = {
     interactive: 'Interactive',
     daily: 'Daily Drivers',
+    sports: 'School Spirit',
+    spectrum: 'Spectrum Series',
+    travel: 'World Travel',
+    materials: 'Materials',
     palette: 'Color Palettes',
     nature: "Nature's Palette",
     urban: 'Urban Vibes',
     gourmet: 'Gourmet',
     vintage: 'Vintage',
+    art: 'Art & Abstract',
     holiday: 'Holidays',
   };
 
-  const categoryOrder: (Theme['category'])[] = ['interactive', 'daily', 'palette', 'nature', 'urban', 'gourmet', 'vintage', 'holiday'];
+  const categoryOrder: (Theme['category'])[] = [
+      'interactive', 
+      'daily', 
+      'sports', 
+      'spectrum', 
+      'travel',
+      'materials',
+      'palette', 
+      'nature', 
+      'urban', 
+      'gourmet', 
+      'vintage',
+      'art',
+      'holiday'
+  ];
 
   const themeGroups = themes.reduce<Record<string, Theme[]>>((acc, theme) => {
     (acc[theme.category] = acc[theme.category] || []).push(theme);
