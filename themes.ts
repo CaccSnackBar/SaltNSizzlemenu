@@ -1,3 +1,4 @@
+
 import { Theme } from './types';
 
 export const themes: Theme[] = [
@@ -10,7 +11,7 @@ export const themes: Theme[] = [
       background: '#e0e8e2',
       header: 'rgba(243, 244, 246, 0.8)',
       textPrimary: '#1f2937',
-      textSecondary: '#4b5563',
+      textSecondary: '#374151', // Darkened for better contrast
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#d1d5db',
       accent: '#8c6d52',
@@ -18,7 +19,7 @@ export const themes: Theme[] = [
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Roboto', sans-serif",
     sound: {
-        click: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAABpAAAAAAAAAABsAAAAAAAAAABpAAAAAAAAAAACVGFsYgAAAAAAAAD+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAABEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/80DEAB8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVJAP/zkAAAAAAAAAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVAAAAAAAAAAAAA=',
+        click: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAABpAAAAAAAAAABsAAAAAAAAAABpAAAAAAAAAAACVGFsYgAAAAAAAAD+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAABEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/80DEAB8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVJAP/zkAAAAAAAAAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/gAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAA',
         toggle: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAABpAAAAAAAAAABsAAAAAAAAAABpAAAAAAAAAAACVGFsYgAAAAAAAAD+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/80DEAAAAA0gAAABEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/80DEAB8AAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVJAP/zkAAAAAAAAAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAD/gAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV-CQAAAAAAAAAAAAA',
     }
   },
@@ -70,6 +71,22 @@ export const themes: Theme[] = [
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Roboto', sans-serif",
   },
+  {
+    id: 'peachy',
+    name: 'Peachy Keen',
+    category: 'daily',
+    colors: {
+      background: '#fff3e0',
+      header: 'rgba(255, 171, 145, 0.8)',
+      textPrimary: '#bf360c',
+      textSecondary: '#d84315',
+      cardBackground: 'rgba(255, 224, 178, 0.5)',
+      cardBorder: '#ffcc80',
+      accent: '#ff6e40',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Lato', sans-serif",
+  },
 
   // --- Color Palettes ---
   {
@@ -80,7 +97,7 @@ export const themes: Theme[] = [
         background: '#f1e8e0',
         header: 'rgba(111, 78, 55, 0.8)',
         textPrimary: '#3e2723',
-        textSecondary: '#6d4c41',
+        textSecondary: '#5d4037', // Darkened
         cardBackground: 'rgba(255, 255, 255, 0.6)',
         cardBorder: '#d7ccc8',
         accent: '#8d6e63',
@@ -95,8 +112,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#fdf6e3',
       header: 'rgba(245, 245, 220, 0.8)',
-      textPrimary: '#586e75',
-      textSecondary: '#657b83',
+      textPrimary: '#455a64', // Darkened
+      textSecondary: '#546e7a', // Darkened
       cardBackground: 'rgba(255, 251, 237, 0.7)',
       cardBorder: '#eee8d5',
       accent: '#cb4b16',
@@ -128,7 +145,7 @@ export const themes: Theme[] = [
       background: '#f5f5f5',
       header: 'rgba(250, 250, 250, 0.8)',
       textPrimary: '#212121',
-      textSecondary: '#757575',
+      textSecondary: '#424242', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#eeeeee',
       accent: '#616161',
@@ -168,6 +185,22 @@ export const themes: Theme[] = [
     fontHeader: "'Dancing Script', cursive",
     fontBody: "'Roboto', sans-serif",
   },
+  {
+    id: 'royal',
+    name: 'Royal Velvet',
+    category: 'palette',
+    colors: {
+      background: '#311b92',
+      header: 'rgba(49, 27, 146, 0.9)',
+      textPrimary: '#ede7f6',
+      textSecondary: '#b39ddb',
+      cardBackground: 'rgba(69, 39, 160, 0.6)',
+      cardBorder: '#512da8',
+      accent: '#ffd700', // Gold
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Montserrat', sans-serif",
+  },
   
   // --- Nature's Palette ---
   {
@@ -178,7 +211,7 @@ export const themes: Theme[] = [
       background: '#3d403a',
       header: 'rgba(61, 64, 58, 0.8)',
       textPrimary: '#e8e6e3',
-      textSecondary: '#b8b5b0',
+      textSecondary: '#c7c4bf', // Slightly lighter for better contrast on dark bg
       cardBackground: 'rgba(81, 85, 78, 0.5)',
       cardBorder: '#6d706a',
       accent: '#a3b18a',
@@ -193,8 +226,8 @@ export const themes: Theme[] = [
     colors: {
       background: '#f3e5d8',
       header: 'rgba(141, 110, 99, 0.8)',
-      textPrimary: '#4e342e',
-      textSecondary: '#795548',
+      textPrimary: '#3e2723', // Darkened
+      textSecondary: '#5d4037', // Darkened
       cardBackground: 'rgba(255, 248, 240, 0.7)',
       cardBorder: '#bcaaa4',
       accent: '#bf360c',
@@ -209,11 +242,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#d8e2ec',
       header: 'rgba(120, 144, 156, 0.8)',
-      textPrimary: '#37474f',
-      textSecondary: '#607d8b',
+      textPrimary: '#263238', // Darkened significantly
+      textSecondary: '#455a64', // Darkened significantly
       cardBackground: 'rgba(236, 239, 241, 0.7)',
-      cardBorder: '#cfd8dc',
-      accent: '#26a69a',
+      cardBorder: '#90a4ae', // Darkened
+      accent: '#00897b', // Darkened for contrast
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Lato', sans-serif",
@@ -225,11 +258,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#fdf0d5',
       header: 'rgba(224, 171, 114, 0.8)',
-      textPrimary: '#5e3a1d',
-      textSecondary: '#8c6d52',
+      textPrimary: '#3e2723', // Darkened significantly
+      textSecondary: '#5d4037', // Darkened significantly
       cardBackground: 'rgba(255, 250, 240, 0.7)',
-      cardBorder: '#e0ab72',
-      accent: '#c67b45',
+      cardBorder: '#d7ccc8',
+      accent: '#bf360c', // More vibrant/darker orange
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Roboto', sans-serif",
@@ -245,7 +278,7 @@ export const themes: Theme[] = [
       textSecondary: '#00838f',
       cardBackground: 'rgba(240, 253, 255, 0.7)',
       cardBorder: '#4dd0e1',
-      accent: '#ff7043',
+      accent: '#d84315', // Darker orange
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Lato', sans-serif",
@@ -258,7 +291,7 @@ export const themes: Theme[] = [
       background: '#3e4444',
       header: 'rgba(92, 64, 51, 0.8)',
       textPrimary: '#f2f1ef',
-      textSecondary: '#c2c1bf',
+      textSecondary: '#d7d6d5',
       cardBackground: 'rgba(92, 64, 51, 0.4)',
       cardBorder: '#7d5a4d',
       accent: '#82a368',
@@ -273,11 +306,59 @@ export const themes: Theme[] = [
     colors: {
       background: '#f0f4f8',
       header: 'rgba(176, 190, 197, 0.8)',
-      textPrimary: '#37474f',
-      textSecondary: '#607d8b',
+      textPrimary: '#263238', // Darkened
+      textSecondary: '#455a64', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#b0bec5',
-      accent: '#f06292',
+      accent: '#d81b60', // Darker pink
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'lavender',
+    name: 'Lavender Fields',
+    category: 'nature',
+    colors: {
+      background: '#f3e5f5',
+      header: 'rgba(123, 31, 162, 0.8)',
+      textPrimary: '#4a148c',
+      textSecondary: '#7b1fa2',
+      cardBackground: 'rgba(255, 255, 255, 0.6)',
+      cardBorder: '#e1bee7',
+      accent: '#8e24aa',
+    },
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'storm',
+    name: 'Stormy Sky',
+    category: 'nature',
+    colors: {
+      background: '#37474f',
+      header: 'rgba(55, 71, 79, 0.9)',
+      textPrimary: '#eceff1',
+      textSecondary: '#b0bec5',
+      cardBackground: 'rgba(38, 50, 56, 0.6)',
+      cardBorder: '#546e7a',
+      accent: '#ffab00', // Electric yellow/orange for lightning feel
+    },
+    fontHeader: "'Montserrat', sans-serif",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'moss',
+    name: 'Mossy Rock',
+    category: 'nature',
+    colors: {
+      background: '#33691e', // Dark green
+      header: 'rgba(27, 94, 32, 0.8)',
+      textPrimary: '#f1f8e9',
+      textSecondary: '#c5e1a5',
+      cardBackground: 'rgba(51, 105, 30, 0.5)',
+      cardBorder: '#558b2f',
+      accent: '#aeea00', // Bright lime
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Lato', sans-serif",
@@ -307,11 +388,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#596e79',
       header: 'rgba(42, 53, 59, 0.8)',
-      textPrimary: '#dfd3c3',
-      textSecondary: '#c7b198',
+      textPrimary: '#fdfbf7', // Lightened
+      textSecondary: '#d7ccc8', // Lightened
       cardBackground: 'rgba(42, 53, 59, 0.5)',
       cardBorder: '#718894',
-      accent: '#f0a500',
+      accent: '#ffa000',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Roboto', sans-serif",
@@ -323,11 +404,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#dcdcdc',
       header: 'rgba(169, 169, 169, 0.8)',
-      textPrimary: '#36454f',
-      textSecondary: '#708090',
+      textPrimary: '#212121', // Darkened
+      textSecondary: '#424242', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
-      cardBorder: '#c0c0c0',
-      accent: '#ff4500',
+      cardBorder: '#9e9e9e',
+      accent: '#d84315',
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Lato', sans-serif",
@@ -339,14 +420,46 @@ export const themes: Theme[] = [
     colors: {
       background: '#edf6f9',
       header: 'rgba(129, 178, 154, 0.8)',
-      textPrimary: '#023c40',
-      textSecondary: '#046c4e',
+      textPrimary: '#004d40', // Darkened
+      textSecondary: '#00695c', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#81b29a',
-      accent: '#e07a5f',
+      accent: '#d84315',
     },
     fontHeader: "'Dancing Script', cursive",
     fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'concrete',
+    name: 'Concrete Jungle',
+    category: 'urban',
+    colors: {
+      background: '#cfd8dc',
+      header: 'rgba(84, 110, 122, 0.8)',
+      textPrimary: '#263238',
+      textSecondary: '#455a64',
+      cardBackground: 'rgba(255, 255, 255, 0.5)',
+      cardBorder: '#90a4ae',
+      accent: '#d84315', // Industrial orange
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'cyberpunk',
+    name: 'Cyberpunk City',
+    category: 'urban',
+    colors: {
+      background: '#050505',
+      header: 'rgba(20, 20, 20, 0.9)',
+      textPrimary: '#00e5ff', // Cyan
+      textSecondary: '#ea00d9', // Magenta
+      cardBackground: 'rgba(30, 30, 30, 0.8)',
+      cardBorder: '#00e5ff',
+      accent: '#f50057',
+    },
+    fontHeader: "'Press Start 2P', cursive",
+    fontBody: "'VT323', monospace",
   },
 
   // --- Gourmet ---
@@ -357,11 +470,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#e5f3e4',
       header: 'rgba(163, 177, 138, 0.8)',
-      textPrimary: '#588157',
-      textSecondary: '#6b9080',
+      textPrimary: '#1b4d3e', // Darkened
+      textSecondary: '#2d6a4f', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#a3b18a',
-      accent: '#3a5a40',
+      accent: '#1b4d3e',
     },
     fontHeader: "'Dancing Script', cursive",
     fontBody: "'Lato', sans-serif",
@@ -374,10 +487,10 @@ export const themes: Theme[] = [
       background: '#f8e1f4',
       header: 'rgba(224, 150, 186, 0.8)',
       textPrimary: '#4a1942',
-      textSecondary: '#893168',
+      textSecondary: '#880e4f', // Darkened
       cardBackground: 'rgba(255, 240, 251, 0.7)',
       cardBorder: '#e096ba',
-      accent: '#d90368',
+      accent: '#c2185b',
     },
     fontHeader: "'Lobster', cursive",
     fontBody: "'Roboto', sans-serif",
@@ -390,10 +503,10 @@ export const themes: Theme[] = [
       background: '#3c2f2f',
       header: 'rgba(60, 47, 47, 0.8)',
       textPrimary: '#fff0e6',
-      textSecondary: '#d4b2a7',
+      textSecondary: '#e6ceca',
       cardBackground: 'rgba(94, 75, 75, 0.5)',
       cardBorder: '#7a5c58',
-      accent: '#e47d51',
+      accent: '#ff8a65',
     },
     fontHeader: "'Playfair Display', serif",
     fontBody: "'Montserrat', sans-serif",
@@ -406,13 +519,61 @@ export const themes: Theme[] = [
       background: '#fffbeb',
       header: 'rgba(252, 211, 77, 0.8)',
       textPrimary: '#78350f',
-      textSecondary: '#b45309',
+      textSecondary: '#92400e', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.8)',
       cardBorder: '#fde68a',
-      accent: '#22c55e',
+      accent: '#16a34a',
     },
     fontHeader: "'Bangers', cursive",
     fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'salsa',
+    name: 'Spicy Salsa',
+    category: 'gourmet',
+    colors: {
+      background: '#ffebee',
+      header: 'rgba(198, 40, 40, 0.8)',
+      textPrimary: '#b71c1c',
+      textSecondary: '#d32f2f',
+      cardBackground: 'rgba(255, 205, 210, 0.6)',
+      cardBorder: '#ef9a9a',
+      accent: '#ff6f00',
+    },
+    fontHeader: "'Lobster', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'blueberry',
+    name: 'Blueberry Tart',
+    category: 'gourmet',
+    colors: {
+      background: '#e8eaf6',
+      header: 'rgba(63, 81, 181, 0.8)',
+      textPrimary: '#1a237e',
+      textSecondary: '#283593',
+      cardBackground: 'rgba(197, 202, 233, 0.6)',
+      cardBorder: '#9fa8da',
+      accent: '#ff4081',
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'Lato', sans-serif",
+  },
+   {
+    id: 'honey',
+    name: 'Honey Comb',
+    category: 'gourmet',
+    colors: {
+      background: '#fff8e1',
+      header: 'rgba(255, 160, 0, 0.8)',
+      textPrimary: '#4e342e', // Dark brown
+      textSecondary: '#6d4c41',
+      cardBackground: 'rgba(255, 236, 179, 0.6)',
+      cardBorder: '#ffe082',
+      accent: '#ff6f00',
+    },
+    fontHeader: "'Dancing Script', cursive",
+    fontBody: "'Montserrat', sans-serif",
   },
 
   // --- Vintage ---
@@ -424,7 +585,7 @@ export const themes: Theme[] = [
       background: '#f4a261',
       header: 'rgba(231, 111, 81, 0.8)',
       textPrimary: '#264653',
-      textSecondary: '#2a9d8f',
+      textSecondary: '#1d3557', // Dark blue for contrast
       cardBackground: 'rgba(255, 234, 210, 0.7)',
       cardBorder: '#e9c46a',
       accent: '#e76f51',
@@ -456,10 +617,10 @@ export const themes: Theme[] = [
       background: '#8c6d52',
       header: 'rgba(78, 52, 46, 0.8)',
       textPrimary: '#ece0d1',
-      textSecondary: '#dbc1ac',
+      textSecondary: '#ffecb3', // Lighter for contrast against dark bg
       cardBackground: 'rgba(78, 52, 46, 0.5)',
       cardBorder: '#c89f7a',
-      accent: '#cd7f32',
+      accent: '#ffb74d',
     },
     fontHeader: "'Lobster', cursive",
     fontBody: "'Roboto', sans-serif",
@@ -472,13 +633,45 @@ export const themes: Theme[] = [
       background: '#f5f0e1',
       header: 'rgba(90, 50, 40, 0.8)',
       textPrimary: '#3a2e2c',
-      textSecondary: '#6a5f5b',
+      textSecondary: '#4e342e', // Darkened
       cardBackground: 'rgba(253, 250, 242, 0.7)',
       cardBorder: '#e4d9c8',
       accent: '#1b5e20',
     },
     fontHeader: "'Lobster', cursive",
     fontBody: "'Lato', sans-serif",
+  },
+  {
+    id: 'vinyl',
+    name: 'Vinyl Record',
+    category: 'vintage',
+    colors: {
+      background: '#212121',
+      header: 'rgba(0, 0, 0, 0.8)',
+      textPrimary: '#e0e0e0',
+      textSecondary: '#9e9e9e',
+      cardBackground: 'rgba(48, 48, 48, 0.6)',
+      cardBorder: '#424242',
+      accent: '#00bcd4', // Retro blue
+    },
+    fontHeader: "'Bangers', cursive",
+    fontBody: "'Roboto', sans-serif",
+  },
+  {
+    id: 'newsprint',
+    name: 'Old Newsprint',
+    category: 'vintage',
+    colors: {
+      background: '#f5f5f5',
+      header: 'rgba(33, 33, 33, 0.8)',
+      textPrimary: '#212121',
+      textSecondary: '#424242',
+      cardBackground: 'rgba(224, 224, 224, 0.6)',
+      cardBorder: '#9e9e9e',
+      accent: '#d50000', // Red ink
+    },
+    fontHeader: "'Playfair Display', serif",
+    fontBody: "'VT323', monospace",
   },
 
 
@@ -491,7 +684,7 @@ export const themes: Theme[] = [
       background: '#121212',
       header: 'rgba(255, 107, 0, 0.8)',
       textPrimary: '#fdfdfd',
-      textSecondary: '#cccccc',
+      textSecondary: '#e0e0e0',
       cardBackground: 'rgba(34, 34, 34, 0.7)',
       cardBorder: '#444444',
       accent: '#ff6b00',
@@ -507,7 +700,7 @@ export const themes: Theme[] = [
       background: '#f2e9e4',
       header: 'rgba(187, 0, 0, 0.8)',
       textPrimary: '#0a4f0a',
-      textSecondary: '#2b782b',
+      textSecondary: '#1b5e20', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#e0e0e0',
       accent: '#c49a4a',
@@ -522,11 +715,11 @@ export const themes: Theme[] = [
     colors: {
       background: '#ffebee',
       header: 'rgba(255, 205, 210, 0.8)',
-      textPrimary: '#c2185b',
-      textSecondary: '#e91e63',
+      textPrimary: '#880e4f', // Darkened
+      textSecondary: '#ad1457', // Darkened
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#f8bbd0',
-      accent: '#ad1457',
+      accent: '#d81b60',
     },
     fontHeader: "'Dancing Script', cursive",
     fontBody: "'Lato', sans-serif",
@@ -542,7 +735,7 @@ export const themes: Theme[] = [
       textSecondary: '#2e7d32',
       cardBackground: 'rgba(255, 255, 255, 0.7)',
       cardBorder: '#c8e6c9',
-      accent: '#ffc107',
+      accent: '#f57f17',
     },
     fontHeader: "'Montserrat', sans-serif",
     fontBody: "'Roboto', sans-serif",
@@ -570,7 +763,7 @@ export const themes: Theme[] = [
     colors: {
         background: '#fef3c7',
         header: 'rgba(217, 119, 6, 0.8)',
-        textPrimary: '#422006',
+        textPrimary: '#451a03', // Darkened
         textSecondary: '#78350f',
         cardBackground: 'rgba(255, 255, 255, 0.7)',
         cardBorder: '#fcd34d',

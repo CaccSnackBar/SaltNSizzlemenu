@@ -1,6 +1,17 @@
+
 import React, { useState, useEffect } from 'react';
-import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme, DealOfTheDay } from './types';
-import { INITIAL_MENU, LOCAL_STORAGE_KEY_MENU, LOCAL_STORAGE_KEY_THEME, LOCAL_STORAGE_KEY_SOUND, LOCAL_STORAGE_KEY_DEAL, INITIAL_DEAL } from './constants';
+import { MenuCategory as MenuCategoryType, MenuItem as MenuItemType, Theme, DealOfTheDay, StaffDirectory } from './types';
+import { 
+    INITIAL_MENU, 
+    LOCAL_STORAGE_KEY_MENU, 
+    LOCAL_STORAGE_KEY_THEME, 
+    LOCAL_STORAGE_KEY_SOUND, 
+    LOCAL_STORAGE_KEY_DEAL, 
+    INITIAL_DEAL,
+    LOCAL_STORAGE_KEY_STAFF,
+    INITIAL_STAFF,
+    LOCAL_STORAGE_KEY_THEME_ROTATION
+} from './constants';
 import MenuCategory from './components/MenuCategory';
 import Modal from './components/Modal';
 import MenuItemForm from './components/MenuItemForm';
@@ -20,9 +31,10 @@ import CategoryForm from './components/CategoryForm';
 import { PlusIcon } from './components/icons/PlusIcon';
 import { ExpandIcon } from './components/icons/ExpandIcon';
 import { LogoutIcon } from './components/icons/LogoutIcon';
-import DealEditor from './components/DealEditor';
 import DealOfTheDayBanner from './components/DealOfTheDayBanner';
 import ComboDeal from './components/ComboDeal';
+import DealEditor from './components/DealEditor';
+import StaffEditor from './components/StaffEditor';
 
 const App: React.FC = () => {
     // State management
@@ -43,6 +55,16 @@ const App: React.FC = () => {
         } catch (error) {
             console.error("Could not parse deal from localStorage", error);
             return INITIAL_DEAL;
+        }
+    });
+
+    const [staff, setStaff] = useState<StaffDirectory>(() => {
+        try {
+            const savedStaff = localStorage.getItem(LOCAL_STORAGE_KEY_STAFF);
+            return savedStaff ? JSON.parse(savedStaff) : INITIAL_STAFF;
+        } catch (error) {
+            console.error("Could not parse staff from localStorage", error);
+            return INITIAL_STAFF;
         }
     });
 
@@ -72,6 +94,17 @@ const App: React.FC = () => {
     });
     const [isThemeSelectorOpen, setIsThemeSelectorOpen] = useState(false);
     
+    // Theme Rotation State (Interval in milliseconds, 0 = off)
+    const [themeRotationInterval, setThemeRotationInterval] = useState<number>(() => {
+        try {
+            const savedInterval = localStorage.getItem(LOCAL_STORAGE_KEY_THEME_ROTATION);
+            return savedInterval ? parseInt(savedInterval, 10) : 0;
+        } catch (error) {
+            console.error("Could not parse theme rotation interval", error);
+            return 0;
+        }
+    });
+    
     const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
         try {
             const savedSound = localStorage.getItem(LOCAL_STORAGE_KEY_SOUND);
@@ -82,15 +115,18 @@ const App: React.FC = () => {
         }
     });
 
-    // Save menu to localStorage whenever it changes
+    // Persist State to LocalStorage
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY_MENU, JSON.stringify(menu));
     }, [menu]);
     
-    // Save deal to localStorage whenever it changes
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY_DEAL, JSON.stringify(deal));
     }, [deal]);
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_STAFF, JSON.stringify(staff));
+    }, [staff]);
 
     // Save theme to localStorage and apply styles
     useEffect(() => {
@@ -112,41 +148,55 @@ const App: React.FC = () => {
         localStorage.setItem(LOCAL_STORAGE_KEY_SOUND, JSON.stringify(isSoundEnabled));
     }, [isSoundEnabled]);
 
+    // Save rotation setting
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY_THEME_ROTATION, themeRotationInterval.toString());
+    }, [themeRotationInterval]);
+
     // Real-time sync between tabs/windows
     useEffect(() => {
         const syncState = (event: StorageEvent) => {
             if (event.key === LOCAL_STORAGE_KEY_MENU && event.newValue) {
-                try {
-                    setMenu(JSON.parse(event.newValue));
-                } catch (error) {
-                    console.error("Failed to sync menu state from another tab.", error);
-                }
+                try { setMenu(JSON.parse(event.newValue)); } catch (e) { console.error(e); }
             }
             if (event.key === LOCAL_STORAGE_KEY_DEAL && event.newValue) {
-                try {
-                    setDeal(JSON.parse(event.newValue));
-                } catch (error) {
-                    console.error("Failed to sync deal state from another tab.", error);
-                }
+                try { setDeal(JSON.parse(event.newValue)); } catch (e) { console.error(e); }
+            }
+            if (event.key === LOCAL_STORAGE_KEY_STAFF && event.newValue) {
+                try { setStaff(JSON.parse(event.newValue)); } catch (e) { console.error(e); }
             }
             if (event.key === LOCAL_STORAGE_KEY_THEME && event.newValue) {
                 setCurrentTheme(themes.find(t => t.id === event.newValue) || themes[0]);
             }
             if (event.key === LOCAL_STORAGE_KEY_SOUND && event.newValue) {
-                try {
-                    setIsSoundEnabled(JSON.parse(event.newValue));
-                } catch (error) {
-                     console.error("Failed to sync sound state from another tab.", error);
-                }
+                try { setIsSoundEnabled(JSON.parse(event.newValue)); } catch (e) { console.error(e); }
+            }
+            if (event.key === LOCAL_STORAGE_KEY_THEME_ROTATION && event.newValue) {
+                try { setThemeRotationInterval(parseInt(event.newValue, 10)); } catch (e) { console.error(e); }
             }
         };
 
         window.addEventListener('storage', syncState);
-
         return () => {
             window.removeEventListener('storage', syncState);
         };
     }, []);
+
+    // Auto-Rotation Logic
+    useEffect(() => {
+        // Only the Admin window controls the rotation to prevent race conditions and jitter
+        // If rotation is off (0), do nothing.
+        if (themeRotationInterval === 0 || !isAdmin) return;
+
+        const intervalId = setInterval(() => {
+            const currentIndex = themes.findIndex(t => t.id === currentTheme.id);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            // We don't play sound on auto-rotation to avoid annoyance
+            setCurrentTheme(themes[nextIndex]);
+        }, themeRotationInterval);
+
+        return () => clearInterval(intervalId);
+    }, [themeRotationInterval, currentTheme, isAdmin]);
 
 
     const handleLoginSuccess = () => {
@@ -368,7 +418,15 @@ const App: React.FC = () => {
 
     return (
         <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--color-background)', color: 'var(--color-text-primary)' }}>
-            {isFullScreen && <FullScreenMenu menu={menu} deal={deal} comboItems={comboItems} onClose={() => setIsFullScreen(false)} />}
+            {isFullScreen && (
+                <FullScreenMenu 
+                    menu={menu} 
+                    deal={deal} 
+                    comboItems={comboItems} 
+                    staff={staff}
+                    onClose={() => setIsFullScreen(false)} 
+                />
+            )}
             
             <AnimatedBackground effect={themeToApply.backgroundEffect} />
             <header className="p-4 md:p-6 shadow-md sticky top-0 z-10 transition-colors duration-300 flex justify-between items-center" style={{ backgroundColor: 'var(--color-header)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
@@ -386,19 +444,27 @@ const App: React.FC = () => {
                         <button onClick={() => setIsThemeSelectorOpen(p => !p)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Change theme">
                             <PaletteIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                         </button>
+                        {themeRotationInterval > 0 && (
+                             <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                             </span>
+                        )}
                     </div>
                      <button onClick={() => setIsFullScreen(true)} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Fullscreen mode">
                         <ExpandIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                     </button>
+                    
                     {isAdmin ? (
                         <button onClick={handleLogout} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Logout">
                             <LogoutIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }}/>
                         </button>
                     ) : (
-                         <a href="/#/admin" className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Admin Login">
+                        <a href="/#/admin" className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Admin Login">
                             <LoginIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }} />
                         </a>
                     )}
+                    
                     {isAdmin && (
                         <button onClick={handleResetMenu} className="p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Reset menu">
                             <ResetIcon className="w-6 h-6" style={{ color: 'var(--color-text-secondary)' }}/>
@@ -412,7 +478,9 @@ const App: React.FC = () => {
 
                 {isAdmin && (
                     <div className="max-w-4xl mx-auto mb-8 space-y-8">
-                         <DealEditor currentDeal={deal} onSave={setDeal} />
+                        <DealEditor currentDeal={deal} onSave={setDeal} />
+                        <StaffEditor staff={staff} onSave={setStaff} />
+                        
                         <div className="text-center">
                             <button
                                 onClick={handleOpenAddCategoryModal}
@@ -474,48 +542,46 @@ const App: React.FC = () => {
             </Modal>
 
             <Modal isOpen={isCategoryModalOpen} onClose={handleCloseCategoryModal}>
-                <CategoryForm
-                    categoryToEdit={categoryToEdit}
-                    onSave={handleSaveCategory}
-                    onCancel={handleCloseCategoryModal}
+                <CategoryForm 
+                    categoryToEdit={categoryToEdit} 
+                    onSave={handleSaveCategory} 
+                    onCancel={handleCloseCategoryModal} 
                 />
             </Modal>
 
-            <Modal isOpen={isDeleteModalOpen} onClose={cancelDeleteCategory}>
-                <div className="text-center p-2">
-                    <h3 className="text-xl font-bold text-gray-800">Confirm Deletion</h3>
-                    <p className="my-4 text-gray-600">
-                        Are you sure you want to permanently delete the category 
-                        <strong className="font-semibold"> "{categoryToDelete?.name}"</strong>? 
-                        This will also remove all items within it. This action cannot be undone.
+             <Modal isOpen={isDeleteModalOpen} onClose={cancelDeleteCategory}>
+                <div className="text-center">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800">Delete Category?</h3>
+                    <p className="mb-6 text-gray-600">
+                        Are you sure you want to delete <strong>{categoryToDelete?.name}</strong>? 
+                        <br/>
+                        <span className="text-red-500 text-sm font-bold">This will delete all items inside it!</span>
                     </p>
-                    <div className="flex justify-center items-center gap-4 mt-6">
-                        <button
+                    <div className="flex justify-center gap-4">
+                         <button 
                             onClick={cancelDeleteCategory}
-                            className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
                         >
                             Cancel
                         </button>
-                        <button
+                        <button 
                             onClick={confirmDeleteCategory}
-                            className="px-6 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                            aria-label={`Confirm deletion of ${categoryToDelete?.name} category`}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                         >
                             Delete
                         </button>
                     </div>
                 </div>
             </Modal>
-
+            
             <ThemeSelectorModal
               isOpen={isThemeSelectorOpen}
               onClose={() => setIsThemeSelectorOpen(false)}
               themes={themes}
               currentTheme={currentTheme}
-              onThemeChange={(theme) => {
-                handleThemeChange(theme);
-                setIsThemeSelectorOpen(false);
-              }}
+              onThemeChange={handleThemeChange}
+              rotationInterval={themeRotationInterval}
+              onRotationIntervalChange={setThemeRotationInterval}
             />
 
         </div>

@@ -1,11 +1,13 @@
-import { MenuCategory, DealOfTheDay } from './types';
+
+import { MenuCategory, DealOfTheDay, StaffDirectory } from './types';
 
 export const ADMIN_PASSWORD = 'sizzle';
 export const LOCAL_STORAGE_KEY_MENU = 'salt-sizzle-menu';
 export const LOCAL_STORAGE_KEY_THEME = 'salt-sizzle-theme';
 export const LOCAL_STORAGE_KEY_SOUND = 'salt-sizzle-sound';
 export const LOCAL_STORAGE_KEY_DEAL = 'salt-sizzle-deal';
-
+export const LOCAL_STORAGE_KEY_STAFF = 'salt-sizzle-staff';
+export const LOCAL_STORAGE_KEY_THEME_ROTATION = 'salt-sizzle-theme-rotation';
 
 export const INITIAL_MENU: MenuCategory[] = [
   {
@@ -97,4 +99,14 @@ export const INITIAL_MENU: MenuCategory[] = [
 export const INITIAL_DEAL: DealOfTheDay = {
   text: "Today's Special: 2-for-1 Smash Burgers!",
   isVisible: false,
+};
+
+export const INITIAL_STAFF: StaffDirectory = {
+  isVisible: true,
+  griller: '',
+  fryCook: '',
+  drinkMaker: '',
+  bakers: '',
+  cashier: '',
+  runners: '',
 };

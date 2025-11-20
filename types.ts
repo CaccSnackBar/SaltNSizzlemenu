@@ -1,3 +1,4 @@
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -5,6 +6,7 @@ export interface MenuItem {
   description: string;
   isCrossedOut?: boolean;
   isFeatured?: boolean;
+  tags?: ('spicy' | 'vegetarian' | 'gluten-free' | 'new')[];
 }
 
 export interface MenuCategory {
@@ -38,4 +40,14 @@ export interface Theme {
 export interface DealOfTheDay {
   text: string;
   isVisible: boolean;
+}
+
+export interface StaffDirectory {
+  isVisible: boolean;
+  griller: string;
+  fryCook: string;
+  drinkMaker: string;
+  bakers: string;
+  cashier: string;
+  runners: string;
 }
